@@ -1,7 +1,7 @@
 package Rooms;
 
-public class TeachingRooms extends Room{
-    public TeachingRooms(String name, int ID){
+public class TeachingRoom extends Room{
+    public TeachingRoom(String name, int ID){
         super(name, ID);
         this.number_of_visitors = 0;
     }

@@ -1,5 +1,5 @@
 package Visitors;
-import Rooms.MeetingRooms;
+import Rooms.MeetingRoom;
 import Rooms.Slot;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +15,7 @@ public class Formal extends Visitor {
 
     Scanner input = new Scanner(System.in);
     Date date =new Date();
-    ArrayList<MeetingRooms> meetings=new ArrayList<>();
+    ArrayList<MeetingRoom> meetings=new ArrayList<>();
     ArrayList<Slot> slots=new ArrayList<>();
 
 

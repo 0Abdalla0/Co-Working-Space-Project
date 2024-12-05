@@ -1,7 +1,7 @@
 package Visitors;
 
 import Rooms.Slot;
-import Rooms.TeachingRooms;
+import Rooms.TeachingRoom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -15,7 +15,7 @@ public class Instructor extends Visitor {
 
     Scanner input = new Scanner(System.in);
     Date date =new Date();
-    ArrayList<TeachingRooms> teaching=new ArrayList<>();
+    ArrayList<TeachingRoom> teaching=new ArrayList<>();
     ArrayList<Slot> slots=new ArrayList<>();
 
     public void options() {

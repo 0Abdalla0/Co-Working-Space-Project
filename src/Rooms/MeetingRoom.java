@@ -1,8 +1,8 @@
 package Rooms;
 
-public class MeetingRooms extends Room {
+public class MeetingRoom extends Room {
 
-    public MeetingRooms(String name, int ID) {
+    public MeetingRoom(String name, int ID) {
         super(name, ID);
         this.number_of_visitors = 0;
     }
