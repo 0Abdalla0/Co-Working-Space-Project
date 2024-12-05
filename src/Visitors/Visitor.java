@@ -5,7 +5,7 @@ import Rooms.Room;
 abstract public class Visitor {
     private String name;
     private String password;
-    private int id;
+    private final int id;
     private String visitorType;
 
     public String getName() {
@@ -33,11 +33,11 @@ abstract public class Visitor {
         this.id = id;
         this.visitorType = visitorType;
     }
-    void makeRes(){};
-    void deleteRes(){};
-    void updateRes(){};
-    void reward (int TotalHours){};
-    void displayAvailableSlots(Room room,int hours){};
+    void makeRes(){}
+    void deleteRes(){}
+    void updateRes(){}
+    void reward (int TotalHours){}
+    void displayAvailableSlots(Room room,int hours){}
 
     Scanner input = new Scanner(System.in);
     public void options() {
