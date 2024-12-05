@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import Rooms.Room;
 import Rooms.Slot;
-
+import Rooms.GeneralRooms;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
