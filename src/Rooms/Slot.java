@@ -5,36 +5,55 @@ import java.time.LocalTime;
 
 public class Slot {
     private LocalDate date;
-    private LocalTime time; // 10:30
+    private LocalTime startTime;
+    private LocalTime endTime; // 10:30
     private double fees;
+    private boolean reserved = false;
 
-    public Slot(LocalDate date, LocalTime time, double fees) {
+    public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, double fees) {
         this.date = date;
-        this.time = time;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.fees = fees;
-    }
-
-    public LocalDate getDate() {
-        return date;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public LocalTime getTime() {
-        return time;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
-    public void setTime(LocalTime time) {
-        this.time = time;
+    public void setFees(double fees) {
+        this.fees = fees;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setReserved(boolean reserved) {
+        this.reserved = reserved;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
     }
 
     public double getFees() {
         return fees;
     }
 
-    public void setFees(double fees) {
-        this.fees = fees;
+    public boolean isReserved() {
+        return reserved;
     }
 }
