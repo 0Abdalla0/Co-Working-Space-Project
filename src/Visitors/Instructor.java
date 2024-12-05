@@ -5,7 +5,7 @@ import Rooms.TeachingRoom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-
+import java.util.TreeSet;
 public class Instructor extends Visitor {
     private int hours;
     public Instructor(String name, String password, int id, String visitorType) {
