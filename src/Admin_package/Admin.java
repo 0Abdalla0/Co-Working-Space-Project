@@ -1,5 +1,7 @@
 
 package Admin_package;
+import Rooms.Room;
+
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalTime;
