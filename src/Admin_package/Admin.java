@@ -5,16 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import Rooms.Room;
-import Rooms.MeetingRooms;
-import Rooms.Slot;
-import java.util.ArrayList;
-import java.util.Date;
-import Rooms.GeneralRooms;
-import Rooms.TeachingRooms;
-
-import Visitors.Instructor;
-import Visitors.Formal;
 
 
 public class Admin {

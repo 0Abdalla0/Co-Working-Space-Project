@@ -1,6 +1,6 @@
 package Visitors;
 
-import Rooms.GeneralRooms;
+import Rooms.GeneralRoom;
 import Rooms.Slot;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class General extends Visitor {
 
     Scanner input = new Scanner(System.in);
     Date date =new Date();
-    ArrayList<GeneralRooms> generals=new ArrayList<>();
+    ArrayList<GeneralRoom> generals=new ArrayList<>();
     ArrayList<Slot> slots=new ArrayList<>();
 
 

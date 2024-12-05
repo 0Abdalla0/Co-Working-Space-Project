@@ -1,10 +1,7 @@
 package Visitors;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Scanner;
-import Rooms.Room;
-import Rooms.Slot;
-import Rooms.GeneralRooms;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -120,7 +117,6 @@ abstract public class Visitor {
                 retry = false;
             }else{
                 System.out.println("Invalid input! Please try again.");
-                retry = true;
             }
         }
     }
