@@ -13,7 +13,7 @@ import java.util.Date;
 import Rooms.GeneralRooms;
 import Rooms.TeachingRooms;
 
-import Visitors.General;
+
 import Visitors.Formal;
 
 
