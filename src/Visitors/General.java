@@ -21,14 +21,7 @@ public class General extends Visitor {
 
 
     //waiting for finding available slots
-    public void makeRes(){
-        System.out.println("How Many Hours Do you Want");
-        int hours = input.nextInt();
-        System.out.println("How Many Rooms Do you Want");
-        int numOfRooms = input.nextInt();
-        displayAvailableSlots(numOfRooms , hours);
-    }
-    public void displayAvailableSlots(int numOfRooms,int hours){
+    public  void makeRes(){
 
     }
     public void deleteRes(){

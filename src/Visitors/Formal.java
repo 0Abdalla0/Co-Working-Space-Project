@@ -20,12 +20,8 @@ public class Formal extends Visitor {
 
 
     //waiting for finding available slots
-    public void makeRes(){
-        System.out.println("How Many Hours Do you Want");
-        int hours = input.nextInt();
-        System.out.println("How Many Rooms Do you Want");
-        int numOfRooms = input.nextInt();
-        displayAvailableSlots(numOfRooms , hours);
+    public  void makeRes(){
+
     }
     public void displayAvailableSlots(int numOfRooms,int hours){
 
@@ -34,6 +30,13 @@ public class Formal extends Visitor {
 
     };
     public void updateRes(){
+        System.out.println("What Do You Want To Update?\n 1. Time Of Meeting\n 2. Date Of Meeting\n3. Update A Reservation");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.println("When Is The New Meeting?");
+
+        }
 
     };
     public void reward (int TotalNumOfHours){
