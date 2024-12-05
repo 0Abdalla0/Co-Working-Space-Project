@@ -67,7 +67,7 @@ public abstract class Room {
                 System.out.println("Error: Fee must be a valid number.");
             }
         }
-        Slot newSlot = new Slot(date, time, fee);
+        Slot newSlot = new Slot(date, time,time,fee);
         slots.add(newSlot);
         System.out.print("Added successfully ");
 
