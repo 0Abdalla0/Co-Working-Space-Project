@@ -20,19 +20,6 @@ public class General extends Visitor {
     ArrayList<Slot> slots=new ArrayList<>();
 
 
-    //waiting for finding available slots
-    public  void makeRes(){
-
-    }
-    public void deleteRes(){
-
-    };
-    public void updateRes(){
-
-    };
-    public void reward (int TotalNumOfHours){
-
-    };
     public void options() {
         System.out.println("Welcome To The General Section\n Choose An Option:\n 1. Make A Reservation\n 2. Delete A Reservation\n 3. Update A Reservation");
     }

@@ -1,4 +1,3 @@
-
 package Admin_package;
 import Rooms.Room;
 
@@ -35,6 +34,8 @@ public class Admin {
         // Print confirmation of added slot
 //        System.out.println("Slot added successfully to " + roomType + ":");
 //        System.out.println("Date: " + date + ", Time: " + time + ", Fee: $" + fee);
-
-
+    public static void adminLogin() {
+        System.out.println("Admin Login Page");
     }
+}
+

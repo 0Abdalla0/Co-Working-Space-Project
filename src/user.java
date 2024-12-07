@@ -1,3 +1,4 @@
+import Admin_package.Admin;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -47,20 +48,20 @@ public class user {
         {
             System.out.println("Choose \n1.Formal\n2.General\n3.Insructor");
             choice= input.nextInt();
-            if(choice == 1) {
-                 visitorType="Formal";
-            }
-            else if(choice == 2) {
-                 visitorType="General";
-            }
-            else if(choice == 3) {
-                 visitorType="Insructor";
-            }
-            else
+            switch(choice)
             {
-                System.out.println("Invalid choice. Please select a valid option.");
+                case 1:
+                    visitorType="Formal";
+                    break;
+                case 2:
+                    visitorType="General";
+                    break;
+                case 3:
+                   visitorType="Instructor";
+                   break;
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
             }
-
         }
 
         // Create a new User object and return it
@@ -95,23 +96,29 @@ public class user {
     // Menu for starting the application
     public static void startMenu(ArrayList<user> users) {
         int choice = 0;
-        while (choice != 1 && choice != 2) {
+        do {
             System.out.println("\t\t\t\t\t\t\t\t\t***Hello to Galacticos Work space***");
             System.out.println("1. Create a new user \n2. Login (Already have an account)");
             choice = input.nextInt();
-            if (choice == 1) {
-                // Create a new user and add it to the list
-                user newUser = register();
-                users.add(newUser);
 
-                // Automatically call login after registratio
-                login(users);
-            } else if (choice == 2) {
-                // Directly call the login function
-                login(users);
-            } else {
-                System.out.println("Invalid choice. Please select a valid option.");
+            switch (choice) {
+                case 1:
+                    // Create a new user and add it to the list
+                    user newUser = register();
+                    users.add(newUser);
+                    break;
+                case 2:
+                    // Directly call the login function
+                    login(users);
+                    break;
+                case 3:
+                    Admin.adminLogin();
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
             }
-        }
+
+        }while (choice > 3);
     }
 }

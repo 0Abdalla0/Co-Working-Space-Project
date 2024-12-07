@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-abstract public class Visitor {
+public class Visitor{
     private String name;
     private String password;
     private final int id;
