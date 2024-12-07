@@ -9,7 +9,7 @@ public class Visitor{
     private String password;
     private final int id;
     private String visitorType;
-
+//
     public String getName() {
         return name;
     }
