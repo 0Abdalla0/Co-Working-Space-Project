@@ -107,7 +107,7 @@ public class user {
                 // Automatically call login after registration
                 login(users);
             } else if (choice == 2) {
-                
+                // Directly call the login function
                 login(users);
             } else {
                 System.out.println("Invalid choice. Please select a valid option.");
