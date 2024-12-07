@@ -1,3 +1,5 @@
+package User;
+
 import Admin_package.Admin;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -16,7 +18,7 @@ public class user {
         this.password = password;
         this.id = idStatic;
         this.visitorType = visitorType;
-        idStatic++;  // Increment the static id for the next user
+        idStatic++;  // Increment the static id for the next User.user
     }
 
     // Getters and Setters
@@ -36,11 +38,11 @@ public class user {
         return id;
     }
 
-    // Register method to add a user
+    // Register method to add a User.user
     public static user register() {
-        System.out.println("Enter the name of the user you want to add:");
+        System.out.println("Enter the name of the User.user you want to add:");
         String name = input.next();
-        System.out.println("Enter the password of the user you want to add:");
+        System.out.println("Enter the password of the User.user you want to add:");
         String password = input.next();
         int choice=0;
         String visitorType="none";
@@ -68,16 +70,16 @@ public class user {
         return new user(name, password,visitorType);
     }
 
-    // Login method to validate user credentials
+    // Login method to validate User.user credentials
     public static void login(ArrayList<user> users) {
         String nameLogin, passwordLogin;
-        System.out.println("Enter the name of the user you want to login:");
+        System.out.println("Enter the name of the User.user you want to login:");
         nameLogin = input.next();
-        System.out.println("Enter the password of the user you want to login:");
+        System.out.println("Enter the password of the User.user you want to login:");
         passwordLogin = input.next();
 
         boolean loggedIn = false;
-        // Search for the user in the list
+        // Search for the User.user in the list
         for (user u : users) {
             if (u.getName().equals(nameLogin) && u.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
@@ -88,7 +90,7 @@ public class user {
 
         if (!loggedIn) {
             System.out.println("Wrong login or password. Please try again.");
-            // Allow the user to retry login without recursion
+            // Allow the User.user to retry login without recursion
             login(users);
         }
     }
@@ -98,12 +100,12 @@ public class user {
         int choice = 0;
         do {
             System.out.println("\t\t\t\t\t\t\t\t\t***Hello to Galacticos Work space***");
-            System.out.println("1. Create a new user \n2. Login (Already have an account)");
+            System.out.println("1. Create a new User.user \n2. Login (Already have an account)");
             choice = input.nextInt();
 
             switch (choice) {
                 case 1:
-                    // Create a new user and add it to the list
+                    // Create a new User.user and add it to the list
                     user newUser = register();
                     users.add(newUser);
                     break;

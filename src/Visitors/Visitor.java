@@ -1,10 +1,13 @@
 package Visitors;
 
+import Admin_package.Admin;
+
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-public class Visitor{
+import User.user;
+public class Visitor {
     private String name;
     private String password;
     private final int id;
