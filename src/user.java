@@ -104,7 +104,7 @@ public class user {
                 user newUser = register();
                 users.add(newUser);
 
-                // Automatically call login after registration
+                // Automatically call login after registratio
                 login(users);
             } else if (choice == 2) {
                 // Directly call the login function
