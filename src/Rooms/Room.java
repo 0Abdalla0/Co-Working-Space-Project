@@ -21,8 +21,9 @@ public abstract class Room {
     public void inputAddSlot() {
         Scanner input = new Scanner(System.in);
         LocalDate date;
-        LocalTime time;
+        LocalTime startTime,endTime;
         double fee;
+
 
         // Input and validate date
         while (true) {
@@ -42,12 +43,22 @@ public abstract class Room {
         }
 
         // Input and validate time
+        // Input and validate start and end time
         while (true) {
             try {
-                System.out.print("Enter time (HH:mm): ");
-                String timeInput = input.nextLine();
-                time = LocalTime.parse(timeInput, DateTimeFormatter.ISO_LOCAL_TIME);
-                break; // Valid time
+                System.out.print("Enter start time (HH:mm): ");
+                String startTimeInput = input.nextLine();
+                startTime = LocalTime.parse(startTimeInput, DateTimeFormatter.ISO_LOCAL_TIME);
+
+                System.out.print("Enter end time (HH:mm): ");
+                String endTimeInput = input.nextLine();
+                endTime = LocalTime.parse(endTimeInput, DateTimeFormatter.ISO_LOCAL_TIME);
+
+                if (endTime.isAfter(startTime)) {
+                    break; // Valid start and end times
+                } else {
+                    System.out.println("Error: End time must be after start time.");
+                }
             } catch (DateTimeParseException e) {
                 System.out.println("Error: Invalid time format. Please use HH:mm.");
             }
@@ -67,7 +78,7 @@ public abstract class Room {
                 System.out.println("Error: Fee must be a valid number.");
             }
         }
-        Slot newSlot = new Slot(date, time,time,fee);
+        Slot newSlot = new Slot(date, startTime,endTime,fee);
         slots.add(newSlot);
         System.out.print("Added successfully ");
 

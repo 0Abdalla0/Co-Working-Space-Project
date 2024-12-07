@@ -1,3 +1,4 @@
+
 package Admin_package;
 import Rooms.Room;
 
@@ -9,22 +10,48 @@ import java.time.format.DateTimeParseException;
 
 
 public class Admin {
-    private String name;
-    private String password;
-    private final Scanner input = new Scanner(System.in);
+    private static String name;
+    private static String password;
+    private Scanner input = new Scanner(System.in);
 
     // Constructor
     public Admin() {
     }
 
-    public Admin(String name, String password) {
-        this.name = name;
-        this.password = password;
+
+
+    public static void adminLogin()
+    {
+        while(true){
+            Scanner input = new Scanner(System.in);
+            System.out.println("Enter Admin Name: ");
+            String name = input.nextLine();
+            System.out.println("Enter Admin Password: ");
+            String password = input.nextLine();
+            if (name.equals("admin") && password.equals("admin"))
+            {
+                System.out.println("Admin Login Successful");
+                break;
+
+            }
+            else{
+                System.out.println("Admin Login Failed, try again");
+            }
+        }
+
+
     }
 
     // Add slots to a specific room type
     public void addSlots(Room room) {
-        room.inputAddSlot();
+        int num_of_slots;
+        System.out.println("Enter Number of Slots you want to add: ");
+        num_of_slots = input.nextInt();
+        for (int i = 0; i < num_of_slots; i++) {
+            room.inputAddSlot();
+
+        }
+
     }
 
     // Input slot details for a specific room type
@@ -34,8 +61,6 @@ public class Admin {
         // Print confirmation of added slot
 //        System.out.println("Slot added successfully to " + roomType + ":");
 //        System.out.println("Date: " + date + ", Time: " + time + ", Fee: $" + fee);
-    public static void adminLogin() {
-        System.out.println("Admin Login Page");
-    }
-}
 
+
+    }
