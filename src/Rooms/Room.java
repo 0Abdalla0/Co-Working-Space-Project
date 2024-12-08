@@ -18,6 +18,10 @@ public abstract class Room {
         this.ID = ID;
     }
 
+    public int getID() {
+        return ID;
+    }
+
     public void inputAddSlot() {
         Scanner input = new Scanner(System.in);
         LocalDate date;

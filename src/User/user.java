@@ -45,7 +45,7 @@ public class user {
     }
 
     // Register method to add a User.user
-    public static user register() {
+    public static user register(ArrayList<user> users) {
         System.out.println("Enter the name of the User.user you want to add:");
         String name = input.next();
         System.out.println("Enter the password of the User.user you want to add:");
@@ -73,7 +73,10 @@ public class user {
         }
 
         // Create a new User object and return it
+
         return new user(name, password,visitorType,idStatic);
+
+
     }
 
     // Login method to validate User.user credentials
@@ -89,6 +92,7 @@ public class user {
             if (u.getName().equals(nameLogin) && u.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
                 loggedIn = true;
+
                 break;
             }
         }
@@ -110,15 +114,16 @@ public class user {
             switch (choice) {
                 case 1:
                     // Create a new User.user and add it to the list
-                    user newUser = register();
+                    user newUser = register(users);
                     users.add(newUser);
+                    startMenu(users);
                     break;
                 case 2:
                     // Directly call the login function
                     login(users);
                     break;
                 case 3:
-                    Admin.adminLogin();
+                    Admin.adminLogin(users);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
