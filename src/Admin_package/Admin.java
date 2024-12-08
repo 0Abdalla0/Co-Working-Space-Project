@@ -38,8 +38,6 @@ public class Admin {
                 System.out.println("Admin Login Failed, try again");
             }
         }
-
-
     }
 
     // Add slots to a specific room type
@@ -51,7 +49,6 @@ public class Admin {
             room.inputAddSlot();
 
         }
-
     }
 
     // Input slot details for a specific room type
