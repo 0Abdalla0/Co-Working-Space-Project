@@ -1,6 +1,11 @@
 import User.user;
+import Visitors.Formal;
+import Visitors.General;
+import Visitors.Instructor;
+import Visitors.Visitor;
 
 import java.util.ArrayList;
+
 
 
 public class Main {
@@ -8,8 +13,20 @@ public class Main {
         String name,password,visitorType;
         ArrayList<user> users = new ArrayList<user>();
         user.startMenu(users);
+        // //////////////////////////////////////////////////////////////////////////////////////
+        ArrayList<Formal> formals = new ArrayList<>();
+        ArrayList<General> generals = new ArrayList<>();
+        ArrayList<Instructor> instructors = new ArrayList<>();
+        // ////////////////////////////////////////////////////////////////////////////
+        // Debugging: Print out registered users
+        System.out.println("Total registered users: " + users.size());
+        Visitor visitor = new Visitor();
         for (user user : users) {
-            System.out.println(user.getVisitorType());
+            visitor.sortVisitors(user,formals,generals,instructors);
         }
+        System.out.println("Formal visitors: " + formals.size());
+        System.out.println("General visitors: " + generals.size());
+        System.out.println("Instructor visitors: " + instructors.size());
+
     }
 }

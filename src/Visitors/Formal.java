@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class Formal extends Visitor {
     private int hours;
-    public Formal(String name, String password, int id, String visitorType) {
-        super(name, password, id, visitorType);
+    public Formal(String name, String password, String visitorType) {
+        super(name, password, visitorType);
         this.hours = 0;
     }
 
@@ -42,6 +42,7 @@ public class Formal extends Visitor {
     public void reward (int TotalNumOfHours){
     };
     public void options() {
-        System.out.println("Welcome To The Meetings Section\n Choose An Option:\n 1. Make A Reservation\n 2. Delete A Reservation\n 3. Update A Reservation");
+        System.out.println("Welcome **"+super.getName()+"** To The Meetings Section\n Choose An Option:\n 1. Make A Reservation\n 2. Delete A Reservation\n 3. Update A Reservation");
+        super.options();
     }
 }

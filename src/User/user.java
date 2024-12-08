@@ -1,6 +1,8 @@
 package User;
 
 import Admin_package.Admin;
+import Visitors.Visitor;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,7 +15,7 @@ public class user {
     private int id;
 
     // Constructor
-    public user(String name, String password,String visitorType) {
+    public user(String name, String password, String visitorType, int i) {
         this.name = name;
         this.password = password;
         this.id = idStatic;
@@ -34,6 +36,10 @@ public class user {
         return visitorType;
     }
 
+    public static int getIdStatic() {
+        return idStatic;
+    }
+
     public int getId() {
         return id;
     }
@@ -48,7 +54,7 @@ public class user {
         String visitorType="none";
         while(choice!=1&&choice!=2&&choice!=3)
         {
-            System.out.println("Choose \n1.Formal\n2.General\n3.Insructor");
+            System.out.println("Choose \n1.Formal\n2.General\n3.Instructor");
             choice= input.nextInt();
             switch(choice)
             {
@@ -67,7 +73,7 @@ public class user {
         }
 
         // Create a new User object and return it
-        return new user(name, password,visitorType);
+        return new user(name, password,visitorType,idStatic);
     }
 
     // Login method to validate User.user credentials
@@ -79,7 +85,6 @@ public class user {
         passwordLogin = input.next();
 
         boolean loggedIn = false;
-        // Search for the User.user in the list
         for (user u : users) {
             if (u.getName().equals(nameLogin) && u.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
@@ -90,7 +95,6 @@ public class user {
 
         if (!loggedIn) {
             System.out.println("Wrong login or password. Please try again.");
-            // Allow the User.user to retry login without recursion
             login(users);
         }
     }

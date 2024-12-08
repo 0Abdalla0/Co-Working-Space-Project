@@ -3,42 +3,24 @@ package Visitors;
 import Admin_package.Admin;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import User.user;
-public class Visitor {
-    private String name;
-    private String password;
-    private final int id;
-    private String visitorType;
-//
-    public String getName() {
-        return name;
+public class Visitor extends user {
+    public Visitor(){
+        super(null,null,null,idStatic);
     }
-    void setName(String name) {
-        this.name = name;
+    public Visitor(String name, String password, String visitorType) {
+        super(name,password,visitorType,idStatic);
     }
-    int getId() {
-        return id;
-    }
-    void setPassword(String password) {
-        this.password = password;
-    }
-    void setVisitorType(String visitorType) {
-        this.visitorType = visitorType;
-    }
-    public String getVisitorType() {
-        return visitorType;
-    }
+//    public Visitor(ArrayList<Formal> formals,ArrayList<General> generals,ArrayList<Instructor> instructors) {
+//        super(null,null,null,idStatic);
+//        sortVisitors(super.getVisitorType(),formals,generals,instructors);
+//    }
 
-    public Visitor(String name, String password, int id, String visitorType) {
-        this.name = name;
-        this.password = password;
-        this.id = id;
-        this.visitorType = visitorType;
-    }
-    private static final Scanner input = new Scanner(System.in);
+    private static Scanner input = new Scanner(System.in);
 
     //Inputs Date
     public static LocalDate getDateInput(String prompt) {
@@ -109,8 +91,8 @@ public class Visitor {
                 int numOfRoom = input.nextInt();
                 LocalTime time = getTimeInput("Enter start time you want to cancel(HH:mm): ");
                 System.out.println("Enter Your Password To Confirm Cancellation: ");
-                String password = input.nextLine();
-                if (password.equals(this.password)) {
+                String cancelPassword = input.nextLine();
+                if (cancelPassword.equals(super.getPassword())) {
 
                 }
                 retry = false;
@@ -124,8 +106,8 @@ public class Visitor {
     }
     void updateRes(){
         System.out.println("Enter Your Password To Update: ");
-        String password = input.nextLine();
-        if (!password.equals(this.password)){
+        String updatePassword = input.nextLine();
+        if (!updatePassword.equals(super.getPassword())){
             System.out.println("wrong password!!!(try again)");
             updateRes();
         }
@@ -191,4 +173,31 @@ public class Visitor {
             }
         } while (retry);
     }
+
+    public void sortVisitors(user currentUser, ArrayList<Formal> formals, ArrayList<General> generals, ArrayList<Instructor> instructors) {
+        try {
+            String visitorType = currentUser.getVisitorType();
+            switch (visitorType) {
+                case "Formal":
+                    Formal formal = new Formal(currentUser.getName(), currentUser.getPassword(), visitorType);
+                    formals.add(formal);
+                    break;
+                case "General":
+                    General general = new General(currentUser.getName(), currentUser.getPassword(), visitorType);
+                    generals.add(general);
+                    break;
+                case "Instructor":
+                    Instructor instructor = new Instructor(currentUser.getName(), currentUser.getPassword(), visitorType);
+                    instructors.add(instructor);
+                    break;
+                default:
+                    System.out.println("Invalid visitor type: " + visitorType);
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("Error sorting visitors: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }
