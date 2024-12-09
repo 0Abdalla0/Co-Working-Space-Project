@@ -9,13 +9,14 @@ public class Slot {
     private LocalTime startTime;
     private LocalTime endTime; // 10:30
     private double fees;
-    private boolean reserved = false;
+    private boolean reserved;
 
     public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, double fees) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.fees = fees;
+        this.reserved = false;
     }
 
     public void setDate(LocalDate date) {

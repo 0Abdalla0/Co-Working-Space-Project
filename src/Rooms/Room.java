@@ -1,4 +1,6 @@
 package Rooms;
+import Visitors.Visitor;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -9,8 +11,9 @@ import java.util.Scanner;
 public abstract class Room {
     protected String name;
     protected int ID, number_of_visitors;
-    private ArrayList<Slot> slots = new ArrayList<>();
-//    private ArrayList<Visitor> visitors = new ArrayList<>();
+    private ArrayList<Slot> Availableslots = new ArrayList<>();
+    private ArrayList<Slot> ReservedSlots = new ArrayList<>();
+    private ArrayList<Visitor> visitors = new ArrayList<>();
 
 
     public Room(String name, int ID) {
@@ -25,9 +28,9 @@ public abstract class Room {
     public void inputAddSlot() {
         Scanner input = new Scanner(System.in);
         LocalDate date;
-        LocalTime startTime,endTime;
+        LocalTime startTime;
+        LocalTime endTime;
         double fee;
-
 
         // Input and validate date
         while (true) {
@@ -47,22 +50,21 @@ public abstract class Room {
         }
 
         // Input and validate time
-        // Input and validate start and end time
         while (true) {
             try {
                 System.out.print("Enter start time (HH:mm): ");
-                String startTimeInput = input.nextLine();
-                startTime = LocalTime.parse(startTimeInput, DateTimeFormatter.ISO_LOCAL_TIME);
+                String timeInput = input.nextLine();
+                startTime = LocalTime.parse(timeInput, DateTimeFormatter.ISO_LOCAL_TIME);
+                // Get the total hours to add, allowing fractional input
+                System.out.println("Enter the total hours (can be fractional): ");
+                String totalHoursInput = input.nextLine();
+                double totalHours = Double.parseDouble(totalHoursInput);
+                // Convert fractional hours to minutes
+                long minutesToAdd = (long) (totalHours * 60); // Convert hours to minutes
+                // Add the minutes to the start time
+                endTime = startTime.plusMinutes(minutesToAdd);
 
-                System.out.print("Enter end time (HH:mm): ");
-                String endTimeInput = input.nextLine();
-                endTime = LocalTime.parse(endTimeInput, DateTimeFormatter.ISO_LOCAL_TIME);
-
-                if (endTime.isAfter(startTime)) {
-                    break; // Valid start and end times
-                } else {
-                    System.out.println("Error: End time must be after start time.");
-                }
+                break; // Valid time
             } catch (DateTimeParseException e) {
                 System.out.println("Error: Invalid time format. Please use HH:mm.");
             }
@@ -83,11 +85,20 @@ public abstract class Room {
             }
         }
         Slot newSlot = new Slot(date, startTime,endTime,fee);
-        slots.add(newSlot);
+        Availableslots.add(newSlot);
         System.out.print("Added successfully ");
 
     }
+
+    public void displayAvailableSlots(){
+        System.out.println("Available slots:");
+        for(Slot slot : Availableslots){
+            System.out.println("start time : " + slot.getStartTime() + " end time : " + slot.getEndTime());
+        }
+    }
 }
+
+
 
   //  public abstract void addVisitor(String visitor);
 //}
