@@ -46,9 +46,9 @@ public class user {
 
     // Register method to add a User.user
     public static user register(ArrayList<user> users) {
-        System.out.println("Enter the name of the User.user you want to add:");
+        System.out.println("Enter the name of the account you want to register:");
         String name = input.next();
-        System.out.println("Enter the password of the User.user you want to add:");
+        System.out.println("Enter the password of the account you want to register:");
         String password = input.next();
         int choice=0;
         String visitorType="none";
@@ -81,10 +81,11 @@ public class user {
 
     // Login method to validate User.user credentials
     public static void login(ArrayList<user> users) {
+        System.out.println("Login Page\n");
         String nameLogin, passwordLogin;
-        System.out.println("Enter the name of the User.user you want to login:");
+        System.out.println("Enter your Name:");
         nameLogin = input.next();
-        System.out.println("Enter the password of the User.user you want to login:");
+        System.out.println("Enter password:");
         passwordLogin = input.next();
 
         boolean loggedIn = false;
@@ -98,8 +99,22 @@ public class user {
         }
 
         if (!loggedIn) {
-            System.out.println("Wrong login or password. Please try again.");
-            login(users);
+            int choice=0;
+            System.out.println("Wrong login or password. Please try again.\n");
+            System.out.println("Do not have an account?");
+            System.out.println("1. Try to login again.");
+            System.out.println("2. Register a new Account.");
+            while (choice!=1&&choice!=2) {
+                choice = input.nextInt();
+                switch (choice) {
+                    case 1:
+                        login(users);
+                        break;
+                    case 2:
+                        register(users);
+                        break;
+                }
+            }
         }
     }
 
@@ -108,7 +123,7 @@ public class user {
         int choice = 0;
         do {
             System.out.println("\t\t\t\t\t\t\t\t\t***Hello to Galacticos Work space***");
-            System.out.println("1. Create a new User.user \n2. Login (Already have an account)");
+            System.out.println("1. Create a new Account \n2. Login (Already have an account)");
             choice = input.nextInt();
 
             switch (choice) {
