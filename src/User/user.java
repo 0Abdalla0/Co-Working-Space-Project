@@ -1,6 +1,8 @@
 package User;
 
 import Admin_package.Admin;
+import Rooms.Room;
+import Rooms.Slot;
 import Visitors.Visitor;
 
 import java.util.ArrayList;
@@ -43,6 +45,17 @@ public class user {
     public int getId() {
         return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     // Register method to add a User.user
     public static user register(ArrayList<user> users) {
@@ -119,7 +132,8 @@ public class user {
     }
 
     // Menu for starting the application
-    public static void startMenu(ArrayList<user> users) {
+    public static void startMenu(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots) {
+
         int choice = 0;
         do {
             System.out.println("\t\t\t\t\t\t\t\t\t***Hello to Galacticos Work space***");
@@ -131,14 +145,14 @@ public class user {
                     // Create a new User.user and add it to the list
                     user newUser = register(users);
                     users.add(newUser);
-                    startMenu(users);
+                    startMenu(users,rooms,slots);
                     break;
                 case 2:
                     // Directly call the login function
                     login(users);
                     break;
                 case 3:
-                    Admin.adminLogin(users);
+                    Admin.adminLogin(users,rooms,slots);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
