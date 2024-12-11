@@ -1,22 +1,36 @@
 import Admin_package.Admin;
-import Rooms.GeneralRoom;
-import Rooms.Room;
+import Rooms.*;
 import User.user; // Renamed from `user`
 import Visitors.Formal;
 import Visitors.General;
 import Visitors.Instructor;
 import Visitors.Visitor;
-import Rooms.Slot;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        ArrayList<user> users = new ArrayList<>();
         ArrayList<Room> rooms = new ArrayList<>();
+        GeneralRoom general1 = new GeneralRoom("general1",1);
+        rooms.add(general1);
+        GeneralRoom general2 = new GeneralRoom("general2",2);
+        rooms.add(general2);
+        MeetingRoom meeting1 = new MeetingRoom("meeting1",3);
+        rooms.add(meeting1);
+        MeetingRoom meeting2 = new MeetingRoom("meeting2",4);
+        rooms.add(meeting2);
+        MeetingRoom meeting3 = new MeetingRoom("meeting3",5);
+        rooms.add(meeting3);
+        TeachingRoom teaching1 = new TeachingRoom("teaching1",6);
+        rooms.add(teaching1);
+        TeachingRoom teaching2 = new TeachingRoom("teaching2",7);
+        rooms.add(teaching2);
+
+        ArrayList<user> users = new ArrayList<>();
         ArrayList<Slot> slots = new ArrayList<>();
-        user.startMenu(users, rooms, slots);
+        user.startMenu(users, rooms, slots,general1);
 
         ArrayList<Formal> formals = new ArrayList<>();
         ArrayList<General> generals = new ArrayList<>();
@@ -44,7 +58,7 @@ public class Main {
             String signOutOption = input.next();
             if (signOutOption.equalsIgnoreCase("Y")) {
                 System.out.println("You have signed out successfully.");
-                visitor.signOut(users, rooms, slots);
+                visitor.signOut(users, rooms, slots,general1);
             } else if (signOutOption.equalsIgnoreCase("N")) {
                 System.out.println("Going back to main menu...");
                 for (Visitor visitor1 : visitors) {

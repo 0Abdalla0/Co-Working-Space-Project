@@ -21,7 +21,7 @@ public class Admin {
     }
 
 
-    public static void adminLogin(ArrayList<user> users,ArrayList<Room> rooms,ArrayList<Slot> slots) {
+    public static void adminLogin(ArrayList<user> users,ArrayList<Room> rooms,ArrayList<Slot> slots,GeneralRoom general1) {
         while (true) {
             Scanner input = new Scanner(System.in);
             System.out.println("Enter Admin Name: ");
@@ -30,7 +30,7 @@ public class Admin {
             String password = input.nextLine();
             if (name.equals("admin") && password.equals("admin")) {
                 System.out.println("Admin Login Successful");
-                Admin.options(users,rooms,slots);
+                Admin.options(users,rooms,slots,general1);
                 break;
 
             } else {
@@ -57,7 +57,7 @@ public class Admin {
     // Print confirmation of added slot
 //        System.out.println("Slot added successfully to " + roomType + ":");
 //        System.out.println("Date: " + date + ", Time: " + time + ", Fee: $" + fee);
-    public static void options(ArrayList<user> users,ArrayList<Room> rooms,ArrayList<Slot> slots) {
+    public static void options(ArrayList<user> users,ArrayList<Room> rooms,ArrayList<Slot> slots,GeneralRoom general1) {
         boolean retry = false;
         Scanner input = new Scanner(System.in);
 
@@ -75,30 +75,34 @@ public class Admin {
                     int addRoom = input.nextInt();
                     switch (addRoom) {
                         case 1:
-                            // Admin.addSlots(general1);
-                        case 2:
-                            // Admin.addSlots(general2);
-                        case 3:
-                            // Admin.addSlots(meeting1);
-                        case 4:
-                            // Admin.addSlots(meeting2);
-                        case 5:
-                            // Admin.addSlots(meeting3);
-                        case 6:
-                            // Admin.addSlots(teaching1);
-                        case 7:
-                            // Admin.addSlots(teaching2);
-                        case 8:
-                            // Admin.addSlots(teaching3);
+                             Admin.addSlots(general1);
+                             break;
+//                        case 2:
+////                             Admin.addSlots(general2);
+//                        case 3:
+//                            // Admin.addSlots(meeting1);
+//                        case 4:
+//                            // Admin.addSlots(meeting2);
+//                        case 5:
+//                            // Admin.addSlots(meeting3);
+//                        case 6:
+//                            // Admin.addSlots(teaching1);
+//                        case 7:
+//                            // Admin.addSlots(teaching2);
+//                        case 8:
+//                            // Admin.addSlots(teaching3);
+
 
                     }
+                    break;
 
                 case 2:
-                    Admin.delete_entity(users);
+                    Admin.delete_entity(users,rooms);
                     break;
 
                 case 3:
-                    //display all slots function
+                    Room.displayAvailableSlots();
+                    break;
 
                 case 4:
                     //display visitors data function
@@ -127,7 +131,7 @@ public class Admin {
             }
         } while (retry);
     }
-    public static void delete_entity(ArrayList<user> users) {
+    public static void delete_entity(ArrayList<user> users,ArrayList<Room> rooms) {
         boolean continueDeleting = true;
         while (continueDeleting) {
             System.out.println("Select entity to delete: ");
@@ -139,7 +143,7 @@ public class Admin {
                     System.out.print("Enter Room ID to delete: ");
                     int room_id = input.nextInt();
                     // display room list with name id
-                    //delete_room(room_id)
+                    delete_room(room_id,rooms);
                     break;
                 case 2:
                     System.out.print("Enter Visitor ID to delete: ");
@@ -237,7 +241,7 @@ public class Admin {
 
 
             }
-            System.out.println("Do You Want To continue deleting?");
+            System.out.println("Do You Want To continue updating?");
             String choose = input.next();
             if (choose.equalsIgnoreCase("Y")) {
                 continueUpdating = true;

@@ -11,7 +11,7 @@ import java.util.Scanner;
 public abstract class Room {
     protected String name;
     protected int ID, number_of_visitors;
-    private ArrayList<Slot> Availableslots = new ArrayList<>();
+    private static ArrayList<Slot> Availableslots = new ArrayList<>();
     private ArrayList<Slot> ReservedSlots = new ArrayList<>();
     private ArrayList<Visitor> visitors = new ArrayList<>();
 
@@ -97,7 +97,7 @@ public abstract class Room {
         System.out.print("Added successfully ");
     }
 
-    public void displayAvailableSlots(){
+    public static void displayAvailableSlots(){
         System.out.println("Available slots:");
         for(Slot slot : Availableslots){
             System.out.println("start time : " + slot.getStartTime() + " end time : " + slot.getEndTime());

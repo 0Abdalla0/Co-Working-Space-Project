@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import Rooms.GeneralRoom;
 import Rooms.Room;
 import Rooms.Slot;
 import User.user;
@@ -152,12 +153,16 @@ public class Visitor extends user {
     }
     void reward (int TotalHours){}
     //abstract void displayAvailableSlots(LocalDate date);
-    public void signOut(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots) {
-        user.startMenu(users,rooms,slots);
+    public void signOut(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots, GeneralRoom general1) {
+        user.startMenu(users,rooms,slots,general1);
     }
     public void options() {
-        int option = input.nextInt();
-           switch(option) {
+        while (true) {
+
+            int option = input.nextInt();
+            input.nextLine(); // Clear the buffer
+
+            switch (option) {
                 case 1:
                     makeRes();
                     break;
@@ -167,11 +172,13 @@ public class Visitor extends user {
                 case 3:
                     updateRes();
                     break;
-               case 4:
-
-                   break;
-
+                case 4:
+                    System.out.println("Signing out...");
+                    return; // Exit options menu
+                default:
+                    System.out.println("Invalid option. Please try again.");
             }
+        }
     }
 
 

@@ -1,6 +1,7 @@
 package User;
 
 import Admin_package.Admin;
+import Rooms.GeneralRoom;
 import Rooms.Room;
 import Rooms.Slot;
 import Visitors.Visitor;
@@ -25,8 +26,8 @@ public class user {
         this.visitorType = visitorType;
         idStatic++;  // Increment the static id for the next User.user
     }
-    public user(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots){
-        startMenu(users,rooms,slots);
+    public user(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots, GeneralRoom general1) {
+        startMenu(users,rooms,slots,general1);
     }
 
     // Getters and Setters
@@ -135,7 +136,7 @@ public class user {
     }
 
     // Menu for starting the application
-    public static void startMenu(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots) {
+    public static void startMenu(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots, GeneralRoom general1) {
 
         int choice = 0;
         do {
@@ -148,14 +149,14 @@ public class user {
                     // Create a new User.user and add it to the list
                     user newUser = register(users);
                     users.add(newUser);
-                    startMenu(users,rooms,slots);
+                    startMenu(users,rooms,slots,general1);
                     break;
                 case 2:
                     // Directly call the login function
                     login(users);
                     break;
                 case 3:
-                    Admin.adminLogin(users,rooms,slots);
+                    Admin.adminLogin(users,rooms,slots,general1);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
