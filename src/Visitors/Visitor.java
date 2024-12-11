@@ -1,12 +1,12 @@
 package Visitors;
-
-import Admin_package.Admin;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+
+import Rooms.Room;
+import Rooms.Slot;
 import User.user;
 public class Visitor extends user {
     public Visitor(){
@@ -15,10 +15,7 @@ public class Visitor extends user {
     public Visitor(String name, String password, String visitorType) {
         super(name,password,visitorType,idStatic);
     }
-//    public Visitor(ArrayList<Formal> formals,ArrayList<General> generals,ArrayList<Instructor> instructors) {
-//        super(null,null,null,idStatic);
-//        sortVisitors(super.getVisitorType(),formals,generals,instructors);
-//    }
+
 
     private static Scanner input = new Scanner(System.in);
 
@@ -73,9 +70,26 @@ public class Visitor extends user {
                 System.out.println("Invalid input! Let's try again.");
                 i--; // Retry the current room
             }
+            reReserve();
             //start and end
             //function to reserve the room(time) return room number that is reserved
             //print You have reserved room number #
+        }
+
+    }
+    public void reReserve(){
+        System.out.println("Do you want to make another reservation?\n 1. Make a new reservation\n 2. Return to Main Menu");
+        int option = input.nextInt();
+                switch (option){
+            case 1:
+                makeRes();
+                break;
+            case 2:
+                options();
+                break;
+            default:
+                System.out.println("Invalid input! Please try again.");
+                reReserve();
         }
     }
 
@@ -92,9 +106,6 @@ public class Visitor extends user {
                 LocalTime time = getTimeInput("Enter start time you want to cancel(HH:mm): ");
                 System.out.println("Enter Your Password To Confirm Cancellation: ");
                 String cancelPassword = input.nextLine();
-                if (cancelPassword.equals(super.getPassword())) {
-
-                }
                 retry = false;
             } else if (cont.equalsIgnoreCase("N")) {
                 options();
@@ -141,12 +152,12 @@ public class Visitor extends user {
     }
     void reward (int TotalHours){}
     //abstract void displayAvailableSlots(LocalDate date);
-
+    public void signOut(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots) {
+        user.startMenu(users,rooms,slots);
+    }
     public void options() {
-        boolean retry = false;
         int option = input.nextInt();
-        do {
-            switch (option) {
+           switch(option) {
                 case 1:
                     makeRes();
                     break;
@@ -156,23 +167,13 @@ public class Visitor extends user {
                 case 3:
                     updateRes();
                     break;
-                //profile
+               case 4:
+
+                   break;
 
             }
-            try {
-                System.out.println("Do You Want To Choose Another Service? (Y/N)");
-                String choose = input.next();
-                if (choose.equalsIgnoreCase("Y")) {
-                    retry = true;
-                } else if (choose.equalsIgnoreCase("N")) {
-                    retry = false;
-                }
-            }
-            catch (Exception e) {
-                System.out.println("Invalid Option");
-            }
-        } while (retry);
     }
+
 
     public void sortVisitors(user currentUser, ArrayList<Formal> formals, ArrayList<General> generals, ArrayList<Instructor> instructors) {
         try {
@@ -196,7 +197,6 @@ public class Visitor extends user {
             }
         } catch (Exception e) {
             System.out.println("Error sorting visitors: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

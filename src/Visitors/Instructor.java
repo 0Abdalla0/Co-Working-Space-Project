@@ -19,7 +19,7 @@ public class Instructor extends Visitor {
     ArrayList<Slot> slots=new ArrayList<>();
 
     public void options() {
-        System.out.println("Welcome **"+super.getName()+"** To The Instructors Section\n Choose An Option:\n 1. Make A Reservation\n 2. Delete A Reservation\n 3. Update A Reservation");
+        System.out.println("Welcome **"+super.getName()+"** To The Instructors Section\n Choose An Option:\n 1. Make A Reservation\n 2. Delete A Reservation\n 3. Update A Reservation \n 4. Sign out");
         super.options();
     }
 

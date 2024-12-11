@@ -95,7 +95,6 @@ public abstract class Room {
         Slot newSlot = new Slot(date, startTime,endTime,fee);
         Availableslots.add(newSlot);
         System.out.print("Added successfully ");
-
     }
 
     public void displayAvailableSlots(){

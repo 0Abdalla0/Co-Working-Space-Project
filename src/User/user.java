@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class user {
     static Scanner input = new Scanner(System.in);
     public static int idStatic = 1;
+    private static boolean loggedInUser = false;
     private String name;
     private String password;
     private String visitorType;
@@ -23,6 +24,9 @@ public class user {
         this.id = idStatic;
         this.visitorType = visitorType;
         idStatic++;  // Increment the static id for the next User.user
+    }
+    public user(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots){
+        startMenu(users,rooms,slots);
     }
 
     // Getters and Setters
@@ -93,6 +97,8 @@ public class user {
     }
 
     // Login method to validate User.user credentials
+    static boolean loggedIn = false;
+    public boolean isLoggedIn() {return loggedIn;}
     public static void login(ArrayList<user> users) {
         System.out.println("Login Page\n");
         String nameLogin, passwordLogin;
@@ -101,16 +107,13 @@ public class user {
         System.out.println("Enter password:");
         passwordLogin = input.next();
 
-        boolean loggedIn = false;
         for (user u : users) {
             if (u.getName().equals(nameLogin) && u.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
-                loggedIn = true;
-
+               loggedIn = true;
                 break;
             }
         }
-
         if (!loggedIn) {
             int choice=0;
             System.out.println("Wrong login or password. Please try again.\n");
