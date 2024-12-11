@@ -12,25 +12,29 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        ArrayList<Room> rooms = new ArrayList<>();
+        ArrayList<Room> generalRooms = new ArrayList<>();
+        ArrayList<Room> meetingRooms = new ArrayList<>();
+        ArrayList<Room> teachingRooms = new ArrayList<>();
         GeneralRoom general1 = new GeneralRoom("general1",1);
-        rooms.add(general1);
+        generalRooms.add(general1);
         GeneralRoom general2 = new GeneralRoom("general2",2);
-        rooms.add(general2);
+        generalRooms.add(general2);
         MeetingRoom meeting1 = new MeetingRoom("meeting1",3);
-        rooms.add(meeting1);
+        meetingRooms.add(meeting1);
         MeetingRoom meeting2 = new MeetingRoom("meeting2",4);
-        rooms.add(meeting2);
+        meetingRooms.add(meeting2);
         MeetingRoom meeting3 = new MeetingRoom("meeting3",5);
-        rooms.add(meeting3);
+        meetingRooms.add(meeting3);
         TeachingRoom teaching1 = new TeachingRoom("teaching1",6);
-        rooms.add(teaching1);
+        teachingRooms.add(teaching1);
         TeachingRoom teaching2 = new TeachingRoom("teaching2",7);
-        rooms.add(teaching2);
+        teachingRooms.add(teaching2);
+        TeachingRoom teaching3 = new TeachingRoom("teaching3",7);
+        teachingRooms.add(teaching3);
 
         ArrayList<user> users = new ArrayList<>();
         ArrayList<Slot> slots = new ArrayList<>();
-        user.startMenu(users, rooms, slots,general1);
+        user.startMenu(users,meetingRooms, generalRooms,teachingRooms);
 
         ArrayList<Formal> formals = new ArrayList<>();
         ArrayList<General> generals = new ArrayList<>();
@@ -48,7 +52,14 @@ public class Main {
                 visitors.addAll(instructors);
             }
             for (Visitor visitor1 : visitors) {
-                visitor1.options();
+                if (visitor1 instanceof Instructor){
+                   visitor1.options(teachingRooms);
+                }else if (visitor1 instanceof General) {
+                    visitor1.options(generalRooms);
+                }else if (visitor1 instanceof Formal){
+                    visitor1.options(meetingRooms);
+                }
+
             }
             System.out.println("Formal visitors: " + formals.size());
             System.out.println("General visitors: " + generals.size());
@@ -58,7 +69,7 @@ public class Main {
             String signOutOption = input.next();
             if (signOutOption.equalsIgnoreCase("Y")) {
                 System.out.println("You have signed out successfully.");
-                visitor.signOut(users, rooms, slots,general1);
+                visitor.signOut(users,meetingRooms, generalRooms,teachingRooms);
             } else if (signOutOption.equalsIgnoreCase("N")) {
                 System.out.println("Going back to main menu...");
                 for (Visitor visitor1 : visitors) {

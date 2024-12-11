@@ -101,7 +101,7 @@ public class Admin {
                     break;
 
                 case 3:
-                    Room.displayAvailableSlots();
+                    //Room.displayAvailableSlots();
                     break;
 
                 case 4:

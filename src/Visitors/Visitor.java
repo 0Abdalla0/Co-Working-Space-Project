@@ -50,7 +50,7 @@ public class Visitor extends user {
         }
     }
 
-    public  void makeRes() {
+    public  void makeRes(ArrayList<Room> rooms) {
         System.out.println("How many rooms would you want?");
         int numOfRooms = input.nextInt();
         input.nextLine();
@@ -60,61 +60,67 @@ public class Visitor extends user {
                 LocalDate today = LocalDate.now();
                 System.out.println("Today's date is" + today);
                 LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
-                //displayAvailableSlots(resDate);
-
+                System.out.println("-----------------------------------------------------------------");
+                for(int j = 1; j <= rooms.size(); j++){
+                    System.out.println("Room " + j+1);
+                    rooms.get(j-1).displayAvailableSlots();
+                }
+                System.out.println("Enter the room number you want to reserve: ");
+                int roomNum = input.nextInt();
+                System.out.println("-----------------------------------------------------------------");
                 LocalTime now = LocalTime.now();
-                System.out.println("Current time is" + now);
+                System.out.println("Current time is " + now);
                 LocalTime startTime = getTimeInput("Enter the start time you want (HH:mm): ");
                 LocalTime endTime = getTimeInput("Enter the end time you want (HH:mm): ");
-                System.out.println("Reservation for room #" + (i + 1) + " on " + resDate + " from " + startTime + "to"+endTime+ " confirmed.");
+                // slot => reserved
+                System.out.println("Reservation for room #" + (i + 1) + " on " + resDate + " from " + startTime + " to "+endTime+ " confirmed.");
             } catch (Exception e) {
                 System.out.println("Invalid input! Let's try again.");
-                i--; // Retry the current room
+                i--;
             }
-            reReserve();
             //start and end
             //function to reserve the room(time) return room number that is reserved
             //print You have reserved room number #
+            reReserve(rooms);
         }
 
     }
-    public void reReserve(){
+    public void reReserve(ArrayList<Room> rooms){
         System.out.println("Do you want to make another reservation?\n 1. Make a new reservation\n 2. Return to Main Menu");
         int option = input.nextInt();
                 switch (option){
             case 1:
-                makeRes();
+                makeRes(rooms);
                 break;
             case 2:
-                options();
+                options(rooms);
                 break;
             default:
                 System.out.println("Invalid input! Please try again.");
-                reReserve();
+                reReserve(rooms);
         }
     }
 
 
     void cancelRes(){
-        String cont ="";
         System.out.println("******NOTE: THEIR IS A CANCELLATION FEES******\n Do you want to continue (Y/N)");
-        cont = input.nextLine();
-        boolean retry = true;
-        while (retry) {
-            if (cont.equalsIgnoreCase("Y")) {
-                System.out.println("Enter The Room Number you want to cancel:");
-                int numOfRoom = input.nextInt();
-                LocalTime time = getTimeInput("Enter start time you want to cancel(HH:mm): ");
-                System.out.println("Enter Your Password To Confirm Cancellation: ");
-                String cancelPassword = input.nextLine();
-                retry = false;
-            } else if (cont.equalsIgnoreCase("N")) {
-                options();
-                retry = false;
-            }else{
-                System.out.println("Invalid input! Please try again.");
+        System.out.println("Fees Will Be 25%");
+        String cont = input.nextLine();
+        if (cont.equalsIgnoreCase("Y")){
+            System.out.println("Enter Your Password To Cancel: ");
+            String cancelPassword = input.nextLine();
+            if (!cancelPassword.equals(super.getPassword())){
+                System.out.println("wrong password!!! (try again)");
+                cancelRes();
             }
+
+            LocalDate cancelDate = getDateInput("Enter The Date You Want To Cancel (YYYY-MM-DD): ");
+            // System.out.println("Your Cancellation Fees = " Room.fees);
+            // Room.remove(cancelDate);
+        } else if (cont.equalsIgnoreCase("N")) {
+            options();
         }
+
     }
     void updateRes(){
         System.out.println("Enter Your Password To Update: ");
@@ -128,35 +134,42 @@ public class Visitor extends user {
         int numOfRoom = input.nextInt();
 
         //check the room is reserved (numOfRoom,startTime)
-
-        System.out.println("What Do You Want To Change? \n1.Room Date\n2.Room Time\n3.Return to Main Menu");
-        int choice = input.nextInt();
-        switch (choice) {
-            case 1:
-                LocalDate newDate = getDateInput("Enter Your New Date");
-                break;
-            case 2:
-                LocalTime newTime= getTimeInput("Enter Your New Time");
-                break;
-            case 3:
-                options();
-                break;
-        }
-        System.out.println("Displaying Available Rooms...");
-        //newDate OR newTime
-        //Display
-        System.out.println("New Room is reserved And the old is cancelled.");
-        //remove from room Old one
-        //add new room
+//        boolean found = Room.checkIfReserved(cancelDate, startTime);
+//        if (!found) {
+//            System.out.println("The specified room is not reserved at the given date and time.");
+//            updateRes();
+//        }
+//
+//            System.out.println("What Do You Want To Change? \n1.Room Date\n2.Room Time\n3.Return to Main Menu");
+//            int choice = input.nextInt();
+//            switch (choice) {
+//                case 1:
+//                    LocalDate newDate = getDateInput("Enter Your New Date");
+//                    break;
+//                case 2:
+//                    LocalTime newTime= getTimeInput("Enter Your New Time");
+//                    break;
+//                case 3:
+//                    options();
+//                    break;
+//            }
+//            System.out.println("Displaying Available Rooms...");
+//
+//            //newDate OR newTime
+//            //Room.
+//            //Display
+//            System.out.println("New Room is reserved And the old is cancelled.");
+//            //remove from room Old one
+//
 
 
     }
-    void reward (int TotalHours){}
-    //abstract void displayAvailableSlots(LocalDate date);
-    public void signOut(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots, GeneralRoom general1) {
-        user.startMenu(users,rooms,slots,general1);
+
+
+    public void signOut(ArrayList<user> users, ArrayList<Room> formals, ArrayList<Room> generals, ArrayList<Room> instructors) {
+        user.startMenu(users, formals, generals, instructors);
     }
-    public void options() {
+    public void options(ArrayList<Room>rooms) {
         while (true) {
 
             int option = input.nextInt();
@@ -164,7 +177,7 @@ public class Visitor extends user {
 
             switch (option) {
                 case 1:
-                    makeRes();
+                    makeRes(rooms);
                     break;
                 case 2:
                     cancelRes();

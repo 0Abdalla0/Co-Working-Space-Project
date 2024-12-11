@@ -1,9 +1,7 @@
 package User;
 
 import Admin_package.Admin;
-import Rooms.GeneralRoom;
-import Rooms.Room;
-import Rooms.Slot;
+import Rooms.*;
 import Visitors.Visitor;
 
 import java.util.ArrayList;
@@ -136,7 +134,7 @@ public class user {
     }
 
     // Menu for starting the application
-    public static void startMenu(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots, GeneralRoom general1) {
+    public static void startMenu(ArrayList<user> users, ArrayList<MeetingRoom>meetingRooms, ArrayList<GeneralRoom> generalRooms, ArrayList<TeachingRoom> teachingRooms) {
 
         int choice = 0;
         do {
@@ -149,14 +147,14 @@ public class user {
                     // Create a new User.user and add it to the list
                     user newUser = register(users);
                     users.add(newUser);
-                    startMenu(users,rooms,slots,general1);
+                    startMenu(users,meetingRooms, generalRooms,teachingRooms);
                     break;
                 case 2:
                     // Directly call the login function
                     login(users);
                     break;
                 case 3:
-                    Admin.adminLogin(users,rooms,slots,general1);
+                    Admin.adminLogin(users,meetingRooms, generalRooms,teachingRooms);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

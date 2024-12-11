@@ -97,7 +97,7 @@ public abstract class Room {
         System.out.print("Added successfully ");
     }
 
-    public static void displayAvailableSlots(){
+    public void displayAvailableSlots(){
         System.out.println("Available slots:");
         for(Slot slot : Availableslots){
             System.out.println("start time : " + slot.getStartTime() + " end time : " + slot.getEndTime());
