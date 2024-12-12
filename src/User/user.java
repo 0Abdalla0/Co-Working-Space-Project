@@ -24,8 +24,8 @@ public class user {
         this.visitorType = visitorType;
         idStatic++;  // Increment the static id for the next User.user
     }
-    public user(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots, GeneralRoom general1) {
-        startMenu(users,rooms,slots,general1);
+    public user(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+        startMenu(users,meetingRooms, generalRooms,teachingRooms);
     }
 
     // Getters and Setters
@@ -134,7 +134,7 @@ public class user {
     }
 
     // Menu for starting the application
-    public static void startMenu(ArrayList<user> users, ArrayList<MeetingRoom>meetingRooms, ArrayList<GeneralRoom> generalRooms, ArrayList<TeachingRoom> teachingRooms) {
+    public static void startMenu(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
 
         int choice = 0;
         do {

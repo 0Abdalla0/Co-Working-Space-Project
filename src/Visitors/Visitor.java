@@ -19,7 +19,6 @@ public class Visitor extends user {
 
 
     private static Scanner input = new Scanner(System.in);
-
     //Inputs Date
     public static LocalDate getDateInput(String prompt) {
         while (true) {
@@ -36,7 +35,6 @@ public class Visitor extends user {
             }
         }
     }
-
     //Inputs Time
     public static LocalTime getTimeInput(String prompt) {
         while (true) {
@@ -50,7 +48,7 @@ public class Visitor extends user {
         }
     }
 
-    public  void makeRes(ArrayList<Room> rooms) {
+    public void makeRes(ArrayList<Room> rooms) {
         System.out.println("How many rooms would you want?");
         int numOfRooms = input.nextInt();
         input.nextLine();
@@ -62,18 +60,17 @@ public class Visitor extends user {
                 LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
                 System.out.println("-----------------------------------------------------------------");
                 for(int j = 1; j <= rooms.size(); j++){
-                    System.out.println("Room " + j+1);
+                    System.out.println("Room " + j);
                     rooms.get(j-1).displayAvailableSlots();
                 }
                 System.out.println("Enter the room number you want to reserve: ");
                 int roomNum = input.nextInt();
                 System.out.println("-----------------------------------------------------------------");
-                LocalTime now = LocalTime.now();
-                System.out.println("Current time is " + now);
-                LocalTime startTime = getTimeInput("Enter the start time you want (HH:mm): ");
-                LocalTime endTime = getTimeInput("Enter the end time you want (HH:mm): ");
+                System.out.println("Enter Slot Number: ");
+                int slotNum = input.nextInt();
+
                 // slot => reserved
-                System.out.println("Reservation for room #" + (i + 1) + " on " + resDate + " from " + startTime + " to "+endTime+ " confirmed.");
+                System.out.println("Reservation for room # " + roomNum + " and Slot # "+ slotNum+" is successful.");
             } catch (Exception e) {
                 System.out.println("Invalid input! Let's try again.");
                 i--;
@@ -83,7 +80,6 @@ public class Visitor extends user {
             //print You have reserved room number #
             reReserve(rooms);
         }
-
     }
     public void reReserve(ArrayList<Room> rooms){
         System.out.println("Do you want to make another reservation?\n 1. Make a new reservation\n 2. Return to Main Menu");
@@ -102,7 +98,7 @@ public class Visitor extends user {
     }
 
 
-    void cancelRes(){
+    void cancelRes(ArrayList<Room> rooms){
         System.out.println("******NOTE: THEIR IS A CANCELLATION FEES******\n Do you want to continue (Y/N)");
         System.out.println("Fees Will Be 25%");
         String cont = input.nextLine();
@@ -111,23 +107,23 @@ public class Visitor extends user {
             String cancelPassword = input.nextLine();
             if (!cancelPassword.equals(super.getPassword())){
                 System.out.println("wrong password!!! (try again)");
-                cancelRes();
+                cancelRes(rooms);
             }
-
             LocalDate cancelDate = getDateInput("Enter The Date You Want To Cancel (YYYY-MM-DD): ");
+            //pass user id to cancel func
             // System.out.println("Your Cancellation Fees = " Room.fees);
             // Room.remove(cancelDate);
         } else if (cont.equalsIgnoreCase("N")) {
-            options();
+            options(rooms);
         }
 
     }
-    void updateRes(){
+    void updateRes(ArrayList<Room> rooms){
         System.out.println("Enter Your Password To Update: ");
         String updatePassword = input.nextLine();
         if (!updatePassword.equals(super.getPassword())){
             System.out.println("wrong password!!!(try again)");
-            updateRes();
+            updateRes(rooms);
         }
         System.out.println("Enter The Room Number you want to update: ");
         LocalTime startTime =getTimeInput("Enter start time you want to update: ");
@@ -180,10 +176,10 @@ public class Visitor extends user {
                     makeRes(rooms);
                     break;
                 case 2:
-                    cancelRes();
+                    cancelRes(rooms);
                     break;
                 case 3:
-                    updateRes();
+                    updateRes(rooms);
                     break;
                 case 4:
                     System.out.println("Signing out...");

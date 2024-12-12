@@ -11,9 +11,12 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        // option visitor => check type & pass array of the type
+        // admin functions => has every array list
+        //
         Scanner input = new Scanner(System.in);
-        ArrayList<Room> generalRooms = new ArrayList<>();
         ArrayList<Room> meetingRooms = new ArrayList<>();
+        ArrayList<Room> generalRooms = new ArrayList<>();
         ArrayList<Room> teachingRooms = new ArrayList<>();
         GeneralRoom general1 = new GeneralRoom("general1",1);
         generalRooms.add(general1);
@@ -72,9 +75,9 @@ public class Main {
                 visitor.signOut(users,meetingRooms, generalRooms,teachingRooms);
             } else if (signOutOption.equalsIgnoreCase("N")) {
                 System.out.println("Going back to main menu...");
-                for (Visitor visitor1 : visitors) {
-                    visitor1.options();
-                }
+//                for (Visitor visitor1 : visitors) {
+//                    visitor1.options(meetingRooms);
+//                }
             } else {
                 System.out.println("Invalid input. Please try again.");
             }

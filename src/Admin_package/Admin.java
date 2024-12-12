@@ -21,7 +21,7 @@ public class Admin {
     }
 
 
-    public static void adminLogin(ArrayList<user> users,ArrayList<Room> rooms,ArrayList<Slot> slots,GeneralRoom general1) {
+    public static void adminLogin(ArrayList<user> users,ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
         while (true) {
             Scanner input = new Scanner(System.in);
             System.out.println("Enter Admin Name: ");
@@ -30,7 +30,7 @@ public class Admin {
             String password = input.nextLine();
             if (name.equals("admin") && password.equals("admin")) {
                 System.out.println("Admin Login Successful");
-                Admin.options(users,rooms,slots,general1);
+                Admin.options(users,meetingRooms,generalRooms,teachingRooms);
                 break;
 
             } else {
@@ -57,7 +57,7 @@ public class Admin {
     // Print confirmation of added slot
 //        System.out.println("Slot added successfully to " + roomType + ":");
 //        System.out.println("Date: " + date + ", Time: " + time + ", Fee: $" + fee);
-    public static void options(ArrayList<user> users,ArrayList<Room> rooms,ArrayList<Slot> slots,GeneralRoom general1) {
+    public static void options(ArrayList<user> users,ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
         boolean retry = false;
         Scanner input = new Scanner(System.in);
 
@@ -75,7 +75,7 @@ public class Admin {
                     int addRoom = input.nextInt();
                     switch (addRoom) {
                         case 1:
-                             Admin.addSlots(general1);
+//                             Admin.addSlots(general1);
                              break;
 //                        case 2:
 ////                             Admin.addSlots(general2);
@@ -97,7 +97,7 @@ public class Admin {
                     break;
 
                 case 2:
-                    Admin.delete_entity(users,rooms);
+                    Admin.delete_entity(users,meetingRooms,generalRooms,teachingRooms);
                     break;
 
                 case 3:
@@ -114,7 +114,7 @@ public class Admin {
                     // calc money and display for all rooms
 
                 case 7:
-                    update_entity(users,rooms,slots);
+                    update_entity(users,meetingRooms,generalRooms,teachingRooms);
 
             }
             try {
@@ -131,7 +131,7 @@ public class Admin {
             }
         } while (retry);
     }
-    public static void delete_entity(ArrayList<user> users,ArrayList<Room> rooms) {
+    public static void delete_entity(ArrayList<user> users,ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
         boolean continueDeleting = true;
         while (continueDeleting) {
             System.out.println("Select entity to delete: ");
@@ -143,7 +143,7 @@ public class Admin {
                     System.out.print("Enter Room ID to delete: ");
                     int room_id = input.nextInt();
                     // display room list with name id
-                    delete_room(room_id,rooms);
+                    delete_room(room_id,meetingRooms,generalRooms,teachingRooms);
                     break;
                 case 2:
                     System.out.print("Enter Visitor ID to delete: ");
@@ -167,18 +167,18 @@ public class Admin {
             }
         }
     }
-    public static void delete_room(int room_id, ArrayList<Room> rooms) {
+    public static void delete_room(int room_id, ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
         boolean found = false;
         while (!found) {
-            for (Room room : rooms) {
-                if(room_id == room.getID())
-                {
-                    rooms.remove(room);
-                    System.out.println("Deleted Room ID: " + room_id );
-                    found = true;
-                    break;
-                }
-            }
+//            for (Room room : rooms) {
+//                if(room_id == room.getID())
+//                {
+//                    rooms.remove(room);
+//                    System.out.println("Deleted Room ID: " + room_id );
+//                    found = true;
+//                    break;
+//                }
+//            }
             if(found)
                 break;
             else{
@@ -208,7 +208,7 @@ public class Admin {
             }
         }
     }
-    public static void update_entity(ArrayList<user> users, ArrayList<Room> rooms, ArrayList<Slot> slots) {
+    public static void update_entity(ArrayList<user> users, ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
         boolean continueUpdating = true;
         while (continueUpdating) {
             System.out.println("Select entity to update: ");
@@ -217,23 +217,23 @@ public class Admin {
             System.out.println("3. slot");
             int option = input.nextInt();
             switch (option) {
-                case 1:
-                    // display room list with name id
-                    System.out.print("Enter Room ID to update: ");
-                    int room_id = input.nextInt();
-                    // display room name and id
-                     update_room(rooms,room_id);
-                    break;
-                case 2:
-                    // display users list with name w id
-                    System.out.print("Enter Visitor ID you want update: ");
-                    int visitor_id = input.nextInt();
-                    // display the user id name,pass
-                    update_visitor(users,visitor_id);
-                    break;
-                case 3:
-                    // display all slots
-                    updateSlot(slots);
+//                case 1:
+//                    // display room list with name id
+//                    System.out.print("Enter Room ID to update: ");
+//                    int room_id = input.nextInt();
+//                    // display room name and id
+//                     update_room(rooms,room_id);
+//                    break;
+//                case 2:
+//                    // display users list with name w id
+//                    System.out.print("Enter Visitor ID you want update: ");
+//                    int visitor_id = input.nextInt();
+//                    // display the user id name,pass
+//                    update_visitor(users,visitor_id);
+//                    break;
+//                case 3:
+//                    // display all slots
+//                    updateSlot(slots);
 
 
                 default:

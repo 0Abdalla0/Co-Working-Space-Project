@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public abstract class Room {
+public class Room {
     protected String name;
     protected int ID, number_of_visitors;
     private static ArrayList<Slot> Availableslots = new ArrayList<>();
