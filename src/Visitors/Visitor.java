@@ -1,4 +1,5 @@
 package Visitors;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -10,12 +11,16 @@ import Rooms.Room;
 import Rooms.Slot;
 import User.user;
 public class Visitor extends user {
+    private int totalReservedHours;
     public Visitor(){
         super(null,null,null,idStatic);
+        totalReservedHours = 0;
     }
     public Visitor(String name, String password, String visitorType) {
         super(name,password,visitorType,idStatic);
+        totalReservedHours = 0;
     }
+
 
 
     private static Scanner input = new Scanner(System.in);
@@ -61,13 +66,18 @@ public class Visitor extends user {
                 System.out.println("-----------------------------------------------------------------");
                 for(int j = 1; j <= rooms.size(); j++){
                     System.out.println("Room " + j);
-//                    rooms.get(j-1).displayAvailableSlots(resDate);
+                    rooms.get(j-1).displayAvailableSlots(resDate);
+                    System.out.println("-----------------------------------------------------------------");
                 }
-                System.out.println("Enter start time of the room number you want to reserve: ");
+                System.out.println("Enter room number you want to reserve: ");
                 int roomNum = input.nextInt();
-                System.out.println("-----------------------------------------------------------------");
+                input.nextLine();  // Consume newline
                 LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
-//                rooms.get(roomNum-1).reserveSlot(startTime);
+                LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
+
+                int reservedHours = Duration.between(startTime, endTime).toHoursPart(); // Calculate hours
+                totalReservedHours += reservedHours;
+                rooms.get(roomNum-1).reserveSlot(startTime, this);
                 // slot => reserved
                 System.out.println("Reservation for room # " + roomNum + " and Slot # "+ startTime +" is successful.");
             } catch (Exception e) {

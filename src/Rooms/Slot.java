@@ -20,11 +20,16 @@ public class Slot {
         this.reserved = false;
     }
 
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
     public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, double fees, int userID) {
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.fees = fees;
+        this(date, startTime, endTime, fees); // Reuse the first constructor
         this.reserved = true;
         this.userID = userID;
     }

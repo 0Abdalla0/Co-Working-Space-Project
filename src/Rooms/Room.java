@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Room {
     protected String name;
     protected int ID, number_of_visitors;
-    private static ArrayList<Slot> Availableslots = new ArrayList<>();
+    private ArrayList<Slot> Availableslots = new ArrayList<>();
     private ArrayList<Slot> ReservedSlots = new ArrayList<>();
     private ArrayList<Visitor> visitors = new ArrayList<>();
 
@@ -120,39 +120,72 @@ public class Room {
     }
 
     // check date to display its slots
-    public void displayAvailableSlots(){
-        System.out.println("Available slots:");
-        for(int i = 0; i < Availableslots.size(); i++){
-            System.out.println("Slot " + (i+1));
-            System.out.println(Availableslots.get(i).getStartTime() + " - " + Availableslots.get(i).getEndTime());
+    public boolean displayAvailableSlots(LocalDate date) {
+        boolean foundSlots = false;
+
+        System.out.println("Available slots for " + date + ":");
+
+        for (int i = 0; i < Availableslots.size(); i++) {
+            Slot slot = Availableslots.get(i);
+
+            if (slot.getDate().equals(date)) {
+                System.out.println("Slot " + (i + 1));
+                System.out.println(slot.getStartTime() + " - " + slot.getEndTime());
+                foundSlots = true;
+            }
         }
+
+        if (!foundSlots) {
+            System.out.println("No available slots for this date.");
+        }
+        return foundSlots;
     }
 
         // CHANGE FROM INDEX TO START TIME
-//    public void reserveSlot(LocalTime startTime) {
-//        // Check if the index is valid
-//        if (index < 0 || index >= Availableslots.size()) {
-//            System.out.println("Error: Invalid index. No slot available at the given index.");
-//            return;
-//        }
-//
-//        // Retrieve the slot to be reserved
-//        Slot slot = Availableslots.get(index);
-//
-//        // Confirm the reservation with details of the slot
-//        System.out.println("Reserving the following slot:");
-//        System.out.println("Date: " + slot.getDate());
-//        System.out.println("Start Time: " + slot.getStartTime());
-//        System.out.println("End Time: " + slot.getEndTime());
-//        System.out.println("Fee: " + slot.getFees());
-//
-//        // Move the slot from available to reserved
-//        ReservedSlots.add(slot);
-//        Availableslots.remove(index);
-//
-//        // Confirm successful reservation
-//        System.out.println("Slot " + index + " reserved successfully.");
-//    }
+        public void reserveSlot(LocalTime startTime, Visitor visitor) {
+            // Check if any slot is available
+            if (Availableslots.isEmpty()) {
+                System.out.println("Error: No available slots.");
+                return;
+            }
+
+            Slot selectedSlot = null;
+            for (Slot slot : Availableslots) {
+                if (slot.getStartTime().equals(startTime)) {
+                    selectedSlot = slot;
+                    break;
+                }
+            }
+
+            if (selectedSlot == null) {
+                System.out.println("Error: No slot found for the given start time.");
+                return;
+            }
+
+            // Confirmation
+            System.out.println("Reserving the following slot:");
+            System.out.println("Date: " + selectedSlot.getDate());
+            System.out.println("Start Time: " + selectedSlot.getStartTime());
+            System.out.println("End Time: " + selectedSlot.getEndTime());
+            System.out.println("Fee: " + selectedSlot.getFees());
+
+            selectedSlot.setUserID(visitor.getId());
+            ReservedSlots.add(selectedSlot);
+            Availableslots.remove(selectedSlot);
+            visitors.add(visitor);
+//            System.out.println("Slot reserved successfully.");
+        }
+
+
+    public double calculateTotalFees() {
+        double totalFees = 0.0;
+
+        for (Slot slot : ReservedSlots) {
+            totalFees += slot.getFees();
+        }
+
+        return totalFees;
+    }
 
 }
 

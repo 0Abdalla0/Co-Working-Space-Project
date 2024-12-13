@@ -8,6 +8,14 @@ public class GeneralRoom extends Room{
         this.number_of_visitors = 0;
     }
 
+    public void addFees() {
+        totalFees += this.calculateTotalFees(); // Adds this room's fees to the total
+    }
+
+    public static double getTotalFees() {
+        return totalFees;
+    }
+
 
 //    public void addVisitor(String visitor){
 //        if (this.number_of_visitors < 20) {
