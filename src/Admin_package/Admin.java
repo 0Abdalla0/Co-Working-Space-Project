@@ -172,26 +172,46 @@ public class Admin {
             }
         }
     }
-    public static void delete_room(int room_id, ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
+    public static void delete_room(int room_id, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean found = false;
-        while (!found) {
-//            for (Room room : rooms) {
-//                if(room_id == room.getID())
-//                {
-//                    rooms.remove(room);
-//                    System.out.println("Deleted Room ID: " + room_id );
-//                    found = true;
-//                    break;
-//                }
-//            }
-            if(found)
+        for (Room room : meetingRooms) {
+            if (room_id == room.getID()) {
+                meetingRooms.remove(room);
+                System.out.println("Deleted Room ID: " + room_id + " from Meeting Rooms");
+                found = true;
                 break;
-            else{
-                System.out.println("Invalid Room ID. try again");
-                System.out.println("Enter correct id to delete");
-                room_id = input.nextInt();
             }
         }
+
+        // Search and delete from generalRooms if not found
+        if (!found) {
+            for (Room room : generalRooms) {
+                if (room_id == room.getID()) {
+                    generalRooms.remove(room);
+                    System.out.println("Deleted Room ID: " + room_id + " from General Rooms");
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        // Search and delete from teachingRooms if not found
+        if (!found) {
+            for (Room room : teachingRooms) {
+                if (room_id == room.getID()) {
+                    teachingRooms.remove(room);
+                    System.out.println("Deleted Room ID: " + room_id + " from Teaching Rooms");
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        // If room is not found, print a message
+        if (!found) {
+            System.out.println("Room ID " + room_id + " not found in any list.");
+        }
+
     }
     public static void delete_visitor(int visitor_id, ArrayList<user> users) {
         boolean found = false;
@@ -222,13 +242,10 @@ public class Admin {
             System.out.println("3. slot");
             int option = input.nextInt();
             switch (option) {
-//                case 1:
-//                    // display room list with name id
-//                    System.out.print("Enter Room ID to update: ");
-//                    int room_id = input.nextInt();
-//                    // display room name and id
-//                     update_room(rooms,room_id);
-//                    break;
+                case 1:
+                    // display room list with name id
+                     update_room( meetingRooms,  generalRooms,  teachingRooms);
+                    break;
 //                case 2:
 //                    // display users list with name w id
 //                    System.out.print("Enter Visitor ID you want update: ");
@@ -256,69 +273,100 @@ public class Admin {
             }
         }
     }
-    public static void update_room(ArrayList<Room> rooms, int id) {
-        System.out.println("Choose 1 if you want to update room name, or 2 for room id ");
-        int choice = input.nextInt();
-        switch (choice) {
-            case 1:
-                // Find the room by ID
-                Room targetRoom = null;
-                for (Room room : rooms) {
+    public static void update_room(ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+        boolean found = false;
+        System.out.print("Enter the ID of the room to update: ");
+        int id = input.nextInt();
+        // display room name and id
+        while (!found) {
+
+
+            Room targetRoom = null;
+
+            // Search in meetingRooms
+            for (Room room : meetingRooms) {
+                if (room.getID() == id) {
+                    targetRoom = room;
+                    break;
+                }
+            }
+
+            // Search in generalRooms if not found
+            if (targetRoom == null) {
+                for (Room room : generalRooms) {
                     if (room.getID() == id) {
                         targetRoom = room;
                         break;
                     }
                 }
+            }
 
-                if (targetRoom != null) {
-                    System.out.print("Enter new room name to update: ");
-                    String room_name = input.next();
-                    targetRoom.setName(room_name);
-                    System.out.println("Room name updated successfully.");
-                } else {
-                    System.out.println("Room with the given ID not found.");
-                }
-                break;
-
-
-            case 2:
-                // Find the room by current ID
-                Room targetRoomId = null;
-                for (Room room : rooms) {
+            // Search in teachingRooms if not found
+            if (targetRoom == null) {
+                for (Room room : teachingRooms) {
                     if (room.getID() == id) {
                         targetRoom = room;
                         break;
                     }
                 }
+            }
 
-                if (targetRoomId != null) {
-                    System.out.print("Enter the new room ID to update: ");
-                    int newId = input.nextInt();
+            // If the room is found, proceed to update
+            if (targetRoom != null) {
+                found = true;
 
-                    // Check if the new ID already exists in the list
-                    boolean idExists = false;
-                    for (Room room : rooms) {
-                        if (room.getID() == newId) {
-                            idExists = true;
-                            break;
+                System.out.println("Choose 1 to update room name, or 2 to update room ID:");
+                int choice = input.nextInt();
+
+                switch (choice) {
+                    case 1: // Update room name
+                        System.out.print("Enter new room name to update: ");
+                        String roomName = input.next();
+                        targetRoom.setName(roomName);
+                        System.out.println("Room name updated successfully.");
+                        break;
+
+                    case 2: // Update room ID
+                        System.out.print("Enter the new room ID to update: ");
+                        int newId = input.nextInt();
+
+                        // Check if the new ID already exists in any list
+                        boolean idExists = false;
+
+                        for (Room room : meetingRooms) {
+                            if (room.getID() == newId) {
+                                idExists = true;
+                                break;
+                            }
                         }
-                    }
+                        for (Room room : generalRooms) {
+                            if (room.getID() == newId) {
+                                idExists = true;
+                                break;
+                            }
+                        }
+                        for (Room room : teachingRooms) {
+                            if (room.getID() == newId) {
+                                idExists = true;
+                                break;
+                            }
+                        }
 
-                    if (!idExists) {
-                        targetRoomId.setID(newId); //
-                        System.out.println("Room ID updated successfully.");
-                    } else {
-                        System.out.println("The entered ID is already in use. Please try again with a different ID.");
-                    }
-                } else {
-                    System.out.println("Room with the given ID not found.");
+                        if (!idExists) {
+                            targetRoom.setID(newId);
+                            System.out.println("Room ID updated successfully.");
+                        } else {
+                            System.out.println("The entered ID is already in use. Please try again with a different ID.");
+                        }
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
                 }
-                break;
-
-
-
-            default:
-                System.out.println("Invalid choice. Please try again.");
+            } else {
+                // If the room is not found, prompt the user to try again
+                System.out.println("Room with the given ID not found. Please try again.");
+            }
         }
     }
     public static void update_visitor(ArrayList<user> users, int id) {

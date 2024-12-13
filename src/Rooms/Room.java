@@ -29,6 +29,10 @@ public class Room {
         return ID;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setID(int ID) {
         this.ID = ID;
     }

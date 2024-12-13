@@ -105,13 +105,14 @@ public class Visitor extends user {
             System.out.println("Enter Your Password To Cancel: ");
             String cancelPassword = input.nextLine();
             if (!cancelPassword.equals(super.getPassword())){
-                System.out.println("wrong password!!! (try again)");
+                System.out.println("Wrong Password!!! (try again)");
                 cancelRes(rooms);
             }
-            LocalDate cancelDate = getDateInput("Enter The Date You Want To Cancel (YYYY-MM-DD): ");
+            LocalDate cancelDate = getDateInput("Enter the Date you want to Cancel (YYYY-MM-DD): ");
             //pass user id to cancel func
             // System.out.println("Your Cancellation Fees = " Room.fees);
-            // Room.remove(cancelDate);
+            //RoomAvailable.add(cancelDate);
+            //RoomReserved.remove(cancelDate);
         } else if (cont.equalsIgnoreCase("N")) {
             options(rooms);
         }

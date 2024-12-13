@@ -32,7 +32,7 @@ public class Main {
         teachingRooms.add(teaching1);
         TeachingRoom teaching2 = new TeachingRoom("teaching2",7);
         teachingRooms.add(teaching2);
-        TeachingRoom teaching3 = new TeachingRoom("teaching3",7);
+        TeachingRoom teaching3 = new TeachingRoom("teaching3",8);
         teachingRooms.add(teaching3);
 
         ArrayList<user> users = new ArrayList<>();
