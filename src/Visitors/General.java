@@ -1,6 +1,7 @@
 package Visitors;
 
 import Rooms.GeneralRoom;
+import Rooms.Room;
 import Rooms.Slot;
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class General extends Visitor {
 
 
 //    @Override
-    public void options() {
+    public void options(ArrayList<Room>rooms) {
         System.out.println("Welcome **"+ super.getName() +"** To The General Section\n Choose An Option:\n 1. Make A Reservation\n 2. Delete A Reservation\n 3. Update A Reservation\n 4. Sign out");
-//        super.options();
+       super.options(rooms);
     }
 }

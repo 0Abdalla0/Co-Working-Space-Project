@@ -61,16 +61,15 @@ public class Visitor extends user {
                 System.out.println("-----------------------------------------------------------------");
                 for(int j = 1; j <= rooms.size(); j++){
                     System.out.println("Room " + j);
-                    rooms.get(j-1).displayAvailableSlots();
+//                    rooms.get(j-1).displayAvailableSlots(resDate);
                 }
-                System.out.println("Enter the room number you want to reserve: ");
+                System.out.println("Enter start time of the room number you want to reserve: ");
                 int roomNum = input.nextInt();
                 System.out.println("-----------------------------------------------------------------");
-                System.out.println("Enter Slot Number: ");
-                int slotNum = input.nextInt();
-                rooms.get(roomNum-1).reserveSlot(slotNum-1);
+                LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
+//                rooms.get(roomNum-1).reserveSlot(startTime);
                 // slot => reserved
-                System.out.println("Reservation for room # " + roomNum + " and Slot # "+ slotNum+" is successful.");
+                System.out.println("Reservation for room # " + roomNum + " and Slot # "+ startTime +" is successful.");
             } catch (Exception e) {
                 System.out.println("Invalid input! Let's try again.");
                 i--;

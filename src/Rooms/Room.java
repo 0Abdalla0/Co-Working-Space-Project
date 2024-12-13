@@ -115,7 +115,7 @@ public class Room {
         System.out.println("Slot added successfully: " + newSlot);
     }
 
-
+    // check date to display its slots
     public void displayAvailableSlots(){
         System.out.println("Available slots:");
         for(int i = 0; i < Availableslots.size(); i++){
@@ -124,31 +124,31 @@ public class Room {
         }
     }
 
-
-    public void reserveSlot(int index) {
-        // Check if the index is valid
-        if (index < 0 || index >= Availableslots.size()) {
-            System.out.println("Error: Invalid index. No slot available at the given index.");
-            return;
-        }
-
-        // Retrieve the slot to be reserved
-        Slot slot = Availableslots.get(index);
-
-        // Confirm the reservation with details of the slot
-        System.out.println("Reserving the following slot:");
-        System.out.println("Date: " + slot.getDate());
-        System.out.println("Start Time: " + slot.getStartTime());
-        System.out.println("End Time: " + slot.getEndTime());
-        System.out.println("Fee: " + slot.getFees());
-
-        // Move the slot from available to reserved
-        ReservedSlots.add(slot);
-        Availableslots.remove(index);
-
-        // Confirm successful reservation
-        System.out.println("Slot " + index + " reserved successfully.");
-    }
+        // CHANGE FROM INDEX TO START TIME
+//    public void reserveSlot(LocalTime startTime) {
+//        // Check if the index is valid
+//        if (index < 0 || index >= Availableslots.size()) {
+//            System.out.println("Error: Invalid index. No slot available at the given index.");
+//            return;
+//        }
+//
+//        // Retrieve the slot to be reserved
+//        Slot slot = Availableslots.get(index);
+//
+//        // Confirm the reservation with details of the slot
+//        System.out.println("Reserving the following slot:");
+//        System.out.println("Date: " + slot.getDate());
+//        System.out.println("Start Time: " + slot.getStartTime());
+//        System.out.println("End Time: " + slot.getEndTime());
+//        System.out.println("Fee: " + slot.getFees());
+//
+//        // Move the slot from available to reserved
+//        ReservedSlots.add(slot);
+//        Availableslots.remove(index);
+//
+//        // Confirm successful reservation
+//        System.out.println("Slot " + index + " reserved successfully.");
+//    }
 
 }
 
