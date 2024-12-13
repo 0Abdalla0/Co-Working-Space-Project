@@ -1,6 +1,6 @@
 import Admin_package.Admin;
 import Rooms.*;
-import User.user; // Renamed from `user`
+import User.user; // Renamed from user
 import Visitors.Formal;
 import Visitors.General;
 import Visitors.Instructor;
@@ -56,7 +56,7 @@ public class Main {
             }
             for (Visitor visitor1 : visitors) {
                 if (visitor1 instanceof Instructor){
-                   visitor1.options(teachingRooms);
+                    visitor1.options(teachingRooms);
                 }else if (visitor1 instanceof General) {
                     visitor1.options(generalRooms);
                 }else if (visitor1 instanceof Formal){

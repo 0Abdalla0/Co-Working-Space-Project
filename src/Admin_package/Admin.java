@@ -45,8 +45,8 @@ public class Admin {
         System.out.println("Enter Number of Slots you want to add: ");
         num_of_slots = input.nextInt();
         for (int i = 0; i < num_of_slots; i++) {
+            System.out.println("Slot " + (i + 1) + ": ");
             room.inputAddSlot();
-
         }
     }
 
@@ -75,24 +75,29 @@ public class Admin {
                     int addRoom = input.nextInt();
                     switch (addRoom) {
                         case 1:
-//                             Admin.addSlots(general1);
+                             Admin.addSlots(generalRooms.getFirst()); // general1
                              break;
-//                        case 2:
-////                             Admin.addSlots(general2);
-//                        case 3:
-//                            // Admin.addSlots(meeting1);
-//                        case 4:
-//                            // Admin.addSlots(meeting2);
-//                        case 5:
-//                            // Admin.addSlots(meeting3);
-//                        case 6:
-//                            // Admin.addSlots(teaching1);
-//                        case 7:
-//                            // Admin.addSlots(teaching2);
-//                        case 8:
-//                            // Admin.addSlots(teaching3);
-
-
+                        case 2:
+                             Admin.addSlots(generalRooms.get(1)); //general2
+                             break;
+                        case 3:
+                             Admin.addSlots(meetingRooms.getFirst()); //meeting1
+                             break;
+                        case 4:
+                             Admin.addSlots(meetingRooms.get(1)); // meeting2
+                             break;
+                        case 5:
+                             Admin.addSlots(meetingRooms.get(2)); // meeting3
+                             break;
+                        case 6:
+                             Admin.addSlots(teachingRooms.getFirst()); // teaching1
+                             break;
+                        case 7:
+                             Admin.addSlots(teachingRooms.get(1)); // teaching2
+                             break;
+                        case 8:
+                             Admin.addSlots(teachingRooms.get(2)); // teaching3
+                             break;
                     }
                     break;
 

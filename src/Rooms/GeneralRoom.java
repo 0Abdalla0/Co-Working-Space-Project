@@ -1,6 +1,7 @@
 package Rooms;
 
 public class GeneralRoom extends Room{
+    private static double totalFees;
     public GeneralRoom(String name, int ID) {
         super(name, ID);
         // Setting max number of visitors for GeneralRoom as 20

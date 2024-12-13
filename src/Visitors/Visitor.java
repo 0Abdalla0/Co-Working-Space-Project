@@ -68,7 +68,7 @@ public class Visitor extends user {
                 System.out.println("-----------------------------------------------------------------");
                 System.out.println("Enter Slot Number: ");
                 int slotNum = input.nextInt();
-
+                rooms.get(roomNum-1).reserveSlot(slotNum-1);
                 // slot => reserved
                 System.out.println("Reservation for room # " + roomNum + " and Slot # "+ slotNum+" is successful.");
             } catch (Exception e) {

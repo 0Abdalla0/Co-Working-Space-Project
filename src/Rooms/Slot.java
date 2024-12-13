@@ -10,6 +10,7 @@ public class Slot {
     private LocalTime endTime; // 10:30
     private double fees;
     private boolean reserved;
+    private int userID;
 
     public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, double fees) {
         this.date = date;
@@ -17,6 +18,15 @@ public class Slot {
         this.endTime = endTime;
         this.fees = fees;
         this.reserved = false;
+    }
+
+    public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, double fees, int userID) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.fees = fees;
+        this.reserved = true;
+        this.userID = userID;
     }
 
     public void setDate(LocalDate date) {
