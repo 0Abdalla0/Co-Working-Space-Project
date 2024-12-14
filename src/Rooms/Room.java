@@ -20,6 +20,33 @@ public class Room {
         this.name = name;
         this.ID = ID;
     }
+    Scanner input = new Scanner(System.in);
+    public  LocalTime getTimeInput(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            String timeInput = input.nextLine();
+            try {
+                return LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("HH:mm"));
+            } catch (Exception e) {
+                System.out.println("Invalid time! Please use format HH:mm.");
+            }
+        }
+    }
+    public  LocalDate getDateInput(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            String date = input.nextLine();
+            try {
+                LocalDate resDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                if (resDate.isBefore(LocalDate.now())) {
+                    throw new IllegalArgumentException("Date cannot be in the past.");
+                }
+                return resDate;
+            } catch (Exception e) {
+                System.out.println("Invalid date! Please use format YYYY-MM-DD and ensure the date is not in the past.");
+            }
+        }
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -185,6 +212,153 @@ public class Room {
         }
 
         return totalFees;
+    }
+
+    public void updateSlot(){
+        Scanner input = new Scanner(System.in);
+        LocalDate date;
+        LocalTime startTime;
+        Slot targetSlot = null;
+
+        // Input and validate date
+        while (true) {
+            try {
+                date =  getDateInput("Enter date of the slot to update (yyyy-MM-dd): ");
+                break; // Valid date
+            } catch (DateTimeParseException e) {
+                System.out.println("Error: Invalid date format. Please use yyyy-MM-dd.");
+            }
+        }
+
+        // Input and validate start time
+        while (true) {
+            try {
+                startTime = getTimeInput("Enter start time of the slot to update (HH:mm): ");
+
+                // Find the slot by date and start time
+                for (Slot slot : Availableslots) {
+                    if (slot.getDate().equals(date) && slot.getStartTime().equals(startTime)) {
+                        targetSlot = slot;
+                        break;
+                    }
+                }
+
+                if (targetSlot == null) {
+                    System.out.println("Error: No slot found with the given date and start time.");
+                    return;
+                }
+
+                break; // Slot found
+            } catch (DateTimeParseException e) {
+                System.out.println("Error: Invalid time format. Please use HH:mm.");
+            }
+        }
+
+
+
+        System.out.println("Slot's Date : "+ targetSlot.getDate());
+        System.out.println("Slot's Start Time : "+ targetSlot.getStartTime());
+        System.out.println("Slot's End Time : "+ targetSlot.getEndTime());
+        System.out.println("Slot's fees: "+ targetSlot.getFees());
+        // Menu for updating slot details
+        System.out.println("What do you want to update?");
+        System.out.println("1. Date");
+        System.out.println("2. Start time");
+        System.out.println("3. End time");
+        System.out.println("4. Fees");
+        int choice = input.nextInt();
+        input.nextLine(); // Consume newline
+
+        switch (choice) {
+            case 1:
+                // Update date
+                while (true) {
+                    try {
+                        LocalDate newDate = getDateInput("Enter new date (yyyy-MM-dd): ");
+
+                        if (newDate.isBefore(LocalDate.now())) {
+                            System.out.println("Error: The date can not be in the past.");
+                        } else {
+                            targetSlot.setDate(newDate);
+                            System.out.println("Slot's date is updated successfully.");
+                            break;
+                        }
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Error: Invalid date format. Please use yyyy-MM-dd.");
+                    }
+                }
+                break;
+
+            case 2:
+                // Update start time
+                while (true) {
+                    try {
+                        LocalTime newStartTime = getTimeInput("Enter new start time (HH:mm): ");
+
+                        // Check for conflicts
+                        boolean conflict = false;
+                        for (Slot slot : Availableslots) {
+                            if (slot.getDate().equals(date) && slot.getStartTime().equals(newStartTime)) {
+                                conflict = true;
+                                break;
+                            }
+                        }
+
+                        if (conflict) {
+                            System.out.println("Error: A slot with the new start time already exists on the same date.");
+                        } else {
+                            targetSlot.setStartTime(newStartTime);
+                            System.out.println("Slot start time updated successfully.");
+                            break;
+                        }
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Error: Invalid time format. Please use HH:mm.");
+                    }
+                }
+                break;
+
+            case 3:
+                // Update end time
+                while (true) {
+                    try {
+                        LocalTime newEndTime = getTimeInput("Enter new end time (HH:mm): ");
+
+                        if (newEndTime.isBefore(targetSlot.getStartTime())) {
+                            System.out.println("Error: End time must be after the start time.");
+                        } else {
+                            targetSlot.setEndTime(newEndTime);
+                            System.out.println("Slot end time updated successfully.");
+                            break;
+                        }
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Error: Invalid time format. Please use HH:mm.");
+                    }
+                }
+                break;
+
+            case 4:
+                // Update fees
+                while (true) {
+                    try {
+                        System.out.print("Enter new fees: ");
+                        double newFees = Double.parseDouble(input.nextLine());
+
+                        if (newFees < 50) {
+                            System.out.println("Error: Fee cannot be less than 50.");
+                        } else {
+                            targetSlot.setFees(newFees);
+                            System.out.println("Slot fees updated successfully.");
+                            break;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error: Fees must be a valid number.");
+                    }
+                }
+                break;
+
+            default:
+                System.out.println("Error: Invalid choice.");
+        }
     }
 
 }

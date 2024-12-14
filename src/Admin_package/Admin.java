@@ -20,8 +20,36 @@ public class Admin {
     public Admin() {
     }
 
+    public static LocalTime getTimeInput(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            String timeInput = input.nextLine();
+            try {
+                return LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("HH:mm"));
+            } catch (Exception e) {
+                System.out.println("Invalid time! Please use format HH:mm.");
+            }
+        }
+    }
 
-    public static void adminLogin(ArrayList<user> users,ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
+    public static LocalDate getDateInput(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            String date = input.nextLine();
+            try {
+                LocalDate resDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                if (resDate.isBefore(LocalDate.now())) {
+                    throw new IllegalArgumentException("Date cannot be in the past.");
+                }
+                return resDate;
+            } catch (Exception e) {
+                System.out.println("Invalid date! Please use format YYYY-MM-DD and ensure the date is not in the past.");
+            }
+        }
+    }
+
+
+    public static void adminLogin(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         while (true) {
             Scanner input = new Scanner(System.in);
             System.out.println("Enter Admin Name: ");
@@ -30,7 +58,7 @@ public class Admin {
             String password = input.nextLine();
             if (name.equals("admin") && password.equals("admin")) {
                 System.out.println("Admin Login Successful");
-                Admin.options(users,meetingRooms,generalRooms,teachingRooms);
+                Admin.options(users, meetingRooms, generalRooms, teachingRooms);
                 break;
 
             } else {
@@ -57,7 +85,7 @@ public class Admin {
     // Print confirmation of added slot
 //        System.out.println("Slot added successfully to " + roomType + ":");
 //        System.out.println("Date: " + date + ", Time: " + time + ", Fee: $" + fee);
-    public static void options(ArrayList<user> users,ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
+    public static void options(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean retry = false;
         Scanner input = new Scanner(System.in);
 
@@ -75,34 +103,34 @@ public class Admin {
                     int addRoom = input.nextInt();
                     switch (addRoom) {
                         case 1:
-                             Admin.addSlots(generalRooms.getFirst()); // general1
-                             break;
+                            Admin.addSlots(generalRooms.getFirst()); // general1
+                            break;
                         case 2:
-                             Admin.addSlots(generalRooms.get(1)); //general2
-                             break;
+                            Admin.addSlots(generalRooms.get(1)); //general2
+                            break;
                         case 3:
-                             Admin.addSlots(meetingRooms.getFirst()); //meeting1
-                             break;
+                            Admin.addSlots(meetingRooms.getFirst()); //meeting1
+                            break;
                         case 4:
-                             Admin.addSlots(meetingRooms.get(1)); // meeting2
-                             break;
+                            Admin.addSlots(meetingRooms.get(1)); // meeting2
+                            break;
                         case 5:
-                             Admin.addSlots(meetingRooms.get(2)); // meeting3
-                             break;
+                            Admin.addSlots(meetingRooms.get(2)); // meeting3
+                            break;
                         case 6:
-                             Admin.addSlots(teachingRooms.getFirst()); // teaching1
-                             break;
+                            Admin.addSlots(teachingRooms.getFirst()); // teaching1
+                            break;
                         case 7:
-                             Admin.addSlots(teachingRooms.get(1)); // teaching2
-                             break;
+                            Admin.addSlots(teachingRooms.get(1)); // teaching2
+                            break;
                         case 8:
-                             Admin.addSlots(teachingRooms.get(2)); // teaching3
-                             break;
+                            Admin.addSlots(teachingRooms.get(2)); // teaching3
+                            break;
                     }
                     break;
 
                 case 2:
-                    Admin.delete_entity(users,meetingRooms,generalRooms,teachingRooms);
+                    Admin.delete_entity(users, meetingRooms, generalRooms, teachingRooms);
                     break;
 
                 case 3:
@@ -119,7 +147,7 @@ public class Admin {
                     // calc money and display for all rooms
 
                 case 7:
-                    update_entity(users,meetingRooms,generalRooms,teachingRooms);
+                    update_entity(users, meetingRooms, generalRooms, teachingRooms);
 
             }
             try {
@@ -130,13 +158,13 @@ public class Admin {
                 } else if (choose.equalsIgnoreCase("N")) {
                     retry = false;
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid Option");
             }
         } while (retry);
     }
-    public static void delete_entity(ArrayList<user> users,ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
+
+    public static void delete_entity(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean continueDeleting = true;
         while (continueDeleting) {
             System.out.println("Select entity to delete: ");
@@ -148,13 +176,13 @@ public class Admin {
                     System.out.print("Enter Room ID to delete: ");
                     int room_id = input.nextInt();
                     // display room list with name id
-                    delete_room(room_id,meetingRooms,generalRooms,teachingRooms);
+                    delete_room(room_id, meetingRooms, generalRooms, teachingRooms);
                     break;
                 case 2:
                     System.out.print("Enter Visitor ID to delete: ");
                     int visitor_id = input.nextInt();
                     // display user list with name w id
-                    delete_visitor(visitor_id,users);
+                    delete_visitor(visitor_id, users);
                     break;
 
                 default:
@@ -166,12 +194,12 @@ public class Admin {
             String choose = input.next();
             if (choose.equalsIgnoreCase("Y")) {
                 continueDeleting = true;
-            }
-            else{
+            } else {
                 continueDeleting = false;
             }
         }
     }
+
     public static void delete_room(int room_id, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean found = false;
         for (Room room : meetingRooms) {
@@ -213,6 +241,7 @@ public class Admin {
         }
 
     }
+
     public static void delete_visitor(int visitor_id, ArrayList<user> users) {
         boolean found = false;
         while (!found) {
@@ -233,7 +262,8 @@ public class Admin {
             }
         }
     }
-    public static void update_entity(ArrayList<user> users, ArrayList<Room> meetingRooms,ArrayList<Room> generalRooms,ArrayList<Room> teachingRooms) {
+
+    public static void update_entity(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean continueUpdating = true;
         while (continueUpdating) {
             System.out.println("Select entity to update: ");
@@ -244,18 +274,19 @@ public class Admin {
             switch (option) {
                 case 1:
                     // display room list with name id
-                     update_room( meetingRooms,  generalRooms,  teachingRooms);
+                    update_room(meetingRooms, generalRooms, teachingRooms);
                     break;
-//                case 2:
-//                    // display users list with name w id
-//                    System.out.print("Enter Visitor ID you want update: ");
-//                    int visitor_id = input.nextInt();
-//                    // display the user id name,pass
-//                    update_visitor(users,visitor_id);
-//                    break;
-//                case 3:
-//                    // display all slots
-//                    updateSlot(slots);
+                case 2:
+                    // display users list with name w id
+                    System.out.print("Enter Visitor ID you want update: ");
+                    int visitor_id = input.nextInt();
+                    // display the user id name,pass
+                    update_visitor(users,visitor_id);
+                    break;
+                case 3:
+                    updateSlot(meetingRooms, generalRooms, teachingRooms);
+//                    LocalDate dateTest = getDateInput("enter date test");
+//                    System.out.println(meetingRooms.get(0).displayAvailableSlots(dateTest));
 
 
                 default:
@@ -267,19 +298,21 @@ public class Admin {
             String choose = input.next();
             if (choose.equalsIgnoreCase("Y")) {
                 continueUpdating = true;
-            }
-            else{
+            } else {
                 continueUpdating = false;
             }
         }
     }
+
     public static void update_room(ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean found = false;
-        System.out.print("Enter the ID of the room to update: ");
-        int id = input.nextInt();
-        // display room name and id
+
+
         while (!found) {
 
+            System.out.print("Enter the ID of the room to update: ");
+            int id = input.nextInt();
+            // display room name and id
 
             Room targetRoom = null;
 
@@ -369,6 +402,7 @@ public class Admin {
             }
         }
     }
+
     public static void update_visitor(ArrayList<user> users, int id) {
         System.out.println("Choose what you want to update: 1 for name, 2 for ID, 3 for password");
         int choice = input.nextInt();
@@ -452,159 +486,50 @@ public class Admin {
                 System.out.println("Invalid choice. Please try again.");
         }
     }
-    public static void updateSlot( ArrayList<Slot> slots) {
-        Scanner input = new Scanner(System.in);
-        LocalDate date;
-        LocalTime startTime;
-        Slot targetSlot = null;
 
-        // Input and validate date
-        while (true) {
-            try {
-                System.out.print("Enter date of the slot to update (yyyy-MM-dd): ");
-                String dateInput = input.nextLine();
-                date = LocalDate.parse(dateInput, DateTimeFormatter.ISO_LOCAL_DATE);
-                break; // Valid date
-            } catch (DateTimeParseException e) {
-                System.out.println("Error: Invalid date format. Please use yyyy-MM-dd.");
+    public static void updateSlot(ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+        boolean found = false;
+
+
+        while (!found) {
+
+            System.out.print("Enter the ID of the room to update: ");
+            int id = input.nextInt();
+            // display room name and id
+
+            Room targetRoom = null;
+
+            // Search in meetingRooms
+            for (Room search : meetingRooms) {
+                if (search.getID() == id) {
+                    targetRoom = search;
+                    break;
+                }
             }
-        }
 
-        // Input and validate start time
-        while (true) {
-            try {
-                System.out.print("Enter start time of the slot to update (HH:mm): ");
-                String timeInput = input.nextLine();
-                startTime = LocalTime.parse(timeInput, DateTimeFormatter.ISO_LOCAL_TIME);
-
-                // Find the slot by date and start time
-                for (Slot slot : slots) {
-                    if (slot.getDate().equals(date) && slot.getStartTime().equals(startTime)) {
-                        targetSlot = slot;
+            // Search in generalRooms if not found
+            if (targetRoom == null) {
+                for (Room search : generalRooms) {
+                    if (search.getID() == id) {
+                        targetRoom = search;
                         break;
                     }
                 }
+            }
 
-                if (targetSlot == null) {
-                    System.out.println("Error: No slot found with the given date and start time.");
-                    return;
+            // Search in teachingRooms if not found
+            if (targetRoom == null) {
+                for (Room search : teachingRooms) {
+                    if (search.getID() == id) {
+                        targetRoom = search;
+                        break;
+                    }
                 }
-
-                break; // Slot found
-            } catch (DateTimeParseException e) {
-                System.out.println("Error: Invalid time format. Please use HH:mm.");
+            }
+            if (targetRoom != null) {
+                found = true;
+                targetRoom.updateSlot();
             }
         }
-
-        // Menu for updating slot details
-        System.out.println("What do you want to update?");
-        System.out.println("1. Date");
-        System.out.println("2. Start time");
-        System.out.println("3. End time");
-        System.out.println("4. Fees");
-        int choice = input.nextInt();
-        input.nextLine(); // Consume newline
-
-        switch (choice) {
-            case 1:
-                // Update date
-                while (true) {
-                    try {
-                        System.out.print("Enter new date (yyyy-MM-dd): ");
-                        String newDateInput = input.nextLine();
-                        LocalDate newDate = LocalDate.parse(newDateInput, DateTimeFormatter.ISO_LOCAL_DATE);
-
-                        if (newDate.isBefore(LocalDate.now())) {
-                            System.out.println("Error: The date must not be in the past.");
-                        } else {
-                            targetSlot.setDate(newDate);
-                            System.out.println("Slot date updated successfully.");
-                            break;
-                        }
-                    } catch (DateTimeParseException e) {
-                        System.out.println("Error: Invalid date format. Please use yyyy-MM-dd.");
-                    }
-                }
-                break;
-
-            case 2:
-                // Update start time
-                while (true) {
-                    try {
-                        System.out.print("Enter new start time (HH:mm): ");
-                        String newStartTimeInput = input.nextLine();
-                        LocalTime newStartTime = LocalTime.parse(newStartTimeInput, DateTimeFormatter.ISO_LOCAL_TIME);
-
-                        // Check for conflicts
-                        boolean conflict = false;
-                        for (Slot slot : slots) {
-                            if (slot.getDate().equals(date) && slot.getStartTime().equals(newStartTime)) {
-                                conflict = true;
-                                break;
-                            }
-                        }
-
-                        if (conflict) {
-                            System.out.println("Error: A slot with the new start time already exists on the same date.");
-                        } else {
-                            targetSlot.setStartTime(newStartTime);
-                            System.out.println("Slot start time updated successfully.");
-                            break;
-                        }
-                    } catch (DateTimeParseException e) {
-                        System.out.println("Error: Invalid time format. Please use HH:mm.");
-                    }
-                }
-                break;
-
-            case 3:
-                // Update end time
-                while (true) {
-                    try {
-                        System.out.print("Enter new end time (HH:mm): ");
-                        String newEndTimeInput = input.nextLine();
-                        LocalTime newEndTime = LocalTime.parse(newEndTimeInput, DateTimeFormatter.ISO_LOCAL_TIME);
-
-                        if (newEndTime.isBefore(targetSlot.getStartTime())) {
-                            System.out.println("Error: End time must be after the start time.");
-                        } else {
-                            targetSlot.setEndTime(newEndTime);
-                            System.out.println("Slot end time updated successfully.");
-                            break;
-                        }
-                    } catch (DateTimeParseException e) {
-                        System.out.println("Error: Invalid time format. Please use HH:mm.");
-                    }
-                }
-                break;
-
-            case 4:
-                // Update fees
-                while (true) {
-                    try {
-                        System.out.print("Enter new fees: ");
-                        double newFees = Double.parseDouble(input.nextLine());
-
-                        if (newFees < 50) {
-                            System.out.println("Error: Fee cannot be less than 50.");
-                        } else {
-                            targetSlot.setFees(newFees);
-                            System.out.println("Slot fees updated successfully.");
-                            break;
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Error: Fees must be a valid number.");
-                    }
-                }
-                break;
-
-            default:
-                System.out.println("Error: Invalid choice.");
-        }
     }
-
-
-
-
-
 }
