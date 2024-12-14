@@ -13,7 +13,9 @@ public class Main {
     public static void main(String[] args) {
         // option visitor => check type & pass array of the type
         // admin functions => has every array list
-        //
+        ArrayList<Slot> Availableslots = new ArrayList<>();
+        ArrayList<Slot> ReservedSlots = new ArrayList<>();
+        // ///////////////////////////////////////////////////////////////////////////////////
         Scanner input = new Scanner(System.in);
         ArrayList<Room> meetingRooms = new ArrayList<>();
         ArrayList<Room> generalRooms = new ArrayList<>();
@@ -56,11 +58,11 @@ public class Main {
             }
             for (Visitor visitor1 : visitors) {
                 if (visitor1 instanceof Instructor){
-                    visitor1.options(teachingRooms);
+                    visitor1.options(teachingRooms,ReservedSlots,Availableslots);
                 }else if (visitor1 instanceof General) {
-                    visitor1.options(generalRooms);
+                    visitor1.options(generalRooms,ReservedSlots,Availableslots);
                 }else if (visitor1 instanceof Formal){
-                    visitor1.options(meetingRooms);
+                    visitor1.options(meetingRooms,ReservedSlots,Availableslots);
                 }
 
             }
