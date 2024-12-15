@@ -96,6 +96,7 @@ public class Admin {
             System.out.println("5.Display all rooms data\n6. calculate and display total amount of money for all rooms\n7. update any entity ");
             System.out.println("Enter your choice: ");
             int option = input.nextInt();
+            //
             switch (option) {
                 case 1:
                     System.out.println("Enter which room you want to add slots in : ");
