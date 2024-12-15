@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Room {
+public abstract class Room {
     protected String name;
     protected int ID, number_of_visitors;
     private ArrayList<Slot> Availableslots = new ArrayList<>();
@@ -366,7 +366,7 @@ public class Room {
                 System.out.println("Error: Invalid choice.");
         }
     }
-
+    public abstract void addFees();
 }
 
 

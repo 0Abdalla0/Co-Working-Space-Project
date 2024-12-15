@@ -1,5 +1,6 @@
 package Admin_package;
 import Rooms.GeneralRoom;
+import Rooms.MeetingRoom;
 import Rooms.Room;
 import Rooms.Slot;
 import java.util.ArrayList;
@@ -148,7 +149,7 @@ public class Admin {
                      break;
 
                 case 6:
-                    // calc money and display for all rooms
+                    calcRoom(meetingRooms, generalRooms, teachingRooms);
                     break;
 
                 case 7:
@@ -571,6 +572,35 @@ public class Admin {
             for (Room room : teachingRooms) {
                 System.out.println(room); // Assumes Room class has a toString() method
             }
+        }
+    }
+    public static void calcRoom (ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms){
+        System.out.println("Which type of room do you want to calculate?");
+        System.out.println("1. Meeting Room     2. General Room     3. Teaching Room");
+        int choice = input.nextInt();
+
+        switch (choice){
+            case 1:
+                for (Room room : meetingRooms) {
+                    room.addFees();
+                }
+                System.out.println("Meeting room fees:  ");
+                System.out.println(MeetingRoom.getTotalFees());
+                break;
+            case 2:
+                for (Room room : generalRooms) {
+                    room.addFees();
+                }
+                System.out.println("General room fees:  ");
+                System.out.println(GeneralRoom.getTotalFees());
+                break;
+            case 3:
+                for (Room room : teachingRooms) {
+                    room.addFees();
+                }
+                System.out.println("Teaching room fees:  ");
+                System.out.println(GeneralRoom.getTotalFees());
+                break;
         }
     }
 
