@@ -138,13 +138,18 @@ public class Admin {
                     break;
 
                 case 4:
-                    //display visitors data function
+                    for (user u : users) {
+                        System.out.println(u);
+                    }
+                    break;
 
                 case 5:
-                    // display all rooms data function
+                    Admin.displayAllRooms(generalRooms, meetingRooms, teachingRooms);
+                     break;
 
                 case 6:
                     // calc money and display for all rooms
+                    break;
 
                 case 7:
                     update_entity(users, meetingRooms, generalRooms, teachingRooms);
@@ -173,12 +178,16 @@ public class Admin {
             int option = input.nextInt();
             switch (option) {
                 case 1:
+                    Admin.displayAllRooms(generalRooms, meetingRooms, teachingRooms);
                     System.out.print("Enter Room ID to delete: ");
                     int room_id = input.nextInt();
                     // display room list with name id
                     delete_room(room_id, meetingRooms, generalRooms, teachingRooms);
                     break;
                 case 2:
+                    for (user u : users) {
+                        System.out.println(u);
+                    }
                     System.out.print("Enter Visitor ID to delete: ");
                     int visitor_id = input.nextInt();
                     // display user list with name w id
@@ -273,15 +282,14 @@ public class Admin {
             int option = input.nextInt();
             switch (option) {
                 case 1:
-                    // display room list with name id
+                    Admin.displayAllRooms(generalRooms, meetingRooms, teachingRooms);
                     update_room(meetingRooms, generalRooms, teachingRooms);
                     break;
                 case 2:
-                    // display users list with name w id
-                    System.out.print("Enter Visitor ID you want update: ");
-                    int visitor_id = input.nextInt();
-                    // display the user id name,pass
-                    update_visitor(users,visitor_id);
+                    for (user u : users) {
+                        System.out.println(u);
+                    }
+                    update_visitor(users);
                     break;
                 case 3:
                     updateSlot(meetingRooms, generalRooms, teachingRooms);
@@ -307,19 +315,18 @@ public class Admin {
     public static void update_room(ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean found = false;
 
-
         while (!found) {
-
             System.out.print("Enter the ID of the room to update: ");
             int id = input.nextInt();
-            // display room name and id
 
             Room targetRoom = null;
+            String roomType = null; // To store the type of the room
 
             // Search in meetingRooms
             for (Room room : meetingRooms) {
                 if (room.getID() == id) {
                     targetRoom = room;
+                    roomType = "Meeting Room";
                     break;
                 }
             }
@@ -329,6 +336,7 @@ public class Admin {
                 for (Room room : generalRooms) {
                     if (room.getID() == id) {
                         targetRoom = room;
+                        roomType = "General Room";
                         break;
                     }
                 }
@@ -339,15 +347,23 @@ public class Admin {
                 for (Room room : teachingRooms) {
                     if (room.getID() == id) {
                         targetRoom = room;
+                        roomType = "Teaching Room";
                         break;
                     }
                 }
             }
 
-            // If the room is found, proceed to update
+            // If the room is found, display details and proceed to update
             if (targetRoom != null) {
                 found = true;
 
+                // Display the room's details
+                System.out.println("Room found:");
+                System.out.println("Type: " + roomType);
+                System.out.println("ID: " + targetRoom.getID());
+                System.out.println("Name: " + targetRoom.getName());
+
+                // Prompt user to choose what to update
                 System.out.println("Choose 1 to update room name, or 2 to update room ID:");
                 int choice = input.nextInt();
 
@@ -403,89 +419,86 @@ public class Admin {
         }
     }
 
-    public static void update_visitor(ArrayList<user> users, int id) {
-        System.out.println("Choose what you want to update: 1 for name, 2 for ID, 3 for password");
-        int choice = input.nextInt();
 
-        switch (choice) {
-            case 1:
-                // Update visitor name
-                user targetUser = null;
-                for (user user : users) {
-                    if (user.getId() == id) {
-                        targetUser = user;
+    public static void update_visitor(ArrayList<user> users) {
+        boolean found = false;
+
+        while (!found) {
+            System.out.print("Enter Visitor ID you want to update: ");
+            int visitor_id = input.nextInt();
+
+            // Search for the visitor by ID
+            user targetUser = null;
+            for (user u : users) {
+                if (u.getId() == visitor_id) {
+                    targetUser = u;
+                    break;
+                }
+            }
+
+            // If visitor is found, display their details and proceed
+            if (targetUser != null) {
+                found = true;
+
+                // Display visitor details
+                System.out.println("Visitor found:");
+                System.out.println("ID: " + targetUser.getId());
+                System.out.println("Name: " + targetUser.getName());
+                System.out.println("Password: " + targetUser.getPassword());
+
+                // Prompt user to choose what to update
+                System.out.println("Choose what you want to update: 1 for Name, 2 for ID, 3 for Password");
+                int choice = input.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        // Update name
+                        System.out.print("Enter new name: ");
+                        String newName = input.next();
+                        targetUser.setName(newName);
+                        System.out.println("Visitor name updated successfully.");
                         break;
-                    }
-                }
 
-                if (targetUser != null) {
-                    System.out.print("Enter new name: ");
-                    String newName = input.next();
-                    targetUser.setName(newName);
-                    System.out.println("Visitor name updated successfully.");
-                } else {
-                    System.out.println("Visitor with the given ID not found.");
-                }
-                break;
+                    case 2:
+                        // Update ID
+                        System.out.print("Enter new ID: ");
+                        int newId = input.nextInt();
 
-            case 2:
-                // Update visitor ID
-                user targetUserForId = null;
-                for (user user : users) {
-                    if (user.getId() == id) {
-                        targetUserForId = user;
-                        break;
-                    }
-                }
-
-                if (targetUserForId != null) {
-                    System.out.print("Enter new ID: ");
-                    int newId = input.nextInt();
-
-                    // Check if the new ID already exists
-                    boolean idExists = false;
-                    for (user user : users) {
-                        if (user.getId() == newId) {
-                            idExists = true;
-                            break;
+                        // Check if new ID already exists
+                        boolean idExists = false;
+                        for (user u : users) {
+                            if (u.getId() == newId) {
+                                idExists = true;
+                                break;
+                            }
                         }
-                    }
 
-                    if (!idExists) {
-                        targetUserForId.setId(newId);
-                        System.out.println("Visitor ID updated successfully.");
-                    } else {
-                        System.out.println("The entered ID is already in use. Please try again with a different ID.");
-                    }
-                } else {
-                    System.out.println("Visitor with the given ID not found.");
-                }
-                break;
-
-            case 3:
-                // Update visitor password
-                user targetUserForPassword = null;
-                for (user user : users) {
-                    if (user.getId() == id) {
-                        targetUserForPassword = user;
+                        if (!idExists) {
+                            targetUser.setId(newId);
+                            System.out.println("Visitor ID updated successfully.");
+                        } else {
+                            System.out.println("The entered ID is already in use. Please try again with a different ID.");
+                        }
                         break;
-                    }
-                }
 
-                if (targetUserForPassword != null) {
-                    System.out.print("Enter new password: ");
-                    String newPassword = input.next();
-                    targetUserForPassword.setPassword(newPassword);
-                    System.out.println("Visitor password updated successfully.");
-                } else {
-                    System.out.println("Visitor with the given ID not found.");
-                }
-                break;
+                    case 3:
+                        // Update password
+                        System.out.print("Enter new password: ");
+                        String newPassword = input.next();
+                        targetUser.setPassword(newPassword);
+                        System.out.println("Visitor password updated successfully.");
+                        break;
 
-            default:
-                System.out.println("Invalid choice. Please try again.");
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } else {
+                // If visitor is not found, prompt user to try again
+                System.out.println("Visitor with the given ID not found. Please try again.");
+            }
         }
     }
+
 
     public static void updateSlot(ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean found = false;
@@ -532,4 +545,33 @@ public class Admin {
             }
         }
     }
+    public static void displayAllRooms(ArrayList<Room> generalRooms, ArrayList<Room> meetingRooms, ArrayList<Room> teachingRooms) {
+        System.out.println("=== General Rooms ===");
+        if (generalRooms.isEmpty()) {
+            System.out.println("No general rooms available.");
+        } else {
+            for (Room room : generalRooms) {
+                System.out.println(room); // Assumes Room class has a toString() method
+            }
+        }
+
+        System.out.println("\n=== Meeting Rooms ===");
+        if (meetingRooms.isEmpty()) {
+            System.out.println("No meeting rooms available.");
+        } else {
+            for (Room room : meetingRooms) {
+                System.out.println(room); // Assumes Room class has a toString() method
+            }
+        }
+
+        System.out.println("\n=== Teaching Rooms ===");
+        if (teachingRooms.isEmpty()) {
+            System.out.println("No teaching rooms available.");
+        } else {
+            for (Room room : teachingRooms) {
+                System.out.println(room); // Assumes Room class has a toString() method
+            }
+        }
+    }
+
 }

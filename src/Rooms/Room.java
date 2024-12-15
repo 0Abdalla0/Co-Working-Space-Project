@@ -63,6 +63,12 @@ public class Room {
     public void setID(int ID) {
         this.ID = ID;
     }
+    @Override
+    public String toString() {
+        return "ID: " + ID + " Name: " + name;
+    }
+
+
 
     public void inputAddSlot() {
         Scanner input = new Scanner(System.in);
@@ -168,7 +174,7 @@ public class Room {
         return foundSlots;
     }
 
-        // CHANGE FROM INDEX TO START TIME
+    // CHANGE FROM INDEX TO START TIME
         public void reserveSlot(LocalTime startTime, Visitor visitor) {
             // Check if any slot is available
             if (Availableslots.isEmpty()) {
@@ -365,8 +371,7 @@ public class Room {
 
 
 
-  //  public abstract void addVisitor(String visitor);
+//  public abstract void addVisitor(String visitor);
 //}
-
 
 

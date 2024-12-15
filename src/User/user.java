@@ -58,6 +58,10 @@ public class user {
     public void setPassword(String password) {
         this.password = password;
     }
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Password: " + password;
+    }
 
 
     // Register method to add a User.user
@@ -81,8 +85,8 @@ public class user {
                     visitorType="General";
                     break;
                 case 3:
-                   visitorType="Instructor";
-                   break;
+                    visitorType="Instructor";
+                    break;
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
             }
@@ -109,7 +113,7 @@ public class user {
         for (user u : users) {
             if (u.getName().equals(nameLogin) && u.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
-               loggedIn = true;
+                loggedIn = true;
                 break;
             }
         }
