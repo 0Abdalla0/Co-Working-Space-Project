@@ -21,8 +21,6 @@ public class Visitor extends user {
         totalReservedHours = 0;
     }
 
-
-
     private static Scanner input = new Scanner(System.in);
     //Inputs Date
     public static LocalDate getDateInput(String prompt) {
@@ -172,8 +170,8 @@ public class Visitor extends user {
     }
 
 
-    public void signOut(ArrayList<user> users, ArrayList<Room> formals, ArrayList<Room> generals, ArrayList<Room> instructors) {
-        user.startMenu(users, formals, generals, instructors);
+    public void signOut(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+        user.startMenu(users, meetingRooms, generalRooms, teachingRooms, instructors);
     }
     public void options(ArrayList<Room>rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots) {
         while (true) {

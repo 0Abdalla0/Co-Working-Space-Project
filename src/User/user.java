@@ -2,6 +2,7 @@ package User;
 
 import Admin_package.Admin;
 import Rooms.*;
+import Visitors.Instructor;
 import Visitors.Visitor;
 
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class user {
         this.visitorType = visitorType;
         idStatic++;  // Increment the static id for the next User.user
     }
-    public user(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
-        startMenu(users,meetingRooms, generalRooms,teachingRooms);
+    public user(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+        startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
     }
 
     // Getters and Setters
@@ -60,7 +61,7 @@ public class user {
     }
     @Override
     public String toString() {
-        return "ID: " + id + ", Name: " + name + ", Password: " + password;
+        return "ID: " + id + ", Name: " + name + ", Password: " + password + ", Visitor type: " + visitorType ;
     }
 
 
@@ -138,7 +139,7 @@ public class user {
     }
 
     // Menu for starting the application
-    public static void startMenu(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+    public static void startMenu(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
 
         int choice = 0;
         do {
@@ -151,14 +152,14 @@ public class user {
                     // Create a new User.user and add it to the list
                     user newUser = register(users);
                     users.add(newUser);
-                    startMenu(users,meetingRooms, generalRooms,teachingRooms);
+                    startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
                     break;
                 case 2:
                     // Directly call the login function
                     login(users);
                     break;
                 case 3:
-                    Admin.adminLogin(users,meetingRooms, generalRooms,teachingRooms);
+                    Admin.adminLogin(users,meetingRooms, generalRooms,teachingRooms, instructors);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

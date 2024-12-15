@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import User.user;
+import Visitors.Instructor;
 
 
 public class Admin {
@@ -50,7 +51,7 @@ public class Admin {
     }
 
 
-    public static void adminLogin(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+    public static void adminLogin(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
         while (true) {
             Scanner input = new Scanner(System.in);
             System.out.println("Enter Admin Name: ");
@@ -59,7 +60,7 @@ public class Admin {
             String password = input.nextLine();
             if (name.equals("admin") && password.equals("admin")) {
                 System.out.println("Admin Login Successful");
-                Admin.options(users, meetingRooms, generalRooms, teachingRooms);
+                Admin.options(users, meetingRooms, generalRooms, teachingRooms, instructors);
                 break;
 
             } else {
@@ -86,14 +87,14 @@ public class Admin {
     // Print confirmation of added slot
 //        System.out.println("Slot added successfully to " + roomType + ":");
 //        System.out.println("Date: " + date + ", Time: " + time + ", Fee: $" + fee);
-    public static void options(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+    public static void options(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
         boolean retry = false;
         Scanner input = new Scanner(System.in);
 
         do {
             System.out.println("---------------ADMIN MENU---------------");
-            System.out.println("1. Add Slots\n2. Delete specific entity\n3. Display all slots\n4. Display all visitors");
-            System.out.println("5.Display all rooms data\n6. calculate and display total amount of money for all rooms\n7. update any entity ");
+            System.out.println("1. Add Slots\n2. Delete specific entity\n3. Display all slots\n4. Display all visitors\n5. Display all instructors data ");
+            System.out.println("6.Display all rooms data\n7. calculate and display total amount of money for all rooms\n8. update any entity ");
             System.out.println("Enter your choice: ");
             int option = input.nextInt();
             //
@@ -144,16 +145,21 @@ public class Admin {
                         System.out.println(u);
                     }
                     break;
-
                 case 5:
+                    for (Instructor i : instructors){
+                        System.out.println(i);
+                    }
+                    break;
+
+                case 6:
                     Admin.displayAllRooms(generalRooms, meetingRooms, teachingRooms);
                      break;
 
-                case 6:
+                case 7:
                     calcRoom(meetingRooms, generalRooms, teachingRooms);
                     break;
 
-                case 7:
+                case 8:
                     update_entity(users, meetingRooms, generalRooms, teachingRooms);
 
             }

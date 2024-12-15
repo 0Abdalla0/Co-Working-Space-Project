@@ -13,6 +13,9 @@ public class Instructor extends Visitor {
         super(name, password, visitorType);
         this.hours = 0;
     }
+    public String toString() {
+        return "ID: " + getId() + ", Name: " + getName() + ", Password: " + getPassword();
+    }
 
     Scanner input = new Scanner(System.in);
     Date date =new Date();

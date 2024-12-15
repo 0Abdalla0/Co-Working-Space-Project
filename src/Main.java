@@ -39,12 +39,11 @@ public class Main {
 
         ArrayList<user> users = new ArrayList<>();
         ArrayList<Slot> slots = new ArrayList<>();
-        user.startMenu(users,meetingRooms, generalRooms,teachingRooms);
-
+        ArrayList<Instructor> instructors = new ArrayList<>();
         ArrayList<Formal> formals = new ArrayList<>();
         ArrayList<General> generals = new ArrayList<>();
-        ArrayList<Instructor> instructors = new ArrayList<>();
         ArrayList<Visitor> visitors = new ArrayList<>();
+        user.startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
         // Debugging: Print out registered users
         while (true) {
             System.out.println("Total registered users: " + users.size());
@@ -74,7 +73,7 @@ public class Main {
             String signOutOption = input.next();
             if (signOutOption.equalsIgnoreCase("Y")) {
                 System.out.println("You have signed out successfully.");
-                visitor.signOut(users,meetingRooms, generalRooms,teachingRooms);
+                visitor.signOut(users,meetingRooms, generalRooms,teachingRooms,instructors);
             } else if (signOutOption.equalsIgnoreCase("N")) {
                 System.out.println("Going back to main menu...");
 //                for (Visitor visitor1 : visitors) {
