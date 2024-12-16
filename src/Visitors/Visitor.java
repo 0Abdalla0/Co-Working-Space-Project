@@ -50,6 +50,32 @@ public class Visitor extends user {
             }
         }
     }
+    public void options(ArrayList<Room> rooms, ArrayList<Slot> ReservedSlots, ArrayList<Slot> Availableslots, ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+        while (true) {
+            System.out.println("Select an option:\n1. Make Reservation\n2. Cancel Reservation\n3. Update Reservation\n4. Sign Out");
+            int option = input.nextInt();
+            input.nextLine(); // Clear the buffer
+
+            switch (option) {
+                case 1:
+                    makeRes(rooms, ReservedSlots, Availableslots,users, meetingRooms, generalRooms, teachingRooms, instructors);
+                    break;
+                case 2:
+                    cancelRes(rooms, ReservedSlots, Availableslots,users, meetingRooms, generalRooms, teachingRooms, instructors);
+                    break;
+                case 3:
+                    updateRes(rooms, ReservedSlots, Availableslots,users, meetingRooms, generalRooms, teachingRooms, instructors);
+                    break;
+                case 4:
+                    System.out.println("Signing out...");
+                    signOut(users, meetingRooms, generalRooms, teachingRooms, instructors);
+                    break; // Exit options menu
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
     public void reservation(ArrayList<Room> rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots) {
         try {
             LocalDate today = LocalDate.now();
@@ -73,7 +99,7 @@ public class Visitor extends user {
             System.out.println("Invalid input! Let's try again.");
         }
     }
-    public void makeRes(ArrayList<Room> rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots) {
+    public void makeRes(ArrayList<Room> rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots, ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
         System.out.println("How many rooms would you want?");
         int numOfRooms = input.nextInt();
 //        input.nextLine();
@@ -85,27 +111,27 @@ public class Visitor extends user {
                i--;
            }
 
-            reReserve(rooms, ReservedSlots, Availableslots);
+            reReserve(rooms, ReservedSlots, Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
         }
     }
-    public void reReserve(ArrayList<Room> rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots){
+    public void reReserve(ArrayList<Room> rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors){
         System.out.println("Do you want to make another reservation?\n 1. Make a new reservation\n 2. Return to Main Menu");
         int option = input.nextInt();
                 switch (option){
             case 1:
-                makeRes(rooms,ReservedSlots,Availableslots);
+                makeRes(rooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
                 break;
             case 2:
-                options(rooms,ReservedSlots,Availableslots);
+                options(rooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
                 break;
             default:
                 System.out.println("Invalid input! Please try again.");
-                reReserve(rooms,ReservedSlots,Availableslots);
+                reReserve(rooms,ReservedSlots,Availableslots,users, meetingRooms, generalRooms, teachingRooms, instructors);
         }
     }
 
 
-    void cancelRes(ArrayList<Room> rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots){
+    void cancelRes(ArrayList<Room> rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors){
         System.out.println("******NOTE: THEIR IS A CANCELLATION FEES******\n Do you want to continue (Y/N)");
         System.out.println("Fees Will Be 25%");
         String cont = input.nextLine();
@@ -114,7 +140,7 @@ public class Visitor extends user {
             String cancelPassword = input.nextLine();
             if (!cancelPassword.equals(super.getPassword())){
                 System.out.println("Wrong Password!!! (try again)");
-                cancelRes(rooms, ReservedSlots, Availableslots);
+                cancelRes(rooms, ReservedSlots, Availableslots,users, meetingRooms, generalRooms, teachingRooms, instructors);
             }
             LocalDate cancelDate = getDateInput("Enter the Date you want to Cancel (YYYY-MM-DD): ");
                 System.out.println(ReservedSlots.size());
@@ -131,16 +157,16 @@ public class Visitor extends user {
                 }
             }
         } else if (cont.equalsIgnoreCase("N")) {
-            options(rooms,ReservedSlots,Availableslots);
+            options(rooms,ReservedSlots,Availableslots,users,meetingRooms, generalRooms, teachingRooms, instructors);
         }
 
     }
-    void updateRes(ArrayList<Room> rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots){
+    void updateRes(ArrayList<Room> rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors){
         System.out.println("Enter Your Password To Update: ");
         String updatePassword = input.nextLine();
         if (!updatePassword.equals(super.getPassword())){
             System.out.println("wrong password!!!(try again)");
-            updateRes(rooms,ReservedSlots,Availableslots);
+            updateRes(rooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
         }
         LocalTime startTime =getTimeInput("Enter start time you want to update: ");
         int numOfRoom = input.nextInt();
@@ -152,7 +178,7 @@ public class Visitor extends user {
         boolean found = slot.isReserved();
         if (!found) {
             System.out.println("The specified room is not reserved at the given date and time.");
-            updateRes(rooms, ReservedSlots,Availableslots);
+            updateRes(rooms, ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms, instructors);
         }
 
             System.out.println("What Do You Want To Change? \n1.Room Date & Time\n2.Return to Main Menu");
@@ -162,7 +188,7 @@ public class Visitor extends user {
                     reservation(rooms, ReservedSlots, Availableslots);
                     break;
                 case 2:
-                    options(rooms,ReservedSlots,Availableslots);
+                    options(rooms,ReservedSlots,Availableslots,users, meetingRooms, generalRooms, teachingRooms, instructors);
                     break;
             }
             System.out.println("New Room is reserved And the old is cancelled.");
@@ -173,29 +199,7 @@ public class Visitor extends user {
     public void signOut(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
         user.startMenu(users, meetingRooms, generalRooms, teachingRooms, instructors);
     }
-    public void options(ArrayList<Room>rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots) {
-        while (true) {
-            int option = input.nextInt();
-            input.nextLine(); // Clear the buffer
 
-            switch (option) {
-                case 1:
-                    makeRes(rooms,ReservedSlots,Availableslots);
-                    break;
-                case 2:
-                    cancelRes(rooms, ReservedSlots, Availableslots);
-                    break;
-                case 3:
-                    updateRes(rooms,ReservedSlots,Availableslots);
-                    break;
-                case 4:
-                    System.out.println("Signing out...");
-                    return; // Exit options menu
-                default:
-                    System.out.println("Invalid option. Please try again.");
-            }
-        }
-    }
 
 
     public void sortVisitors(user currentUser, ArrayList<Formal> formals, ArrayList<General> generals, ArrayList<Instructor> instructors) {

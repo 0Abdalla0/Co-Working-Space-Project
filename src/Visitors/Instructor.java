@@ -1,5 +1,7 @@
 package Visitors;
-
+import Rooms.MeetingRoom;
+import Rooms.GeneralRoom;
+import User.user;
 import Rooms.Room;
 import Rooms.Slot;
 import Rooms.TeachingRoom;
@@ -22,9 +24,9 @@ public class Instructor extends Visitor {
     ArrayList<TeachingRoom> teaching=new ArrayList<>();
     ArrayList<Slot> slots=new ArrayList<>();
 
-    public void options(ArrayList<Room>rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots) {
-        System.out.println("Welcome **"+super.getName()+"** To The Instructors Section\n Choose An Option:\n 1. Make A Reservation\n 2. Delete A Reservation\n 3. Update A Reservation \n 4. Sign out");
-        super.options(rooms,ReservedSlots,Availableslots);
+    public void options(ArrayList<Room>rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+        System.out.println("Welcome **"+super.getName()+"** To The Instructors Section");
+        super.options(rooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
     }
 
 }

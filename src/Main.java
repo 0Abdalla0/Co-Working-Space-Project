@@ -57,11 +57,11 @@ public class Main {
             }
             for (Visitor visitor1 : visitors) {
                 if (visitor1 instanceof Instructor){
-                    visitor1.options(teachingRooms,ReservedSlots,Availableslots);
+                    visitor1.options(teachingRooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
                 }else if (visitor1 instanceof General) {
-                    visitor1.options(generalRooms,ReservedSlots,Availableslots);
+                    visitor1.options(generalRooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
                 }else if (visitor1 instanceof Formal){
-                    visitor1.options(meetingRooms,ReservedSlots,Availableslots);
+                    visitor1.options(meetingRooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
                 }
 
             }
