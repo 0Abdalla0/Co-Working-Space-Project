@@ -101,8 +101,8 @@ public class user {
     }
 
     // Login method to validate User.user credentials
-    static boolean loggedIn = false;
-    public boolean isLoggedIn() {return loggedIn;}
+//    static boolean loggedIn = false;
+//    public boolean isLoggedIn() {return loggedIn;}
     public static void login(ArrayList<user> users) {
         System.out.println("Login Page\n");
         String nameLogin, passwordLogin;
@@ -111,6 +111,8 @@ public class user {
         System.out.println("Enter password:");
         passwordLogin = input.next();
 
+        boolean loggedIn = false; // Reset loggedIn for each login attempt
+
         for (user u : users) {
             if (u.getName().equals(nameLogin) && u.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
@@ -118,25 +120,28 @@ public class user {
                 break;
             }
         }
+
         if (!loggedIn) {
-            int choice=0;
+            int choice = 0;
             System.out.println("Wrong login or password. Please try again.\n");
             System.out.println("Do not have an account?");
             System.out.println("1. Try to login again.");
             System.out.println("2. Register a new Account.");
-            while (choice!=1&&choice!=2) {
+            while (choice != 1 && choice != 2) {
                 choice = input.nextInt();
                 switch (choice) {
                     case 1:
                         login(users);
-                        break;
+                        return; // Avoid further execution
                     case 2:
-                        register(users);
-                        break;
+                        user newUser = register(users);
+                        users.add(newUser);
+                        return; // Avoid further execution
                 }
             }
         }
     }
+
 
     // Menu for starting the application
     public static void startMenu(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
