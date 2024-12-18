@@ -50,7 +50,7 @@ public class Visitor extends user {
             }
         }
     }
-    public void options(ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<user> users, ArrayList<Instructor> instructors) {
+    public void options(ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors) {
         while (true) {
             System.out.println("Select an option:\n1. Make Reservation\n2. Cancel Reservation\n3. Update Reservation\n4. Sign Out");
             int option = input.nextInt();
@@ -76,7 +76,7 @@ public class Visitor extends user {
                     break;
                 case 4:
                     System.out.println("Signing out...");
-                    signOut(users, meetingRooms, generalRooms, teachingRooms, instructors);
+                    signOut(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
                     break; // Exit options menu
                 default:
                     System.out.println("Invalid option. Please try again.");
@@ -97,6 +97,7 @@ public class Visitor extends user {
             System.out.println("-----------------------------------------------------------------");
             System.out.println("Enter room number you want to reserve: ");
             int roomNum = input.nextInt();
+            input.nextLine();
             LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
             LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
 
@@ -348,8 +349,8 @@ public class Visitor extends user {
 
 
 
-    public void signOut(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
-        user.startMenu(users, meetingRooms, generalRooms, teachingRooms, instructors);
+    public void signOut(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+        user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
     }
 
 

@@ -43,29 +43,29 @@ public class Main {
         ArrayList<Formal> formals = new ArrayList<>();
         ArrayList<General> generals = new ArrayList<>();
         ArrayList<Visitor> visitors = new ArrayList<>();
-        user.startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
+        user.startMenu(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
         // Debugging: Print out registered users
         while (true) {
             System.out.println("Total registered users: " + users.size());
             Visitor visitor = new Visitor();
             // Ensure visitors list is populated before iteration
-            for (user user : users) {
-                visitor.sortVisitors(user, formals, generals, instructors);
-                visitors.addAll(formals);
-                visitors.addAll(generals);
-                visitors.addAll(instructors);
-            }
-            for (Visitor visitor1 : visitors) {
-                visitor1.options(teachingRooms,meetingRooms,generalRooms,users,instructors);
-//                if (visitor1 instanceof Instructor){
-//                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
-//                }else if (visitor1 instanceof General) {
-//                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
-//                }else if (visitor1 instanceof Formal){
-//                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
-//                }
-
-            }
+//            for (user user : users) {
+//                visitor.sortVisitors(user, formals, generals, instructors);
+//                visitors.addAll(formals);
+//                visitors.addAll(generals);
+//                visitors.addAll(instructors);
+//            }
+//            for (Visitor visitor1 : visitors) {
+//                visitor1.options(teachingRooms,meetingRooms,generalRooms,users,instructors);
+////                if (visitor1 instanceof Instructor){
+////                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
+////                }else if (visitor1 instanceof General) {
+////                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
+////                }else if (visitor1 instanceof Formal){
+////                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
+////                }
+//
+//            }
             System.out.println("Formal visitors: " + formals.size());
             System.out.println("General visitors: " + generals.size());
             System.out.println("Instructor visitors: " + instructors.size());
@@ -74,7 +74,7 @@ public class Main {
             String signOutOption = input.next();
             if (signOutOption.equalsIgnoreCase("Y")) {
                 System.out.println("You have signed out successfully.");
-                visitor.signOut(users,meetingRooms, generalRooms,teachingRooms,instructors);
+                visitor.signOut(visitors,meetingRooms, generalRooms,teachingRooms,instructors);
             } else if (signOutOption.equalsIgnoreCase("N")) {
                 System.out.println("Going back to main menu...");
 //                for (Visitor visitor1 : visitors) {

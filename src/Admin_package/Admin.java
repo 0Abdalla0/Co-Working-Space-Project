@@ -11,16 +11,21 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import User.user;
 import Visitors.Instructor;
+import Visitors.Visitor;
 
 
-public class Admin {
+public class Admin extends user {
     private static String name;
     private static String password;
     public static Scanner input = new Scanner(System.in);
 
-    // Constructor
-    public Admin() {
+    public Admin(String name, String password, String visitorType, int i) {
+        super(name, password, visitorType, i);
     }
+
+    // Constructor
+//    public Admin() {
+//    }
 
     public static LocalTime getTimeInput(String prompt) {
         while (true) {
@@ -51,7 +56,7 @@ public class Admin {
     }
 
 
-    public static void adminLogin(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+    public static void adminLogin(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
         while (true) {
             Scanner input = new Scanner(System.in);
             System.out.println("Enter Admin Name: ");
@@ -60,7 +65,7 @@ public class Admin {
             String password = input.nextLine();
             if (name.equals("admin") && password.equals("admin")) {
                 System.out.println("Admin Login Successful");
-                Admin.options(users, meetingRooms, generalRooms, teachingRooms, instructors);
+                Admin.options(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
                 break;
 
             } else {
@@ -87,7 +92,7 @@ public class Admin {
     // Print confirmation of added slot
 //        System.out.println("Slot added successfully to " + roomType + ":");
 //        System.out.println("Date: " + date + ", Time: " + time + ", Fee: $" + fee);
-    public static void options(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+    public static void options(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
         boolean retry = false;
         Scanner input = new Scanner(System.in);
 
@@ -133,7 +138,7 @@ public class Admin {
                     break;
 
                 case 2:
-                    Admin.delete_entity(users, meetingRooms, generalRooms, teachingRooms);
+                    Admin.delete_entity(visitors, meetingRooms, generalRooms, teachingRooms);
                     break;
 
                 case 3:
@@ -141,8 +146,8 @@ public class Admin {
                     break;
 
                 case 4:
-                    for (user u : users) {
-                        System.out.println(u);
+                    for (Visitor v : visitors) {
+                        System.out.println(v);
                     }
                     break;
                 case 5:
@@ -158,9 +163,8 @@ public class Admin {
                 case 7:
                     calcRoom(meetingRooms, generalRooms, teachingRooms);
                     break;
-
                 case 8:
-                    update_entity(users, meetingRooms, generalRooms, teachingRooms);
+                    update_entity(visitors, meetingRooms, generalRooms, teachingRooms);
 
             }
             try {
@@ -170,6 +174,7 @@ public class Admin {
                     retry = true;
                 } else if (choose.equalsIgnoreCase("N")) {
                     retry = false;
+                    user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
                 }
             } catch (Exception e) {
                 System.out.println("Invalid Option");
@@ -177,7 +182,7 @@ public class Admin {
         } while (retry);
     }
 
-    public static void delete_entity(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+    public static void delete_entity(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean continueDeleting = true;
         while (continueDeleting) {
             System.out.println("Select entity to delete: ");
@@ -193,13 +198,13 @@ public class Admin {
                     delete_room(room_id, meetingRooms, generalRooms, teachingRooms);
                     break;
                 case 2:
-                    for (user u : users) {
-                        System.out.println(u);
+                    for (Visitor v : visitors) {
+                        System.out.println(v);
                     }
                     System.out.print("Enter Visitor ID to delete: ");
                     int visitor_id = input.nextInt();
                     // display user list with name w id
-                    delete_visitor(visitor_id, users);
+                    delete_visitor(visitor_id, visitors);
                     break;
 
                 default:
@@ -259,12 +264,12 @@ public class Admin {
 
     }
 
-    public static void delete_visitor(int visitor_id, ArrayList<user> users) {
+    public static void delete_visitor(int visitor_id, ArrayList<Visitor> visitors) {
         boolean found = false;
         while (!found) {
-            for (user user : users) {
-                if (visitor_id == user.getId()) {
-                    users.remove(user);
+            for (Visitor visitor : visitors) {
+                if (visitor_id == visitor.getId()) {
+                    visitors.remove(visitor);
                     System.out.println("visitor with id " + visitor_id + " deleted successfully");
                     found = true;
                     break;
@@ -280,7 +285,7 @@ public class Admin {
         }
     }
 
-    public static void update_entity(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+    public static void update_entity(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean continueUpdating = true;
         while (continueUpdating) {
             System.out.println("Select entity to update: ");
@@ -294,10 +299,10 @@ public class Admin {
                     update_room(meetingRooms, generalRooms, teachingRooms);
                     break;
                 case 2:
-                    for (user u : users) {
-                        System.out.println(u);
+                    for (Visitor v : visitors) {
+                        System.out.println(v);
                     }
-                    update_visitor(users);
+                    update_visitor(visitors);
                     break;
                 case 3:
                     updateSlot(meetingRooms, generalRooms, teachingRooms);
@@ -428,7 +433,7 @@ public class Admin {
     }
 
 
-    public static void update_visitor(ArrayList<user> users) {
+    public static void update_visitor(ArrayList<Visitor> visitors) {
         boolean found = false;
 
         while (!found) {
@@ -437,9 +442,9 @@ public class Admin {
 
             // Search for the visitor by ID
             user targetUser = null;
-            for (user u : users) {
-                if (u.getId() == visitor_id) {
-                    targetUser = u;
+            for (Visitor v : visitors) {
+                if (v.getId() == visitor_id) {
+                    targetUser = v;
                     break;
                 }
             }
@@ -474,8 +479,8 @@ public class Admin {
 
                         // Check if new ID already exists
                         boolean idExists = false;
-                        for (user u : users) {
-                            if (u.getId() == newId) {
+                        for (Visitor v : visitors) {
+                            if (v.getId() == newId) {
                                 idExists = true;
                                 break;
                             }

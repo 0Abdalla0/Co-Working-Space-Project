@@ -25,9 +25,9 @@ public class user {
         this.visitorType = visitorType;
         idStatic++;  // Increment the static id for the next User.user
     }
-    public user(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
-        startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
-    }
+//    public user(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+//        startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
+//    }
 
     // Getters and Setters
     public String getName() {
@@ -66,7 +66,7 @@ public class user {
 
 
     // Register method to add a User.user
-    public static user register(ArrayList<user> users) {
+    public static Visitor register(ArrayList<Visitor> visitors) {
         System.out.println("Enter the name of the account you want to register:");
         String name = input.next();
         System.out.println("Enter the password of the account you want to register:");
@@ -94,8 +94,7 @@ public class user {
         }
 
         // Create a new User object and return it
-
-        return new user(name, password,visitorType,idStatic);
+        return new Visitor(name, password,visitorType);
 
 
     }
@@ -103,7 +102,8 @@ public class user {
     // Login method to validate User.user credentials
 //    static boolean loggedIn = false;
 //    public boolean isLoggedIn() {return loggedIn;}
-    public static void login(ArrayList<user> users) {
+    public static void login(ArrayList<Visitor> visitors, ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Instructor> instructors) {
+        // ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors
         System.out.println("Login Page\n");
         String nameLogin, passwordLogin;
         System.out.println("Enter your Name:");
@@ -113,9 +113,11 @@ public class user {
 
         boolean loggedIn = false; // Reset loggedIn for each login attempt
 
-        for (user u : users) {
-            if (u.getName().equals(nameLogin) && u.getPassword().equals(passwordLogin)) {
+        for (Visitor v : visitors) {
+            if (v.getName().equals(nameLogin) && v.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
+                v.options(teachingRooms, meetingRooms, generalRooms, visitors, instructors);
+ // ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors
                 loggedIn = true;
                 break;
             }
@@ -131,11 +133,11 @@ public class user {
                 choice = input.nextInt();
                 switch (choice) {
                     case 1:
-                        login(users);
+                        login(visitors, teachingRooms, meetingRooms, generalRooms, instructors);
                         return; // Avoid further execution
                     case 2:
-                        user newUser = register(users);
-                        users.add(newUser);
+                        Visitor newVisitor = register(visitors);
+                        visitors.add(newVisitor);
                         return; // Avoid further execution
                 }
             }
@@ -144,7 +146,7 @@ public class user {
 
 
     // Menu for starting the application
-    public static void startMenu(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+    public static void startMenu(ArrayList<Visitor> visitors, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
 
         int choice = 0;
         do {
@@ -155,16 +157,16 @@ public class user {
             switch (choice) {
                 case 1:
                     // Create a new User.user and add it to the list
-                    user newUser = register(users);
-                    users.add(newUser);
-                    startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
+                    Visitor newVisitor = register(visitors);
+                    visitors.add(newVisitor);
+                    startMenu(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
                     break;
                 case 2:
                     // Directly call the login function
-                    login(users);
+                    login(visitors, teachingRooms, meetingRooms, generalRooms, instructors);
                     break;
                 case 3:
-                    Admin.adminLogin(users,meetingRooms, generalRooms,teachingRooms, instructors);
+                    Admin.adminLogin(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
