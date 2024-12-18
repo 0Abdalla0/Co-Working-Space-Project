@@ -110,22 +110,6 @@ public class Visitor extends user {
         }
     }
 
-//    public void reReserve(ArrayList<Room> rooms,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors){
-//        System.out.println("Do you want to make another reservation?\n 1. Make a new reservation\n 2. Return to Main Menu");
-//        int option = input.nextInt();
-//        switch (option){
-//            case 1:
-//                reservation(rooms);
-//                break;
-//            case 2:
-//                options(rooms,users,meetingRooms,generalRooms,teachingRooms,instructors);
-//                break;
-//            default:
-//                System.out.println("Invalid input! Please try again.");
-//                reReserve(rooms,users, meetingRooms, generalRooms, teachingRooms, instructors);
-//        }
-//    }
-
 
     void cancelRes(ArrayList<Room> rooms){
         System.out.println("******NOTE: THEIR IS A CANCELLATION FEES******\n Do you want to continue (Y/N)");
@@ -320,22 +304,7 @@ public class Visitor extends user {
 
             default:
                 System.out.println("Invalid choice. Returning to the main menu.");
-                return;
         }
-
-//        // Cancel the old reservation (remove the old slot from reserved slots)
-//        if (slotToUpdate.getRoom().getReservedSlots().contains(slotToUpdate)) {
-//            slotToUpdate.getRoom().getReservedSlots().remove(slotToUpdate); // Remove the slot from reserved slots
-//            slotToUpdate.getRoom().getAvailableSlots().add(slotToUpdate);   // Add the slot to available slots
-//            System.out.println("The reservation has been canceled.");
-//        } else {
-//            System.out.println("Slot not found in the reserved slots.");
-//        }
-//
-//        // Now that the old reservation is canceled, ask the user to reserve a new slot
-//        System.out.println("Your old reservation has been canceled. You need to reserve a new slot.");
-//        reservation(rooms);  // Call reservation method to reserve a new slot
-//        System.out.println("Reservation process completed.");
     }
 
     boolean checkTimeConflict(Room room, LocalTime newStartTime, LocalTime newEndTime) {
@@ -347,36 +316,22 @@ public class Visitor extends user {
         return false;  // No conflict
     }
 
-
-
     public void signOut(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
         user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
     }
-
-
-
-    public void sortVisitors(user currentUser, ArrayList<Formal> formals, ArrayList<General> generals, ArrayList<Instructor> instructors) {
-        try {
-            String visitorType = currentUser.getVisitorType();
-            switch (visitorType) {
-                case "Formal":
-                    Formal formal = new Formal(currentUser.getName(), currentUser.getPassword(), visitorType);
-                    formals.add(formal);
-                    break;
-                case "General":
-                    General general = new General(currentUser.getName(), currentUser.getPassword(), visitorType);
-                    generals.add(general);
-                    break;
-                case "Instructor":
-                    Instructor instructor = new Instructor(currentUser.getName(), currentUser.getPassword(), visitorType);
-                    instructors.add(instructor);
-                    break;
-                default:
-                    System.out.println("Invalid visitor type: " + visitorType);
-                    break;
+    public static void leaderBoard(ArrayList<Visitor> visitors) {
+        int highestScore = 0;
+        String winnerVisitor = "";
+        String winnerType = "";
+        for (Visitor visitor : visitors) {
+            if (visitor.totalReservedHours>highestScore) {
+                highestScore = visitor.totalReservedHours;
+                winnerVisitor = visitor.getName();
+                winnerType = visitor.getVisitorType();
             }
-        } catch (Exception e) {
-            System.out.println("Error sorting visitors: " + e.getMessage());
         }
+        System.out.println("The winner visitor is : "+ winnerVisitor+" and the highest score is : "+ highestScore +" h\n Won 7 free hours for a\n" +
+                "month for the same which is "+winnerType);
     }
+
 }
