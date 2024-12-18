@@ -11,12 +11,18 @@ public class Slot {
     private double fees;
     private boolean reserved;
     private int userID;
+    private Room room;
 
-    public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, double fees) {
+    public Room getRoom() {
+        return room;
+    }
+
+    public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, double fees, Room room) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.fees = fees;
+        this.room = room;
         this.reserved = false;
     }
 
@@ -28,8 +34,8 @@ public class Slot {
         return userID;
     }
 
-    public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, double fees, int userID) {
-        this(date, startTime, endTime, fees); // Reuse the first constructor
+    public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, double fees, int userID, Room room) {
+        this(date, startTime, endTime, fees, room); // Reuse the first constructor
         this.reserved = true;
         this.userID = userID;
     }
