@@ -13,8 +13,8 @@ public class Main {
     public static void main(String[] args) {
         // option visitor => check type & pass array of the type
         // admin functions => has every array list
-        ArrayList<Slot> Availableslots = new ArrayList<>();
-        ArrayList<Slot> ReservedSlots = new ArrayList<>();
+//        ArrayList<Slot> Availableslots = new ArrayList<>();
+//        ArrayList<Slot> ReservedSlots = new ArrayList<>();
         // ///////////////////////////////////////////////////////////////////////////////////
         Scanner input = new Scanner(System.in);
         ArrayList<Room> meetingRooms = new ArrayList<>();
@@ -56,13 +56,14 @@ public class Main {
                 visitors.addAll(instructors);
             }
             for (Visitor visitor1 : visitors) {
-                if (visitor1 instanceof Instructor){
-                    visitor1.options(teachingRooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
-                }else if (visitor1 instanceof General) {
-                    visitor1.options(generalRooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
-                }else if (visitor1 instanceof Formal){
-                    visitor1.options(meetingRooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
-                }
+                visitor1.options(teachingRooms,meetingRooms,generalRooms,users,instructors);
+//                if (visitor1 instanceof Instructor){
+//                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
+//                }else if (visitor1 instanceof General) {
+//                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
+//                }else if (visitor1 instanceof Formal){
+//                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
+//                }
 
             }
             System.out.println("Formal visitors: " + formals.size());

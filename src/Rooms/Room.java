@@ -145,7 +145,7 @@ public abstract class Room {
         }
 
         // Create the new slot and add it to the available slots list
-        Slot newSlot = new Slot(date, startTime, endTime, fee);
+        Slot newSlot = new Slot(date, startTime, endTime, fee, this);
         Availableslots.add(newSlot);
 
         // Provide feedback to the user
@@ -153,7 +153,7 @@ public abstract class Room {
     }
 
     // check date to display its slots
-    public boolean displayAvailableSlots(LocalDate date) {
+    public void displayAvailableSlots(LocalDate date) {
         boolean foundSlots = false;
 
         System.out.println("Available slots for " + date + ":");
@@ -171,7 +171,6 @@ public abstract class Room {
         if (!foundSlots) {
             System.out.println("No available slots for this date.");
         }
-        return foundSlots;
     }
 
     // CHANGE FROM INDEX TO START TIME
@@ -218,6 +217,18 @@ public abstract class Room {
         }
 
         return totalFees;
+    }
+
+    public ArrayList<Slot> getAvailableSlots() {
+        return Availableslots;
+    }
+
+    public ArrayList<Slot> getReservedSlots() {
+        return ReservedSlots;
+    }
+
+    public ArrayList<Visitor> getVisitors() {
+        return visitors;
     }
 
     public void updateSlot(){
@@ -367,11 +378,8 @@ public abstract class Room {
         }
     }
     public abstract void addFees();
+
+    public void updateReservation(){
+
+    }
 }
-
-
-
-//  public abstract void addVisitor(String visitor);
-//}
-
-
