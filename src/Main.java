@@ -40,8 +40,12 @@ public class Main {
         general1.getAvailableSlots().add(general2slot);
         Slot meeting1slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, meeting1);
         meeting1.getAvailableSlots().add(meeting1slot);
-        Slot teaching1Slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(9, 0), LocalTime.of(10, 0), 350, teaching1);
+        Slot meeting2slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(11, 0), LocalTime.of(17, 0), 150, meeting1);
+        meeting1.getAvailableSlots().add(meeting2slot);
+        Slot teaching1Slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(9, 0), LocalTime.of(14, 0), 350, teaching1);
         teaching1.getAvailableSlots().add(teaching1Slot);
+        Slot teaching2Slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(1, 0), LocalTime.of(9, 0), 350, teaching1);
+        teaching1.getAvailableSlots().add(teaching2Slot);
 
 
 

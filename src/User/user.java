@@ -102,13 +102,18 @@ public class user {
 
 
     public static void login(ArrayList<Visitor> visitors, ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Instructor> instructors) {
-        System.out.println("Login Page\n");
-        String nameLogin, passwordLogin;
-        System.out.println("Enter your Name:");
-        nameLogin = input.next();
-        System.out.println("Enter password:");
-        passwordLogin = input.next();
+            String nameLogin ="", passwordLogin="";
 
+        try {
+            System.out.println("Login Page\n");
+            System.out.println("Enter your Name:");
+            nameLogin = input.next();
+            System.out.println("Enter password:");
+            passwordLogin = input.next();
+        }catch (Exception e) {
+            System.out.println("Login Error : "+e.getMessage());
+            input.nextLine();
+        }
         boolean loggedIn = false; // Reset loggedIn for each login attempt
 
         for (Visitor v : visitors) {
@@ -123,7 +128,7 @@ public class user {
                     System.out.println("You won 7 free hours for the next month for " + v.getVisitorType() + " category.");
                 }
                 // Check if the logged-in user has earned a reward
-                if (v.equals(reward)) {
+                if (v.getTotalFreeHours() >= 1) {
                     System.out.println("Congratulations " + v.getName() + "! You have reached a milestone!");
                     System.out.println("You won 1 free hour");
                 }
@@ -160,10 +165,16 @@ public class user {
 
         int choice = 0;
         do {
-            System.out.println("\t\t\t\t\t\t\t\t\t***Hello to Galacticos Work space***");
-            System.out.println("1. Create a new Account \n2. Login (Already have an account)");
-            choice = input.nextInt();
-
+            try {
+                System.out.println("\t\t\t\t\t\t\t\t\t***Hello to Galacticos Work space***");
+                System.out.println("1. Create a new Account \n2. Login (Already have an account)");
+                choice = input.nextInt();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid Input : "+e.getMessage());
+                input.nextLine();
+                choice = 4;
+            }
             switch (choice) {
                 case 1:
                     // Create a new User.user and add it to the list
@@ -177,6 +188,9 @@ public class user {
                     break;
                 case 3:
                     Admin.adminLogin(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
+                    break;
+                case 4:
+                    startMenu(visitors,meetingRooms, generalRooms, teachingRooms, instructors);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

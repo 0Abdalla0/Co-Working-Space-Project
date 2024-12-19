@@ -13,6 +13,9 @@ public class Visitor extends user {
     protected int totalReservedHours;
     protected int totalFreeHours;
 
+    public int getTotalFreeHours() {
+        return totalFreeHours;
+    }
 
     public Visitor(){
         super(null,null,null,idStatic);
@@ -25,7 +28,7 @@ public class Visitor extends user {
         totalFreeHours = 0;
     }
 
-    private static Scanner input = new Scanner(System.in);
+    static Scanner input = new Scanner(System.in);
     //Inputs Date
     public static LocalDate getDateInput(String prompt) {
         while (true) {
@@ -39,6 +42,7 @@ public class Visitor extends user {
                 return resDate;
             } catch (Exception e) {
                 System.out.println("Invalid date! Please use format YYYY-MM-DD and ensure the date is not in the past.");
+                input.nextLine();
             }
         }
     }
@@ -51,14 +55,19 @@ public class Visitor extends user {
                 return LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("HH:mm"));
             } catch (Exception e) {
                 System.out.println("Invalid time! Please use format HH:mm.");
+                input.nextLine();
             }
         }
     }
     public void options(ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors) {
         while (true) {
-            System.out.println("Select an option:\n1. Make Reservation\n2. Cancel Reservation\n3. Update Reservation\n4. Sign Out");
-            int option = input.nextInt();
-            input.nextLine(); // Clear the buffer
+            int option = 0;
+            try {
+                System.out.println("Select an option:\n1. Make Reservation\n2. Cancel Reservation\n3. Update Reservation\n4. Sign Out");
+                option = input.nextInt();
+            }catch (Exception e) {
+                input.nextLine();
+            }
             ArrayList<Room> roomsToDisplay = new ArrayList<>();
             if (this.getVisitorType().equals("Instructor")) {
                 roomsToDisplay = teachingRooms;

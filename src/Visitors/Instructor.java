@@ -10,7 +10,8 @@ public class Instructor extends Visitor {
     }
 
     public Visitor rewardSys() {
-        if (this.totalReservedHours >= 6) {
+        if (this.totalReservedHours % 12 == 0 && this.totalReservedHours != 0) {
+            this.totalFreeHours++;
             return this;
         }
         return null;

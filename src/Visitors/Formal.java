@@ -7,7 +7,7 @@ public class Formal extends Visitor {
         super.totalReservedHours = 0;
     }
     public Visitor rewardSys() {
-        if (this.totalReservedHours % 6 == 0) {
+        if (this.totalReservedHours % 6 == 0 && this.totalReservedHours != 0) {
             this.totalFreeHours++;
             return this;
         }
