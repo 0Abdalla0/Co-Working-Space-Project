@@ -86,25 +86,57 @@ public class Visitor extends user {
 
     public void reservation(ArrayList<Room> rooms) {
         try {
-            LocalDate today = LocalDate.now();
-            System.out.println("Today's date is " + today);
-            LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
-            System.out.println("-----------------------------------------------------------------");
-            for (int i = 0; i < rooms.size(); i++) {
-                System.out.println("Room " + (i + 1) + ": " + rooms.get(i).getName());
-                rooms.get(i).displayAvailableSlots(resDate);
-            }
-            System.out.println("-----------------------------------------------------------------");
-            System.out.println("Enter room number you want to reserve: ");
-            int roomNum = input.nextInt();
-            input.nextLine();
-            LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
-            LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
+            // Loop to check availability of slots
+            while (true) {
+                LocalDate today = LocalDate.now();
+                System.out.println("Today's date is " + today);
+                LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
+                System.out.println("-----------------------------------------------------------------");
 
-            int reservedHours = Duration.between(startTime, endTime).toHoursPart(); // Calculate hours
-            totalReservedHours += reservedHours;
-            rooms.get(roomNum-1).reserveSlot(startTime, this);
-            System.out.println("Reservation for room # " + roomNum + " and Slot # "+ startTime +" is successful.");
+                boolean availableSlots = false;
+
+                // Check for available slots in any room
+                for (int i = 0; i < rooms.size(); i++) {
+                    System.out.println("Room " + (i + 1) + ": " + rooms.get(i).getName());
+                    if (rooms.get(i).hasAvailableSlots(resDate)) {
+                        rooms.get(i).displayAvailableSlots(resDate);
+                        availableSlots = true;
+                    }
+                }
+
+                if (!availableSlots) {
+                    System.out.println("No available slots in any room for the selected date. Please try again.");
+                    continue; // If no slots are available, restart the loop
+                }
+
+                System.out.println("-----------------------------------------------------------------");
+                int roomNum = -1;
+
+                // Loop to get a valid room number
+                while (roomNum < 1 || roomNum > rooms.size()) {
+                    System.out.println("Enter room number you want to reserve: ");
+                    roomNum = input.nextInt();
+                    input.nextLine();
+
+                    if (roomNum < 1 || roomNum > rooms.size()) {
+                        System.out.println("Invalid room number. Please try again.");
+                    }
+                }
+
+                // Get start and end time
+                LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
+                LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
+
+                int reservedHours = Duration.between(startTime, endTime).toHoursPart(); // Calculate hours
+                totalReservedHours += reservedHours;
+
+                // Reserve the slot in the selected room
+                rooms.get(roomNum - 1).reserveSlot(startTime, this);
+
+                System.out.println("Reservation for room # " + roomNum + " and Slot # " + startTime + " is successful.");
+                break;  // Exit the loop after successful reservation
+            }
+
         } catch (Exception e) {
             System.out.println("Invalid input! Let's try again.");
         }
