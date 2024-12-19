@@ -99,9 +99,7 @@ public class user {
 
     }
 
-// Login method to validate User.user credentials
-//    static boolean loggedIn = false;
-//    public boolean isLoggedIn() {return loggedIn;}
+
     public static void login(ArrayList<Visitor> visitors, ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Instructor> instructors) {
         // ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors
         System.out.println("Login Page\n");
@@ -117,7 +115,18 @@ public class user {
             if (v.getName().equals(nameLogin) && v.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
                 v.options(teachingRooms, meetingRooms, generalRooms, visitors, instructors);
- // ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors
+                Visitor winner = v.leaderBoard(visitors); // Get the winner from the leaderboard
+                Visitor reward = v.rewardSys(v.getTotalReservedHours());
+                // Check if the logged-in user is the winner
+                if (v.equals(winner)) {
+                    System.out.println("Congratulations " + v.getName() + "! You are the winner!");
+                    System.out.println("You won 7 free hours for the next month for " + v.getVisitorType() + " category.");
+                }
+                // Check if the logged-in user is the winner
+                if (v.equals(reward)) {
+                    System.out.println("Congratulations " + v.getName() + "! You have reached a milestone!");
+                    System.out.println("You won 1 free hour");
+                }
                 loggedIn = true;
                 break;
             }

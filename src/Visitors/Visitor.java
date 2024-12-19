@@ -11,7 +11,12 @@ import Rooms.Room;
 import Rooms.Slot;
 import User.user;
 public class Visitor extends user {
-    private int totalReservedHours;
+    protected int totalReservedHours;
+
+    public int getTotalReservedHours() {
+        return totalReservedHours;
+    }
+
     public Visitor(){
         super(null,null,null,idStatic);
         totalReservedHours = 0;
@@ -86,77 +91,29 @@ public class Visitor extends user {
 
     public void reservation(ArrayList<Room> rooms) {
         try {
-            // Loop to check availability of slots
-            while (true) {
-                LocalDate today = LocalDate.now();
-                System.out.println("Today's date is " + today);
-                LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
-                System.out.println("-----------------------------------------------------------------");
-
-                boolean availableSlots = false;
-
-                // Check for available slots in any room
-                for (int i = 0; i < rooms.size(); i++) {
-                    System.out.println("Room " + (i + 1) + ": " + rooms.get(i).getName());
-                    if (rooms.get(i).hasAvailableSlots(resDate)) {
-                        rooms.get(i).displayAvailableSlots(resDate);
-                        availableSlots = true;
-                    }
-                }
-
-                if (!availableSlots) {
-                    System.out.println("No available slots in any room for the selected date. Please try again.");
-                    continue; // If no slots are available, restart the loop
-                }
-
-                System.out.println("-----------------------------------------------------------------");
-                int roomNum = -1;
-
-                // Loop to get a valid room number
-                while (roomNum < 1 || roomNum > rooms.size()) {
-                    System.out.println("Enter room number you want to reserve: ");
-                    roomNum = input.nextInt();
-                    input.nextLine();
-
-                    if (roomNum < 1 || roomNum > rooms.size()) {
-                        System.out.println("Invalid room number. Please try again.");
-                    }
-                }
-
-                // Get start and end time
-                LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
-                LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
-
-                int reservedHours = Duration.between(startTime, endTime).toHoursPart(); // Calculate hours
-                totalReservedHours += reservedHours;
-
-                // Reserve the slot in the selected room
-                rooms.get(roomNum - 1).reserveSlot(startTime, this);
-
-                System.out.println("Reservation for room # " + roomNum + " and Slot # " + startTime + " is successful.");
-                break;  // Exit the loop after successful reservation
+            LocalDate today = LocalDate.now();
+            System.out.println("Today's date is " + today);
+            LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
+            System.out.println("-----------------------------------------------------------------");
+            for (int i = 0; i < rooms.size(); i++) {
+                System.out.println("Room " + (i + 1) + ": " + rooms.get(i).getName());
+                rooms.get(i).displayAvailableSlots(resDate);
             }
+            System.out.println("-----------------------------------------------------------------");
+            System.out.println("Enter room number you want to reserve: ");
+            int roomNum = input.nextInt();
+            input.nextLine();
+            LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
+            LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
 
+            int reservedHours = Duration.between(startTime, endTime).toHoursPart(); // Calculate hours
+            totalReservedHours += reservedHours;
+            rooms.get(roomNum-1).reserveSlot(startTime, this);
+            System.out.println("Reservation for room # " + roomNum + " and Slot # "+ startTime +" is successful.");
         } catch (Exception e) {
             System.out.println("Invalid input! Let's try again.");
         }
     }
-
-//    public void reReserve(ArrayList<Room> rooms,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors){
-//        System.out.println("Do you want to make another reservation?\n 1. Make a new reservation\n 2. Return to Main Menu");
-//        int option = input.nextInt();
-//        switch (option){
-//            case 1:
-//                reservation(rooms);
-//                break;
-//            case 2:
-//                options(rooms,users,meetingRooms,generalRooms,teachingRooms,instructors);
-//                break;
-//            default:
-//                System.out.println("Invalid input! Please try again.");
-//                reReserve(rooms,users, meetingRooms, generalRooms, teachingRooms, instructors);
-//        }
-//    }
 
 
     void cancelRes(ArrayList<Room> rooms){
@@ -352,22 +309,7 @@ public class Visitor extends user {
 
             default:
                 System.out.println("Invalid choice. Returning to the main menu.");
-                return;
         }
-
-//        // Cancel the old reservation (remove the old slot from reserved slots)
-//        if (slotToUpdate.getRoom().getReservedSlots().contains(slotToUpdate)) {
-//            slotToUpdate.getRoom().getReservedSlots().remove(slotToUpdate); // Remove the slot from reserved slots
-//            slotToUpdate.getRoom().getAvailableSlots().add(slotToUpdate);   // Add the slot to available slots
-//            System.out.println("The reservation has been canceled.");
-//        } else {
-//            System.out.println("Slot not found in the reserved slots.");
-//        }
-//
-//        // Now that the old reservation is canceled, ask the user to reserve a new slot
-//        System.out.println("Your old reservation has been canceled. You need to reserve a new slot.");
-//        reservation(rooms);  // Call reservation method to reserve a new slot
-//        System.out.println("Reservation process completed.");
     }
 
     boolean checkTimeConflict(Room room, LocalTime newStartTime, LocalTime newEndTime) {
@@ -379,36 +321,22 @@ public class Visitor extends user {
         return false;  // No conflict
     }
 
-
-
     public void signOut(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
         user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
     }
-
-
-
-    public void sortVisitors(user currentUser, ArrayList<Formal> formals, ArrayList<General> generals, ArrayList<Instructor> instructors) {
-        try {
-            String visitorType = currentUser.getVisitorType();
-            switch (visitorType) {
-                case "Formal":
-                    Formal formal = new Formal(currentUser.getName(), currentUser.getPassword(), visitorType);
-                    formals.add(formal);
-                    break;
-                case "General":
-                    General general = new General(currentUser.getName(), currentUser.getPassword(), visitorType);
-                    generals.add(general);
-                    break;
-                case "Instructor":
-                    Instructor instructor = new Instructor(currentUser.getName(), currentUser.getPassword(), visitorType);
-                    instructors.add(instructor);
-                    break;
-                default:
-                    System.out.println("Invalid visitor type: " + visitorType);
-                    break;
+    public Visitor leaderBoard(ArrayList<Visitor> visitors) {
+        int highestScore = 0;
+        Visitor winner = null;
+        for (Visitor visitor : visitors) {
+            if (visitor.totalReservedHours>highestScore) {
+                highestScore = visitor.totalReservedHours;
+                winner = visitor;
             }
-        } catch (Exception e) {
-            System.out.println("Error sorting visitors: " + e.getMessage());
         }
+        return winner;
     }
+    public Visitor rewardSys(int hours){
+        return null;
+    }
+
 }

@@ -24,9 +24,12 @@ public class Instructor extends Visitor {
     ArrayList<TeachingRoom> teaching=new ArrayList<>();
     ArrayList<Slot> slots=new ArrayList<>();
 
-    public void options(ArrayList<Room>rooms,ArrayList<Slot> ReservedSlots,ArrayList<Slot> Availableslots,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
-        System.out.println("Welcome **"+super.getName()+"** To The Instructors Section");
-//        super.options(rooms,ReservedSlots,Availableslots,users,meetingRooms,generalRooms,teachingRooms,instructors);
+    public Visitor rewardSys(int hours){
+        hours= super.totalReservedHours;
+        if ( hours >= 12){
+            return this;
+        }
+        return null;
     }
 
 }

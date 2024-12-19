@@ -32,10 +32,11 @@ public class Formal extends Visitor {
                 System.out.println("When Is The New Meeting?");
         }
     };
-    public void reward (int TotalNumOfHours){
-    };
-//    public void options(ArrayList<Room>rooms,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
-//        System.out.println("Welcome **"+super.getName()+"** To The Meetings Section");
-//        super.options(rooms,users,meetingRooms,generalRooms,teachingRooms,instructors);
-//    }
+    public Visitor rewardSys(int hours){
+        hours= super.totalReservedHours;
+        if ( hours >= 6){
+            return this;
+        }
+        return null;
+    }
 }
