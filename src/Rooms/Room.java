@@ -149,7 +149,7 @@ public abstract class Room {
         Availableslots.add(newSlot);
 
         // Provide feedback to the user
-        System.out.println("Slot added successfully: " + newSlot);
+        System.out.println("Slot added successfully");
     }
 
     // check date to display its slots
