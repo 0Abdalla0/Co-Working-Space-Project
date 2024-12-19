@@ -99,7 +99,7 @@ public class user {
 
     }
 
-    // Login method to validate User.user credentials
+// Login method to validate User.user credentials
 //    static boolean loggedIn = false;
 //    public boolean isLoggedIn() {return loggedIn;}
     public static void login(ArrayList<Visitor> visitors, ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Instructor> instructors) {
@@ -143,7 +143,6 @@ public class user {
             }
         }
     }
-
 
     // Menu for starting the application
     public static void startMenu(ArrayList<Visitor> visitors, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {

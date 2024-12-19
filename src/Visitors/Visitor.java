@@ -86,62 +86,29 @@ public class Visitor extends user {
 
     public void reservation(ArrayList<Room> rooms) {
         try {
-            // Loop to check availability of slots
-            while (true) {
-                LocalDate today = LocalDate.now();
-                System.out.println("Today's date is " + today);
-                LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
-                System.out.println("-----------------------------------------------------------------");
-
-                boolean availableSlots = false;
-
-                // Check for available slots in any room
-                for (int i = 0; i < rooms.size(); i++) {
-                    System.out.println("Room " + (i + 1) + ": " + rooms.get(i).getName());
-                    if (rooms.get(i).hasAvailableSlots(resDate)) {
-                        rooms.get(i).displayAvailableSlots(resDate);
-                        availableSlots = true;
-                    }
-                }
-
-                if (!availableSlots) {
-                    System.out.println("No available slots in any room for the selected date. Please try again.");
-                    continue; // If no slots are available, restart the loop
-                }
-
-                System.out.println("-----------------------------------------------------------------");
-                int roomNum = -1;
-
-                // Loop to get a valid room number
-                while (roomNum < 1 || roomNum > rooms.size()) {
-                    System.out.println("Enter room number you want to reserve: ");
-                    roomNum = input.nextInt();
-                    input.nextLine();
-
-                    if (roomNum < 1 || roomNum > rooms.size()) {
-                        System.out.println("Invalid room number. Please try again.");
-                    }
-                }
-
-                // Get start and end time
-                LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
-                LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
-
-                int reservedHours = Duration.between(startTime, endTime).toHoursPart(); // Calculate hours
-                totalReservedHours += reservedHours;
-
-                // Reserve the slot in the selected room
-                rooms.get(roomNum - 1).reserveSlot(startTime, this);
-
-                System.out.println("Reservation for room # " + roomNum + " and Slot # " + startTime + " is successful.");
-                break;  // Exit the loop after successful reservation
+            LocalDate today = LocalDate.now();
+            System.out.println("Today's date is " + today);
+            LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
+            System.out.println("-----------------------------------------------------------------");
+            for (int i = 0; i < rooms.size(); i++) {
+                System.out.println("Room " + (i + 1) + ": " + rooms.get(i).getName());
+                rooms.get(i).displayAvailableSlots(resDate);
             }
+            System.out.println("-----------------------------------------------------------------");
+            System.out.println("Enter room number you want to reserve: ");
+            int roomNum = input.nextInt();
+            input.nextLine();
+            LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
+            LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
 
+            int reservedHours = Duration.between(startTime, endTime).toHoursPart(); // Calculate hours
+            totalReservedHours += reservedHours;
+            rooms.get(roomNum-1).reserveSlot(startTime, this);
+            System.out.println("Reservation for room # " + roomNum + " and Slot # "+ startTime +" is successful.");
         } catch (Exception e) {
             System.out.println("Invalid input! Let's try again.");
         }
     }
-
 
 //    public void reReserve(ArrayList<Room> rooms,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors){
 //        System.out.println("Do you want to make another reservation?\n 1. Make a new reservation\n 2. Return to Main Menu");
@@ -282,7 +249,7 @@ public class Visitor extends user {
                 // Change the start time
                 LocalTime newStartTime = getTimeInput("Enter the new start time for the reservation (HH:MM): ");
                 // Check if the new start time conflicts with any existing reservation in the room
-                if (checkTimeConflict(slotToUpdate.getRoom(), newStartTime, slotToUpdate.getEndTime(), slotToUpdate)) {
+                if (checkTimeConflict(slotToUpdate.getRoom(), newStartTime, slotToUpdate.getEndTime())) {
                     System.out.println("The new start time conflicts with an existing reservation.");
                     System.out.println("Would you like to cancel your current reservation and reserve a new slot?");
                     System.out.println("1. Yes, cancel the reservation and re-reserve");
@@ -316,7 +283,7 @@ public class Visitor extends user {
                 // Change the end time
                 LocalTime newEndTime = getTimeInput("Enter the new end time for the reservation (HH:MM): ");
                 // Check if the new end time conflicts with any existing reservation in the room
-                if (checkTimeConflict(slotToUpdate.getRoom(), slotToUpdate.getStartTime(), newEndTime, slotToUpdate)) {
+                if (checkTimeConflict(slotToUpdate.getRoom(), slotToUpdate.getStartTime(), newEndTime)) {
                     System.out.println("The new end time conflicts with an existing reservation.");
                     System.out.println("Would you like to cancel your current reservation and reserve a new slot?");
                     System.out.println("1. Yes, cancel the reservation and re-reserve");
@@ -371,14 +338,8 @@ public class Visitor extends user {
 //        System.out.println("Reservation process completed.");
     }
 
-    boolean checkTimeConflict(Room room, LocalTime newStartTime, LocalTime newEndTime, Slot slotToUpdate) {
+    boolean checkTimeConflict(Room room, LocalTime newStartTime, LocalTime newEndTime) {
         for (Slot slot : room.getReservedSlots()) {
-            // Skip the slot that is being updated
-            if (slot.equals(slotToUpdate)) {
-                continue;
-            }
-
-            // Check for conflicts with other slots
             if (newStartTime.isBefore(slot.getEndTime()) && newEndTime.isAfter(slot.getStartTime())) {
                 return true;  // Conflict found
             }
