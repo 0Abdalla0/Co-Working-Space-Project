@@ -10,10 +10,11 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.TreeSet;
 public class Instructor extends Visitor {
-    private int hours;
+//    private int hours;
     public Instructor(String name, String password, String visitorType) {
         super(name, password, visitorType);
-        this.hours = 0;
+        super.totalReservedHours = 0;
+//        this.hours = 0;
     }
     public String toString() {
         return "ID: " + getId() + ", Name: " + getName() + ", Password: " + getPassword();
@@ -24,12 +25,19 @@ public class Instructor extends Visitor {
     ArrayList<TeachingRoom> teaching=new ArrayList<>();
     ArrayList<Slot> slots=new ArrayList<>();
 
-    public Visitor rewardSys(int hours){
-        hours= super.totalReservedHours;
-        if ( hours >= 12){
-            return this;
-        }
-        return null;
+//    public Visitor rewardSys(int hours){
+////        hours= super.totalReservedHours;
+//        if ( hours >= 12){
+//            return this;
+//        }
+//        return null;
+//    }
+public Visitor rewardSys() {
+    if (this.totalReservedHours >= 6) {
+        return this;
     }
+    return null;
+}
+
 
 }

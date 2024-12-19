@@ -42,6 +42,8 @@ public class Main {
         //  slots
         Slot general1slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, general1);
         general1.getAvailableSlots().add(general1slot);
+        Slot general2slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(12, 0), LocalTime.of(19, 0), 350, general1);
+        general1.getAvailableSlots().add(general2slot);
         Slot meeting1slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, meeting1);
         meeting1.getAvailableSlots().add(meeting1slot);
         Slot teaching1Slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(9, 0), LocalTime.of(10, 0), 350, teaching1);

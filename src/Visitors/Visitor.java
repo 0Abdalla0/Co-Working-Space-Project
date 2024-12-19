@@ -12,6 +12,7 @@ import Rooms.Slot;
 import User.user;
 public class Visitor extends user {
     protected int totalReservedHours;
+    protected int totalFreeHours;
 
     public int getTotalReservedHours() {
         return totalReservedHours;
@@ -20,10 +21,12 @@ public class Visitor extends user {
     public Visitor(){
         super(null,null,null,idStatic);
         totalReservedHours = 0;
+        totalFreeHours = 0;
     }
     public Visitor(String name, String password, String visitorType) {
         super(name,password,visitorType,idStatic);
         totalReservedHours = 0;
+        totalFreeHours = 0;
     }
 
     private static Scanner input = new Scanner(System.in);
@@ -335,7 +338,7 @@ public class Visitor extends user {
         }
         return winner;
     }
-    public Visitor rewardSys(int hours){
+    public Visitor rewardSys(){
         return null;
     }
 

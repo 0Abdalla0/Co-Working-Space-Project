@@ -3,18 +3,19 @@ package Visitors;
 import java.util.ArrayList;
 
 public class General extends Visitor {
-    private int hours;
+//    private int hours;
     public General(String name, String password, String visitorType) {
         super(name, password, visitorType);
-        this.hours = 0;
+        super.totalReservedHours = 0;
+//        this.hours = 0;
     }
 
-    public Visitor rewardSys(int hours){
-        hours= super.totalReservedHours;
-        if ( hours >= 6){
+    public Visitor rewardSys() {
+        if (this.totalReservedHours >= 6) {
             return this;
         }
         return null;
     }
+
 
 }

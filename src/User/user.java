@@ -2,6 +2,8 @@ package User;
 
 import Admin_package.Admin;
 import Rooms.*;
+import Visitors.Formal;
+import Visitors.General;
 import Visitors.Instructor;
 import Visitors.Visitor;
 
@@ -81,13 +83,16 @@ public class user {
             {
                 case 1:
                     visitorType="Formal";
-                    break;
+                    return new Formal(name, password,visitorType);
+//                    break;
                 case 2:
                     visitorType="General";
-                    break;
+                    return new General(name, password,visitorType);
+//                    break;
                 case 3:
                     visitorType="Instructor";
-                    break;
+                    return new Instructor(name, password,visitorType);
+//                    break;
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
             }
@@ -112,25 +117,29 @@ public class user {
         boolean loggedIn = false; // Reset loggedIn for each login attempt
 
         for (Visitor v : visitors) {
+//            Visitor visitor = null;
+//            v = new General();
             if (v.getName().equals(nameLogin) && v.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
-                v.options(teachingRooms, meetingRooms, generalRooms, visitors, instructors);
                 Visitor winner = v.leaderBoard(visitors); // Get the winner from the leaderboard
-                Visitor reward = v.rewardSys(v.getTotalReservedHours());
+                Visitor reward = v.rewardSys(); // Get the visitor who qualifies for a reward
+
                 // Check if the logged-in user is the winner
                 if (v.equals(winner)) {
                     System.out.println("Congratulations " + v.getName() + "! You are the winner!");
                     System.out.println("You won 7 free hours for the next month for " + v.getVisitorType() + " category.");
                 }
-                // Check if the logged-in user is the winner
+                // Check if the logged-in user has earned a reward
                 if (v.equals(reward)) {
                     System.out.println("Congratulations " + v.getName() + "! You have reached a milestone!");
                     System.out.println("You won 1 free hour");
                 }
+                v.options(teachingRooms, meetingRooms, generalRooms, visitors, instructors);
                 loggedIn = true;
                 break;
             }
         }
+
 
         if (!loggedIn) {
             int choice = 0;
