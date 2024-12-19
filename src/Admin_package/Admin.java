@@ -13,45 +13,38 @@ import Visitors.Visitor;
 
 
 public class Admin extends user {
-    private static String name;
-    private static String password;
     public static Scanner input = new Scanner(System.in);
-
     public Admin(String name, String password, String visitorType, int i) {
         super(name, password, visitorType, i);
     }
-
-    // Constructor
-//    public Admin() {
+//
+//    public static LocalTime getTimeInput(String prompt) {
+//        while (true) {
+//            System.out.println(prompt);
+//            String timeInput = input.nextLine();
+//            try {
+//                return LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("HH:mm"));
+//            } catch (Exception e) {
+//                System.out.println("Invalid time! Please use format HH:mm.");
+//            }
+//        }
 //    }
-
-    public static LocalTime getTimeInput(String prompt) {
-        while (true) {
-            System.out.println(prompt);
-            String timeInput = input.nextLine();
-            try {
-                return LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("HH:mm"));
-            } catch (Exception e) {
-                System.out.println("Invalid time! Please use format HH:mm.");
-            }
-        }
-    }
-
-    public static LocalDate getDateInput(String prompt) {
-        while (true) {
-            System.out.println(prompt);
-            String date = input.nextLine();
-            try {
-                LocalDate resDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                if (resDate.isBefore(LocalDate.now())) {
-                    throw new IllegalArgumentException("Date cannot be in the past.");
-                }
-                return resDate;
-            } catch (Exception e) {
-                System.out.println("Invalid date! Please use format YYYY-MM-DD and ensure the date is not in the past.");
-            }
-        }
-    }
+//
+//    public static LocalDate getDateInput(String prompt) {
+//        while (true) {
+//            System.out.println(prompt);
+//            String date = input.nextLine();
+//            try {
+//                LocalDate resDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//                if (resDate.isBefore(LocalDate.now())) {
+//                    throw new IllegalArgumentException("Date cannot be in the past.");
+//                }
+//                return resDate;
+//            } catch (Exception e) {
+//                System.out.println("Invalid date! Please use format YYYY-MM-DD and ensure the date is not in the past.");
+//            }
+//        }
+//    }
 
 
     public static void adminLogin(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {

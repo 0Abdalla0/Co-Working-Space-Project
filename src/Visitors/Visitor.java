@@ -13,9 +13,6 @@ public class Visitor extends user {
     protected int totalReservedHours;
     protected int totalFreeHours;
 
-    public int getTotalReservedHours() {
-        return totalReservedHours;
-    }
 
     public Visitor(){
         super(null,null,null,idStatic);

@@ -1,4 +1,3 @@
-import Admin_package.Admin;
 import Rooms.*;
 import User.user; // Renamed from user
 import Visitors.Formal;
@@ -56,6 +55,7 @@ public class Main {
         // Debugging: Print out registered users
         while (true) {
             Visitor visitor = new Visitor();
+
             // Sign-out option
             System.out.println("Do you want to Sign Out? (Y/N)");
             String signOutOption = input.next();

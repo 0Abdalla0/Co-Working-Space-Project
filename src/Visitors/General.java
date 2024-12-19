@@ -5,7 +5,6 @@ public class General extends Visitor {
         super(name, password, visitorType);
         super.totalReservedHours = 0;
     }
-
     public Visitor rewardSys() {
         if (this.totalReservedHours >= 6) {
             return this;
