@@ -1,6 +1,6 @@
 package Admin_package;
 import Rooms.*;
-
+import java.util.InputMismatchException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -49,32 +49,51 @@ public class Admin extends user {
 
     public static void adminLogin(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
         while (true) {
-            Scanner input = new Scanner(System.in);
-            System.out.println("Enter Admin Name: ");
-            String name = input.nextLine();
-            System.out.println("Enter Admin Password: ");
-            String password = input.nextLine();
-            if (name.equals("admin") && password.equals("admin")) {
-                System.out.println("Admin Login Successful");
-                Admin.options(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
-                break;
+            try {
+                System.out.println("Enter Admin Name: ");
+                String name = input.nextLine();
 
-            } else {
-                System.out.println("Admin Login Failed, try again");
+                System.out.println("Enter Admin Password: ");
+                String password = input.nextLine();
+
+                if (name.equals("admin") && password.equals("admin")) {
+                    System.out.println("Admin Login Successful");
+                    Admin.options(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
+                    break;
+                } else {
+                    System.out.println("Admin Login Failed, try again");
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+                System.out.println("Please try logging in again.");
             }
         }
     }
 
     // Add slots to a specific room type
     public static void addSlots(Room room) {
-        int num_of_slots;
-        System.out.println("Enter Number of Slots you want to add: ");
-        num_of_slots = input.nextInt();
-        for (int i = 0; i < num_of_slots; i++) {
-            System.out.println("Slot " + (i + 1) + ": ");
-            room.inputAddSlot();
+        int num_of_slots = 0;
+
+        try {
+            System.out.println("Enter Number of Slots you want to add: ");
+            num_of_slots = input.nextInt();
+            input.nextLine(); // Clear the buffer
+
+            for (int i = 0; i < num_of_slots; i++) {
+                try {
+                    System.out.println("Slot " + (i + 1) + ": ");
+                    room.inputAddSlot();
+                } catch (Exception e) {
+                    System.out.println("An error occurred while adding the slot: " + e.getMessage());
+                    System.out.println("Skipping this slot and continuing...");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid input for number of slots. Please enter a valid integer.");
+            input.nextLine(); // Clear the buffer to allow retry
         }
     }
+
 
     // Input slot details for a specific room type
 
@@ -88,77 +107,98 @@ public class Admin extends user {
         Scanner input = new Scanner(System.in);
 
         do {
-            System.out.println("---------------ADMIN MENU---------------");
-            System.out.println("1. Add Slots\n2. Delete specific entity\n3. Display all slots\n4. Display all visitors\n5. Display all instructors data ");
-            System.out.println("6. Display all rooms data\n7. calculate and display total amount of money for all rooms\n8. update any entity ");
-            System.out.println("Enter your choice: ");
-            int option = input.nextInt();
-            //
-            switch (option) {
-                case 1:
-                    System.out.println("Enter which room you want to add slots in : ");
-                    System.out.println("1. General #1\n2. General #2\n3. Meeting #1\n4. Meeting #2");
-                    System.out.println("5. Meeting #3\n6. Teaching #1\n7. Teaching #2\n8. Teaching #3");
-                    int addRoom = input.nextInt();
-                    switch (addRoom) {
-                        case 1:
-                            Admin.addSlots(generalRooms.getFirst()); // general1
-                            break;
-                        case 2:
-                            Admin.addSlots(generalRooms.get(1)); //general2
-                            break;
-                        case 3:
-                            Admin.addSlots(meetingRooms.getFirst()); //meeting1
-                            break;
-                        case 4:
-                            Admin.addSlots(meetingRooms.get(1)); // meeting2
-                            break;
-                        case 5:
-                            Admin.addSlots(meetingRooms.get(2)); // meeting3
-                            break;
-                        case 6:
-                            Admin.addSlots(teachingRooms.getFirst()); // teaching1
-                            break;
-                        case 7:
-                            Admin.addSlots(teachingRooms.get(1)); // teaching2
-                            break;
-                        case 8:
-                            Admin.addSlots(teachingRooms.get(2)); // teaching3
-                            break;
-                    }
-                    break;
-
-                case 2:
-                    Admin.delete_entity(visitors, meetingRooms, generalRooms, teachingRooms);
-                    break;
-
-                case 3:
-                    //Room.displayAvailableSlots();
-                    break;
-
-                case 4:
-                    for (Visitor v : visitors) {
-                        System.out.println(v);
-                    }
-                    break;
-                case 5:
-                    for (Instructor i : instructors){
-                        System.out.println(i);
-                    }
-                    break;
-
-                case 6:
-                    Admin.displayAllRooms(generalRooms, meetingRooms, teachingRooms);
-                     break;
-
-                case 7:
-                    calcRoom(meetingRooms, generalRooms, teachingRooms);
-                    break;
-                case 8:
-                    update_entity(visitors, meetingRooms, generalRooms, teachingRooms);
-
-            }
             try {
+                System.out.println("---------------ADMIN MENU---------------");
+                System.out.println("1. Add Slots\n2. Delete specific entity\n3. Display all slots\n4. Display all visitors");
+                System.out.println("5. Display all instructors data\n6. Display all rooms data");
+                System.out.println("7. Calculate and display total amount of money for all rooms\n8. Update any entity");
+                System.out.println("Enter your choice: ");
+
+                int option = input.nextInt();
+                switch (option) {
+                    case 1:
+                        boolean validInput = false;
+                        do {
+                            try {
+                                System.out.println("Enter which room you want to add slots in: ");
+                                System.out.println("1. General #1\n2. General #2\n3. Meeting #1\n4. Meeting #2");
+                                System.out.println("5. Meeting #3\n6. Teaching #1\n7. Teaching #2\n8. Teaching #3");
+
+                                int addRoom = input.nextInt();
+                                validInput = true; // Assume input is valid unless proven otherwise
+
+                                switch (addRoom) {
+                                    case 1:
+                                        Admin.addSlots(generalRooms.get(0)); // general1
+                                        break;
+                                    case 2:
+                                        Admin.addSlots(generalRooms.get(1)); // general2
+                                        break;
+                                    case 3:
+                                        Admin.addSlots(meetingRooms.get(0)); // meeting1
+                                        break;
+                                    case 4:
+                                        Admin.addSlots(meetingRooms.get(1)); // meeting2
+                                        break;
+                                    case 5:
+                                        Admin.addSlots(meetingRooms.get(2)); // meeting3
+                                        break;
+                                    case 6:
+                                        Admin.addSlots(teachingRooms.get(0)); // teaching1
+                                        break;
+                                    case 7:
+                                        Admin.addSlots(teachingRooms.get(1)); // teaching2
+                                        break;
+                                    case 8:
+                                        Admin.addSlots(teachingRooms.get(2)); // teaching3
+                                        break;
+                                    default:
+                                        System.out.println("Invalid choice. Please try again.");
+                                        validInput = false; // Reset validInput for out-of-bounds input
+                                }
+                            } catch (InputMismatchException e) {
+                                System.out.println("Invalid input. Please enter a number between 1 and 8.");
+                                input.next(); // Clear invalid input
+                            }
+                        } while (!validInput);
+                        break;
+
+                    case 2:
+                        Admin.delete_entity(visitors, meetingRooms, generalRooms, teachingRooms);
+                        break;
+
+                    case 3:
+//                        Room.displayAvailableSlots();
+                        break;
+
+                    case 4:
+                        for (Visitor v : visitors) {
+                            System.out.println(v);
+                        }
+                        break;
+
+                    case 5:
+                        for (Instructor i : instructors) {
+                            System.out.println(i);
+                        }
+                        break;
+
+                    case 6:
+                        Admin.displayAllRooms(generalRooms, meetingRooms, teachingRooms);
+                        break;
+
+                    case 7:
+                        calcRoom(meetingRooms, generalRooms, teachingRooms);
+                        break;
+
+                    case 8:
+                        update_entity(visitors, meetingRooms, generalRooms, teachingRooms);
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+
                 System.out.println("Do You Want To Choose Another Service? (Y/N)");
                 String choose = input.next();
                 if (choose.equalsIgnoreCase("Y")) {
@@ -166,94 +206,129 @@ public class Admin extends user {
                 } else if (choose.equalsIgnoreCase("N")) {
                     retry = false;
                     user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
+                } else {
+                    System.out.println("Invalid option. Returning to main menu.");
+                    retry = false;
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid Option");
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid menu option.");
+                input.next(); // Clear invalid input
             }
         } while (retry);
+
+
     }
+
 
     public static void delete_entity(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean continueDeleting = true;
+        Scanner input = new Scanner(System.in);
+
         while (continueDeleting) {
-            System.out.println("Select entity to delete: ");
-            System.out.println("1. Room");
-            System.out.println("2. Visitor");
-            int option = input.nextInt();
-            switch (option) {
-                case 1:
-                    Admin.displayAllRooms(generalRooms, meetingRooms, teachingRooms);
-                    System.out.print("Enter Room ID to delete: ");
-                    int room_id = input.nextInt();
-                    // display room list with name id
-                    delete_room(room_id, meetingRooms, generalRooms, teachingRooms);
-                    break;
-                case 2:
-                    for (Visitor v : visitors) {
-                        System.out.println(v);
+            boolean validSelection = false; // Flag to track if the user made a valid choice
+            while (!validSelection) {
+                try {
+                    System.out.println("Select entity to delete: ");
+                    System.out.println("1. Room");
+                    System.out.println("2. Visitor");
+
+                    int option = input.nextInt();
+                    switch (option) {
+                        case 1:
+                            Admin.displayAllRooms(generalRooms, meetingRooms, teachingRooms);
+                            System.out.print("Enter Room ID to delete: ");
+                            int room_id = input.nextInt();
+                            delete_room(room_id, meetingRooms, generalRooms, teachingRooms); // Method to delete a room
+                            validSelection = true; // Valid choice, exit the loop
+                            break;
+
+                        case 2:
+                            for (Visitor v : visitors) {
+                                System.out.println(v); // Display visitors with their details
+                            }
+                            System.out.print("Enter Visitor ID to delete: ");
+                            int visitor_id = input.nextInt();
+                            delete_visitor(visitor_id, visitors); // Method to delete a visitor
+                            validSelection = true; // Valid choice, exit the loop
+                            break;
+
+                        default:
+                            System.out.println("Invalid option. Please select a valid entity.");
                     }
-                    System.out.print("Enter Visitor ID to delete: ");
-                    int visitor_id = input.nextInt();
-                    // display user list with name w id
-                    delete_visitor(visitor_id, visitors);
-                    break;
-
-                default:
-                    System.out.println("Invalid Option. try again");
-
-
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a number corresponding to an option.");
+                    input.next(); // Clear invalid input from scanner buffer
+                }
             }
-            System.out.println("Do You Want To continue deleting?");
+
+            // After successfully deleting, ask if they want to continue
+            System.out.println("Do You Want To Continue Deleting? (Y/N)");
             String choose = input.next();
-            if (choose.equalsIgnoreCase("Y")) {
-                continueDeleting = true;
-            } else {
+            if (!choose.equalsIgnoreCase("Y")) {
                 continueDeleting = false;
             }
         }
     }
 
+
+
     public static void delete_room(int room_id, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
-        boolean found = false;
-        for (Room room : meetingRooms) {
-            if (room_id == room.getID()) {
-                meetingRooms.remove(room);
-                System.out.println("Deleted Room ID: " + room_id + " from Meeting Rooms");
-                found = true;
-                break;
-            }
-        }
+        Scanner input = new Scanner(System.in);
+        boolean roomDeleted = false; // Flag to track if a room has been deleted
 
-        // Search and delete from generalRooms if not found
-        if (!found) {
-            for (Room room : generalRooms) {
+        while (!roomDeleted) {
+            boolean found = false;
+
+            // Search and delete from meetingRooms
+            for (Room room : meetingRooms) {
                 if (room_id == room.getID()) {
-                    generalRooms.remove(room);
-                    System.out.println("Deleted Room ID: " + room_id + " from General Rooms");
+                    meetingRooms.remove(room);
+                    System.out.println("Deleted Room ID: " + room_id + " from Meeting Rooms");
                     found = true;
+                    roomDeleted = true; // Room found and deleted, exit loop
                     break;
                 }
             }
-        }
 
-        // Search and delete from teachingRooms if not found
-        if (!found) {
-            for (Room room : teachingRooms) {
-                if (room_id == room.getID()) {
-                    teachingRooms.remove(room);
-                    System.out.println("Deleted Room ID: " + room_id + " from Teaching Rooms");
-                    found = true;
-                    break;
+            // Search and delete from generalRooms if not found
+            if (!found) {
+                for (Room room : generalRooms) {
+                    if (room_id == room.getID()) {
+                        generalRooms.remove(room);
+                        System.out.println("Deleted Room ID: " + room_id + " from General Rooms");
+                        found = true;
+                        roomDeleted = true; // Room found and deleted, exit loop
+                        break;
+                    }
                 }
             }
-        }
 
-        // If room is not found, print a message
-        if (!found) {
-            System.out.println("Room ID " + room_id + " not found in any list.");
-        }
+            // Search and delete from teachingRooms if not found
+            if (!found) {
+                for (Room room : teachingRooms) {
+                    if (room_id == room.getID()) {
+                        teachingRooms.remove(room);
+                        System.out.println("Deleted Room ID: " + room_id + " from Teaching Rooms");
+                        found = true;
+                        roomDeleted = true; // Room found and deleted, exit loop
+                        break;
+                    }
+                }
+            }
 
+            // If room is not found, prompt the user to re-enter a valid room ID
+            if (!found) {
+                System.out.println("Room ID " + room_id + " not found in any list.");
+                System.out.print("Please enter a valid Room ID: ");
+                while (!input.hasNextInt()) {
+                    System.out.println("Invalid input. Please enter a numeric Room ID.");
+                    input.next(); // Clear invalid input
+                }
+                room_id = input.nextInt(); // Accept new room ID
+            }
+        }
     }
+
 
     public static void delete_visitor(int visitor_id, ArrayList<Visitor> visitors) {
         boolean found = false;
@@ -303,6 +378,7 @@ public class Admin extends user {
 
                 default:
                     System.out.println("Invalid Option. try again");
+
 
 
             }
