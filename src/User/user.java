@@ -10,6 +10,8 @@ import Visitors.Visitor;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+
 public class user {
     static Scanner input = new Scanner(System.in);
     public static int idStatic = 1;

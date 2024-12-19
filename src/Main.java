@@ -1,10 +1,7 @@
 import Rooms.*;
-import User.user; // Renamed from user
-import Visitors.Formal;
-import Visitors.General;
+import User.user;
 import Visitors.Instructor;
 import Visitors.Visitor;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -12,6 +9,16 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        String fnGeneralRoom = "fnGeneralRoom";
+        String fnMeetingRoom ="fnMeetingRoom";
+        String fnTeachingRoom ="fnTeachingRoom";
+        String fnGenerals ="fnGenerals";
+        String fnFormal ="fnFormal";
+        String fnInstructor ="fnInstructor";
+        filesHandler.readFromFile(fnGeneralRoom);
+        filesHandler.readFromFile(fnMeetingRoom);
+        filesHandler.readFromFile(fnTeachingRoom);
+
         Scanner input = new Scanner(System.in);
         ArrayList<Room> meetingRooms = new ArrayList<>();
         ArrayList<Room> generalRooms = new ArrayList<>();
@@ -47,20 +54,12 @@ public class Main {
         Slot teaching2Slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(1, 0), LocalTime.of(9, 0), 350, teaching1);
         teaching1.getAvailableSlots().add(teaching2Slot);
 
-
-
-        ArrayList<user> users = new ArrayList<>();
-        ArrayList<Slot> slots = new ArrayList<>();
         ArrayList<Instructor> instructors = new ArrayList<>();
-        ArrayList<Formal> formals = new ArrayList<>();
-        ArrayList<General> generals = new ArrayList<>();
         ArrayList<Visitor> visitors = new ArrayList<>();
         user.startMenu(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
-        // Debugging: Print out registered users
+
         while (true) {
             Visitor visitor = new Visitor();
-
-            // Sign-out option
             System.out.println("Do you want to Sign Out? (Y/N)");
             String signOutOption = input.next();
             if (signOutOption.equalsIgnoreCase("Y")) {
@@ -71,7 +70,9 @@ public class Main {
             } else {
                 System.out.println("Invalid input. Please try again.");
             }
-            // Output visitor counts
+            filesHandler.saveToFile(fnGeneralRoom,generalRooms);
+            filesHandler.saveToFile(fnMeetingRoom,meetingRooms);
+            filesHandler.saveToFile(fnTeachingRoom,teachingRooms);
         }
 
     }
