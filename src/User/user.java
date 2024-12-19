@@ -27,9 +27,6 @@ public class user {
         this.visitorType = visitorType;
         idStatic++;  // Increment the static id for the next User.user
     }
-//    public user(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
-//        startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
-//    }
 
     // Getters and Setters
     public String getName() {
@@ -84,15 +81,14 @@ public class user {
                 case 1:
                     visitorType="Formal";
                     return new Formal(name, password,visitorType);
-//                    break;
                 case 2:
                     visitorType="General";
                     return new General(name, password,visitorType);
-//                    break;
+
                 case 3:
                     visitorType="Instructor";
                     return new Instructor(name, password,visitorType);
-//                    break;
+
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
             }
@@ -106,7 +102,6 @@ public class user {
 
 
     public static void login(ArrayList<Visitor> visitors, ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Instructor> instructors) {
-        // ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors
         System.out.println("Login Page\n");
         String nameLogin, passwordLogin;
         System.out.println("Enter your Name:");
@@ -117,8 +112,6 @@ public class user {
         boolean loggedIn = false; // Reset loggedIn for each login attempt
 
         for (Visitor v : visitors) {
-//            Visitor visitor = null;
-//            v = new General();
             if (v.getName().equals(nameLogin) && v.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
                 Visitor winner = v.leaderBoard(visitors); // Get the winner from the leaderboard

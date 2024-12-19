@@ -6,7 +6,6 @@ import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import Rooms.GeneralRoom;
 import Rooms.Room;
 import Rooms.Slot;
 import User.user;

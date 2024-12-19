@@ -13,11 +13,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // option visitor => check type & pass array of the type
-        // admin functions => has every array list
-//        ArrayList<Slot> Availableslots = new ArrayList<>();
-//        ArrayList<Slot> ReservedSlots = new ArrayList<>();
-        // ///////////////////////////////////////////////////////////////////////////////////
         Scanner input = new Scanner(System.in);
         ArrayList<Room> meetingRooms = new ArrayList<>();
         ArrayList<Room> generalRooms = new ArrayList<>();
@@ -60,12 +55,7 @@ public class Main {
         user.startMenu(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
         // Debugging: Print out registered users
         while (true) {
-            System.out.println("Total registered users: " + users.size());
             Visitor visitor = new Visitor();
-
-            System.out.println("Formal visitors: " + formals.size());
-            System.out.println("General visitors: " + generals.size());
-            System.out.println("Instructor visitors: " + instructors.size());
             // Sign-out option
             System.out.println("Do you want to Sign Out? (Y/N)");
             String signOutOption = input.next();

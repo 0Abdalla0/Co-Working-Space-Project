@@ -12,11 +12,9 @@ import java.util.Scanner;
 
 
 public class Formal extends Visitor {
-//    private int hours;
     public Formal(String name, String password, String visitorType) {
         super(name, password, visitorType);
         super.totalReservedHours = 0;
-//        this.hours = 0;
     }
 
 
@@ -33,12 +31,7 @@ public class Formal extends Visitor {
                 System.out.println("When Is The New Meeting?");
         }
     }
-//    public Visitor rewardSys(int hours){
-//        if ( hours >= 6){
-//            return this;
-//        }
-//        return null;
-//    }
+
 public Visitor rewardSys() {
     if (this.totalReservedHours % 6 == 0) {
         this.totalFreeHours++;
