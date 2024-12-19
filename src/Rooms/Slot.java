@@ -11,7 +11,7 @@ public class Slot {
     private double fees;
     private boolean reserved;
     private int userID;
-    private Room room;
+    private final Room room;
 
     public Room getRoom() {
         return room;

@@ -6,6 +6,8 @@ import Visitors.General;
 import Visitors.Instructor;
 import Visitors.Visitor;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -36,6 +38,16 @@ public class Main {
         teachingRooms.add(teaching2);
         TeachingRoom teaching3 = new TeachingRoom("teaching3",8);
         teachingRooms.add(teaching3);
+
+        //  slots
+        Slot general1slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, general1);
+        general1.getAvailableSlots().add(general1slot);
+        Slot meeting1slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, meeting1);
+        meeting1.getAvailableSlots().add(meeting1slot);
+        Slot teaching1Slot = new Slot(LocalDate.of(2024, 12, 19), LocalTime.of(9, 0), LocalTime.of(10, 0), 350, teaching1);
+        teaching1.getAvailableSlots().add(teaching1Slot);
+
+
 
         ArrayList<user> users = new ArrayList<>();
         ArrayList<Slot> slots = new ArrayList<>();

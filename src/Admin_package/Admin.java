@@ -1,8 +1,6 @@
 package Admin_package;
-import Rooms.GeneralRoom;
-import Rooms.MeetingRoom;
-import Rooms.Room;
-import Rooms.Slot;
+import Rooms.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -99,7 +97,7 @@ public class Admin extends user {
         do {
             System.out.println("---------------ADMIN MENU---------------");
             System.out.println("1. Add Slots\n2. Delete specific entity\n3. Display all slots\n4. Display all visitors\n5. Display all instructors data ");
-            System.out.println("6.Display all rooms data\n7. calculate and display total amount of money for all rooms\n8. update any entity ");
+            System.out.println("6. Display all rooms data\n7. calculate and display total amount of money for all rooms\n8. update any entity ");
             System.out.println("Enter your choice: ");
             int option = input.nextInt();
             //
@@ -611,7 +609,7 @@ public class Admin extends user {
                     room.addFees();
                 }
                 System.out.println("Teaching room fees:  ");
-                System.out.println(GeneralRoom.getTotalFees());
+                System.out.println(TeachingRoom.getTotalFees());
                 break;
         }
     }
