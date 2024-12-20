@@ -17,19 +17,8 @@ public class Main {
         String fnGenerals ="fnGenerals";
         String fnFormal ="fnFormal";
         String fnInstructor ="fnInstructor";
-//        filesHandler.readFromFile(fnGeneralRoom);
-//        filesHandler.readFromFile(fnMeetingRoom);
-//        filesHandler.readFromFile(fnTeachingRoom);
-
         // Create an object of FileH.FileHandler
         FileHandler fileHandler = new FileHandler();
-
-        // Writing data to the file
-//        fileHandler.writeToFile("wigo");
-//        fileHandler.writeToFile("Another line of data.");
-
-        // Reading data from the file
-//        fileHandler.readFromFile();
 
         Scanner input = new Scanner(System.in);
         ArrayList<Room> meetingRooms = new ArrayList<>();
@@ -101,9 +90,6 @@ public class Main {
             } else {
                 System.out.println("Invalid input. Please try again.");
             }
-//            filesHandler.saveToFile(fnGeneralRoom,generalRooms);
-//            filesHandler.saveToFile(fnMeetingRoom,meetingRooms);
-//            filesHandler.saveToFile(fnTeachingRoom,teachingRooms);
         }
 
     }

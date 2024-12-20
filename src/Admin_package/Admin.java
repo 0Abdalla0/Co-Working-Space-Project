@@ -257,9 +257,9 @@ public class Admin extends user {
                             break;
 
                         case 2:
-                            for (Visitor v : visitors) {
-                                System.out.println(v); // Display visitors with their details
-                            }
+//                            for (Visitor v : visitors) {
+//                                System.out.println(v); // Display visitors with their details
+//                            }
                             System.out.print("Enter Visitor ID to delete: ");
                             int visitor_id = input.nextInt();
                             delete_visitor(visitor_id, visitors); // Method to delete a visitor
