@@ -180,7 +180,7 @@ public class Admin extends user {
                         break;
 
                     case 3:
-//                        Room.displayAvailableSlots();
+                        displayAllSlots(meetingRooms, generalRooms, teachingRooms);
                         break;
 
                     case 4:
@@ -772,6 +772,28 @@ public class Admin extends user {
             }
         }
     }
+    public static void displayAllSlots(ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms){
+        System.out.println("\n=== Meeting Rooms ===");
+        for (Room room : meetingRooms) {
+            System.out.println("Room: " + room.getName());
+            room.displayAllAvailableSlots();
+            room.displayAllReservedSlots();
+        }
+        System.out.println("\n=== General Rooms ===");
+        for (Room room : generalRooms) {
+            System.out.println("Room: " + room.getName());
+            room.displayAllAvailableSlots();
+            room.displayAllReservedSlots();
+        }
+        System.out.println("\n=== Teaching Rooms ===");
+        for (Room room : teachingRooms) {
+            System.out.println("Room: " + room.getName());
+            room.displayAllAvailableSlots();
+            room.displayAllReservedSlots();
+        }
+    }
+
+
 
 
 }
