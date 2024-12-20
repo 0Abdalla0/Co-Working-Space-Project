@@ -42,7 +42,7 @@ public class Visitor extends user {
                 return resDate;
             } catch (Exception e) {
                 System.out.println("Invalid date! Please use format YYYY-MM-DD and ensure the date is not in the past.");
-                input.nextLine();
+
             }
         }
     }
@@ -101,6 +101,12 @@ public class Visitor extends user {
         try {
             LocalDate today = LocalDate.now();
             System.out.println("Today's date is " + today);
+            // Clear the input buffer
+            if (input.hasNextLine()) {
+                input.nextLine();
+            }
+
+
             LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
             System.out.println("-----------------------------------------------------------------");
             for (int i = 0; i < rooms.size(); i++) {
@@ -108,32 +114,64 @@ public class Visitor extends user {
                 rooms.get(i).displayAvailableSlots(resDate);
             }
             System.out.println("-----------------------------------------------------------------");
+
             System.out.println("Enter room number you want to reserve: ");
             int roomNum = input.nextInt();
-            input.nextLine();
+            input.nextLine(); // Consume the newline
+
             LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
             LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
 
+            // Validate start and end times
+            if (endTime.isBefore(startTime)) {
+                System.out.println("Error: End time cannot be earlier than start time.");
+                return;
+            }
+
+            Room selectedRoom = rooms.get(roomNum - 1); // Get the selected room
+            Slot slotToReserve = null;
+
+            // Check if the slot exists in the room's available slots
+            for (Slot slot : selectedRoom.getAvailableSlots()) {
+                if (slot.getStartTime().equals(startTime) && slot.getEndTime().equals(endTime)) {
+                    slotToReserve = slot;
+                    break;
+                }
+            }
+
+            if (slotToReserve == null) {
+                System.out.println("Error: No matching slot found with the specified times.");
+                return;
+            }
+
+            // Calculate reserved hours and reserve slot
             int reservedHours = Duration.between(startTime, endTime).toHoursPart(); // Calculate hours
             totalReservedHours += reservedHours;
-            rooms.get(roomNum-1).reserveSlot(startTime, this);
-            System.out.println("Reservation for room # " + roomNum + " and Slot # "+ startTime +" is successful.");
+            selectedRoom.reserveSlot(startTime, endTime, this);
+
+            // Success message
+            System.out.println("Reservation for room #" + roomNum + " and slot starting at " + startTime + " is successful.");
         } catch (Exception e) {
             System.out.println("Invalid input! Let's try again.");
+            input.nextLine(); // Clear the input buffer
         }
     }
+
 
 
     void cancelRes(ArrayList<Room> rooms){
         while(true) {
             System.out.println("******NOTE: THEIR IS A CANCELLATION FEES******\n Do you want to continue (1.YES/2.NO)");
             int cont = input.nextInt();
+            input.nextLine(); // Consume the leftover newline character
             if (cont == 1) {
                 System.out.println("Fees Will Be 25%");
                 System.out.println("Enter Your Password To Cancel: ");
                 while (true) {
                 String cancelPassword = input.nextLine();
                     if (!cancelPassword.equals(super.getPassword())) {
+
+
                         System.out.println("Wrong Password!!! (try again)");
                     }
                     else {
@@ -195,6 +233,9 @@ public class Visitor extends user {
 
                             return;  // Exit after cancellation
                         }
+                        else{
+                            System.out.println("This is not your reservation with this date and time");
+                        }
                     }
                 }
             } else if (cont == 2) {
@@ -206,7 +247,9 @@ public class Visitor extends user {
     }
     void updateRes(ArrayList<Room> rooms){
         System.out.println("Enter Your Password To Update: ");
+        input.nextLine(); // This clears the leftover newline from the previous input
         String updatePassword = input.nextLine();
+
         if (!updatePassword.equals(super.getPassword())){
             System.out.println("wrong password!!!(try again)");
             updateRes(rooms);

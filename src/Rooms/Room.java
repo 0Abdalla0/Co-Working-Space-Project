@@ -185,7 +185,7 @@ public abstract class Room {
     }
 
     // CHANGE FROM INDEX TO START TIME
-    public void reserveSlot(LocalTime startTime, Visitor visitor) {
+    public void reserveSlot(LocalTime startTime, LocalTime endTime, Visitor visitor) {
         // Check if any slot is available
         if (Availableslots.isEmpty()) {
             System.out.println("Error: No available slots.");
@@ -193,15 +193,17 @@ public abstract class Room {
         }
 
         Slot selectedSlot = null;
+
+        // Check for a slot with matching start time and end time
         for (Slot slot : Availableslots) {
-            if (slot.getStartTime().equals(startTime)) {
+            if (slot.getStartTime().equals(startTime) && slot.getEndTime().equals(endTime)) {
                 selectedSlot = slot;
                 break;
             }
         }
 
         if (selectedSlot == null) {
-            System.out.println("Error: No slot found for the given start time.");
+            System.out.println("Error: No slot found for the given start and end time.");
             return;
         }
 
@@ -212,12 +214,15 @@ public abstract class Room {
         System.out.println("End Time: " + selectedSlot.getEndTime());
         System.out.println("Fee: " + selectedSlot.getFees());
 
+        // Reserve the slot
         selectedSlot.setUserID(visitor.getId());
         ReservedSlots.add(selectedSlot);
         Availableslots.remove(selectedSlot);
         visitors.add(visitor);
-//            System.out.println("Slot reserved successfully.");
+
+        System.out.println("Slot reserved successfully.");
     }
+
 
 
     public double calculateTotalFees() {
