@@ -1,3 +1,4 @@
+import FileH.FileHandler;
 import Rooms.*;
 import User.user;
 import Visitors.Instructor;
@@ -6,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
+//import java.util.logging.FileH.FileHandler;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,9 +17,19 @@ public class Main {
         String fnGenerals ="fnGenerals";
         String fnFormal ="fnFormal";
         String fnInstructor ="fnInstructor";
-        filesHandler.readFromFile(fnGeneralRoom);
-        filesHandler.readFromFile(fnMeetingRoom);
-        filesHandler.readFromFile(fnTeachingRoom);
+//        filesHandler.readFromFile(fnGeneralRoom);
+//        filesHandler.readFromFile(fnMeetingRoom);
+//        filesHandler.readFromFile(fnTeachingRoom);
+
+        // Create an object of FileH.FileHandler
+        FileHandler fileHandler = new FileHandler();
+
+        // Writing data to the file
+//        fileHandler.writeToFile("wigo");
+//        fileHandler.writeToFile("Another line of data.");
+
+        // Reading data from the file
+//        fileHandler.readFromFile();
 
         Scanner input = new Scanner(System.in);
         ArrayList<Room> meetingRooms = new ArrayList<>();
@@ -40,23 +52,42 @@ public class Main {
         TeachingRoom teaching3 = new TeachingRoom("teaching3",8);
         teachingRooms.add(teaching3);
 
+        fileHandler.saveRoomsToFile("data/rooms.txt", meetingRooms);
+        fileHandler.saveRoomsToFile("data/rooms.txt", generalRooms);
+        fileHandler.saveRoomsToFile("data/rooms.txt", teachingRooms);
+
         //  slots
-        Slot general1slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, general1);
+        Slot general1slot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, general1);
         general1.getAvailableSlots().add(general1slot);
-        Slot general2slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(12, 0), LocalTime.of(19, 0), 350, general1);
-        general1.getAvailableSlots().add(general2slot);
-        Slot meeting1slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, meeting1);
+        Slot general2slot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, general2);
+        general2.getAvailableSlots().add(general2slot);
+        Slot general6H = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(12, 0), LocalTime.of(19, 0), 350, general1);
+        general1.getAvailableSlots().add(general6H);
+
+        Slot meeting1slot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, meeting1);
         meeting1.getAvailableSlots().add(meeting1slot);
-        Slot meeting2slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(11, 0), LocalTime.of(17, 0), 150, meeting1);
-        meeting1.getAvailableSlots().add(meeting2slot);
-        Slot teaching1Slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(9, 0), LocalTime.of(14, 0), 350, teaching1);
-        teaching1.getAvailableSlots().add(teaching1Slot);
-        Slot teaching2Slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(1, 0), LocalTime.of(9, 0), 350, teaching1);
-        teaching1.getAvailableSlots().add(teaching2Slot);
+        Slot meeting2slot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, meeting2);
+        meeting2.getAvailableSlots().add(meeting2slot);
+        Slot meeting3slot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, meeting1);
+        meeting3.getAvailableSlots().add(meeting3slot);
+
+        Slot teaching12H = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(8, 0), LocalTime.of(21, 0), 350, teaching1);
+        teaching1.getAvailableSlots().add(teaching12H);
+        Slot teaching2slot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, teaching2);
+        teaching2.getAvailableSlots().add(teaching2slot);
+        Slot teaching3slot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, teaching3);
+        teaching2.getAvailableSlots().add(teaching3slot);
+
+        Slot general1resslot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(19, 0), LocalTime.of(21, 0), 350, general1);
+        general2.getReservedSlots().add(general1resslot);
+        Slot meeting1resslot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(10, 0), LocalTime.of(12, 0), 350, meeting1);
+        meeting2.getReservedSlots().add(meeting1resslot);
+        Slot teaching1resSlot = new Slot(LocalDate.of(2024, 12, 23), LocalTime.of(10, 0), LocalTime.of(12, 0), 350, teaching1);
+        teaching2.getReservedSlots().add(teaching1resSlot);
 
         ArrayList<Instructor> instructors = new ArrayList<>();
         ArrayList<Visitor> visitors = new ArrayList<>();
-        user.startMenu(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
+        user.startMenu(visitors,meetingRooms, generalRooms,teachingRooms, instructors, fileHandler);
 
         while (true) {
             Visitor visitor = new Visitor();
@@ -64,15 +95,15 @@ public class Main {
             String signOutOption = input.next();
             if (signOutOption.equalsIgnoreCase("Y")) {
                 System.out.println("You have signed out successfully.");
-                visitor.signOut(visitors,meetingRooms, generalRooms,teachingRooms,instructors);
+                visitor.signOut(visitors,meetingRooms, generalRooms,teachingRooms,instructors, fileHandler);
             } else if (signOutOption.equalsIgnoreCase("N")) {
                 System.out.println("Going back to main menu...");
             } else {
                 System.out.println("Invalid input. Please try again.");
             }
-            filesHandler.saveToFile(fnGeneralRoom,generalRooms);
-            filesHandler.saveToFile(fnMeetingRoom,meetingRooms);
-            filesHandler.saveToFile(fnTeachingRoom,teachingRooms);
+//            filesHandler.saveToFile(fnGeneralRoom,generalRooms);
+//            filesHandler.saveToFile(fnMeetingRoom,meetingRooms);
+//            filesHandler.saveToFile(fnTeachingRoom,teachingRooms);
         }
 
     }

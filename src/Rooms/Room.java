@@ -1,4 +1,5 @@
 package Rooms;
+import FileH.FileHandler;
 import Visitors.Visitor;
 
 import java.time.LocalDate;
@@ -148,6 +149,10 @@ public abstract class Room {
         Slot newSlot = new Slot(date, startTime, endTime, fee, this);
         Availableslots.add(newSlot);
 
+        // After adding the slot, save it to the file
+        FileHandler fileHandler = new FileHandler();  // Assuming you have a FileHandler class with file-writing methods
+        fileHandler.saveAvailableSlotToFile(newSlot);  // Save the new slot to file
+
         // Provide feedback to the user
         System.out.println("Slot added successfully");
     }
@@ -219,6 +224,9 @@ public abstract class Room {
         ReservedSlots.add(selectedSlot);
         Availableslots.remove(selectedSlot);
         visitors.add(visitor);
+
+        FileHandler fileHandler = new FileHandler();
+        fileHandler.saveReservedSlotToFile(selectedSlot);
 
         System.out.println("Slot reserved successfully.");
     }

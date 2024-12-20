@@ -1,4 +1,5 @@
 package Admin_package;
+import FileH.FileHandler;
 import Rooms.*;
 import java.util.InputMismatchException;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class Admin extends user {
 //    }
 
 
-    public static void adminLogin(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+    public static void adminLogin(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors, FileHandler fileHandler) {
         while (true) {
             try {
                 System.out.println("Enter Admin Name: ");
@@ -58,7 +59,7 @@ public class Admin extends user {
 
                 if (name.equals("admin") && password.equals("admin")) {
                     System.out.println("Admin Login Successful");
-                    Admin.options(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
+                    Admin.options(visitors, meetingRooms, generalRooms, teachingRooms, instructors, fileHandler);
                     break;
                 } else {
                     System.out.println("Admin Login Failed, try again");
@@ -114,7 +115,7 @@ public class Admin extends user {
     // Print confirmation of added slot
 //        System.out.println("Slot added successfully to " + roomType + ":");
 //        System.out.println("Date: " + date + ", Time: " + time + ", Fee: $" + fee);
-    public static void options(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+    public static void options(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors, FileHandler fileHandler) {
         boolean retry = false;
         Scanner input = new Scanner(System.in);
 
@@ -217,7 +218,7 @@ public class Admin extends user {
                     retry = true;
                 } else if (choose.equalsIgnoreCase("N")) {
                     retry = false;
-                    user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
+                    user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors, fileHandler);
                 } else {
                     System.out.println("Invalid option. Returning to main menu.");
                     retry = false;

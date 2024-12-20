@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import FileH.FileHandler;
 import Rooms.Room;
 import Rooms.Slot;
 import User.user;
@@ -59,7 +60,7 @@ public class Visitor extends user {
             }
         }
     }
-    public void options(ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors) {
+    public void options(ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors, FileHandler fileHandler) {
         while (true) {
             int option = 0;
             try {
@@ -89,7 +90,7 @@ public class Visitor extends user {
                     break;
                 case 4:
                     System.out.println("Signing out...");
-                    signOut(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
+                    signOut(visitors, meetingRooms, generalRooms, teachingRooms, instructors, fileHandler);
                     break; // Exit options menu
                 default:
                     System.out.println("Invalid option. Please try again.");
@@ -300,7 +301,7 @@ public class Visitor extends user {
                 // Change the start time
                 LocalTime newStartTime = getTimeInput("Enter the new start time for the reservation (HH:MM): ");
                 // Check if the new start time conflicts with any existing reservation in the room
-                if (checkTimeConflict(slotToUpdate.getRoom(), newStartTime, slotToUpdate.getEndTime())) {
+                if (checkTimeConflict(slotToUpdate.getRoom(), newStartTime, slotToUpdate.getEndTime(), slotToUpdate)) {
                     System.out.println("The new start time conflicts with an existing reservation.");
                     System.out.println("Would you like to cancel your current reservation and reserve a new slot?");
                     System.out.println("1. Yes, cancel the reservation and re-reserve");
@@ -334,7 +335,7 @@ public class Visitor extends user {
                 // Change the end time
                 LocalTime newEndTime = getTimeInput("Enter the new end time for the reservation (HH:MM): ");
                 // Check if the new end time conflicts with any existing reservation in the room
-                if (checkTimeConflict(slotToUpdate.getRoom(), slotToUpdate.getStartTime(), newEndTime)) {
+                if (checkTimeConflict(slotToUpdate.getRoom(), slotToUpdate.getStartTime(), newEndTime, slotToUpdate)) {
                     System.out.println("The new end time conflicts with an existing reservation.");
                     System.out.println("Would you like to cancel your current reservation and reserve a new slot?");
                     System.out.println("1. Yes, cancel the reservation and re-reserve");
@@ -374,8 +375,15 @@ public class Visitor extends user {
         }
     }
 
-    boolean checkTimeConflict(Room room, LocalTime newStartTime, LocalTime newEndTime) {
+    boolean checkTimeConflict(Room room, LocalTime newStartTime, LocalTime newEndTime, Slot slotToUpdate) {
+        // Iterate through all reserved slots in the room
         for (Slot slot : room.getReservedSlots()) {
+            // Skip the slot that we are trying to update
+            if (slot.equals(slotToUpdate)) {
+                continue;
+            }
+
+            // Check for conflict between the new time and existing reserved slot
             if (newStartTime.isBefore(slot.getEndTime()) && newEndTime.isAfter(slot.getStartTime())) {
                 return true;  // Conflict found
             }
@@ -383,8 +391,9 @@ public class Visitor extends user {
         return false;  // No conflict
     }
 
-    public void signOut(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
-        user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
+
+    public void signOut(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors, FileHandler fileHandler) {
+        user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors, fileHandler);
     }
     public Visitor leaderBoard(ArrayList<Visitor> visitors) {
         int highestScore = 0;
