@@ -177,6 +177,55 @@ public abstract class Room {
             System.out.println("No available slots for this date.");
         }
     }
+    public void displayAllAvailableSlots() {
+        boolean foundSlots = false;
+
+        System.out.println("Displaying all available slots:");
+
+
+        for (int i = 0; i < Availableslots.size(); i++) {
+            Slot slot = Availableslots.get(i);
+
+
+            LocalDate slotDate = slot.getDate();
+            String roomName = getName();
+
+            System.out.println("Date: " + slotDate);
+            System.out.println("Slot " + (i + 1));
+            System.out.println(slot.getStartTime() + " - " + slot.getEndTime());
+            System.out.println("-------------------------------");
+
+            foundSlots = true;
+        }
+
+        if (!foundSlots) {
+            System.out.println("No available slots found.");
+        }
+    }
+    public void displayAllReservedSlots() {
+        boolean foundSlots = false;
+        System.out.println("Displaying all reserved slots:");
+
+
+        for (int i = 0; i < ReservedSlots.size(); i++) {
+            Slot slot = ReservedSlots.get(i);
+            LocalDate slotDate = slot.getDate();
+            String roomName = getName();
+
+            System.out.println("Date: " + slotDate);
+            System.out.println("Slot " + (i + 1));
+            System.out.println(slot.getStartTime() + " - " + slot.getEndTime());
+            System.out.println("-------------------------------");
+
+            foundSlots = true;
+        }
+
+        if (!foundSlots) {
+            System.out.println("No reserved slots found.");
+        }
+
+    }
+
 
     // Method to check if there are available slots for specific date
     public boolean hasAvailableSlots(LocalDate date) {
