@@ -125,71 +125,82 @@ public class Visitor extends user {
 
 
     void cancelRes(ArrayList<Room> rooms){
-        System.out.println("******NOTE: THEIR IS A CANCELLATION FEES******\n Do you want to continue (Y/N)");
-        System.out.println("Fees Will Be 25%");
-        String cont = input.nextLine();
-        if (cont.equalsIgnoreCase("Y")){
-            System.out.println("Enter Your Password To Cancel: ");
-            String cancelPassword = input.nextLine();
-            if (!cancelPassword.equals(super.getPassword())){
-                System.out.println("Wrong Password!!! (try again)");
-                cancelRes(rooms);
-            }
-            // Ask the user for the cancellation date
-            LocalDate cancelDate = getDateInput("Enter the Date you want to Cancel (YYYY-MM-DD): ");
+        while(true) {
+            System.out.println("******NOTE: THEIR IS A CANCELLATION FEES******\n Do you want to continue (1.YES/2.NO)");
+            int cont = input.nextInt();
+            if (cont == 1) {
+                System.out.println("Fees Will Be 25%");
+                System.out.println("Enter Your Password To Cancel: ");
+                while (true) {
+                String cancelPassword = input.nextLine();
+                    if (!cancelPassword.equals(super.getPassword())) {
+                        System.out.println("Wrong Password!!! (try again)");
+                    }
+                    else {
+                        break;
+                    }
+                }
 
-            // Ask the user for the cancellation time
-            LocalTime cancelTime = getTimeInput("Enter the time you want to Cancel (HH:MM): ");
+                // Ask the user for the cancellation date
+                LocalDate cancelDate = getDateInput("Enter the Date you want to Cancel (YYYY-MM-DD): ");
 
-            // Print the current size of Reserved Slots (for debugging purposes)
-            System.out.println("Total Rooms: " + rooms.size());
+                // Ask the user for the cancellation time
+                LocalTime cancelTime = getTimeInput("Enter the time you want to Cancel (HH:MM): ");
 
-            // Loop through each room in the rooms array
-            for (Room room : rooms) {
-                // Loop through each reserved slot in the room to find the matching reservation
-                for (Slot slot : room.getReservedSlots()) {
-                    // Check if the date and time match the user's input
-                    if (slot.getDate().equals(cancelDate) && slot.getStartTime().equals(cancelTime)) {
-                        // Check if the user is trying to cancel their own reservation
-                        if (slot.getUserID() != this.getId()) {
-                            System.out.println("This is not your reservation.");
-                            return;  // Exit if it's not the user's reservation
-                        }
+                // Print the current size of Reserved Slots (for debugging purposes)
+                System.out.println("Total Rooms: " + rooms.size());
 
-                        // Calculate the cancellation fee (25% of the original fee)
-                        double cancelFees = slot.getFees() * (25.0 / 100);
-                        System.out.println("You are being fined: " + cancelFees);
+                // Loop through each room in the rooms array
+                for (Room room : rooms) {
+                    // Loop through each reserved slot in the room to find the matching reservation
+                    for (Slot slot : room.getReservedSlots()) {
+                        // Check if the date and time match the user's input
+                        if (slot.getDate().equals(cancelDate) && slot.getStartTime().equals(cancelTime)) {
+                            // Check if the user is trying to cancel their own reservation
+                            if (slot.getUserID() != this.getId()) {
+                                System.out.println("This is not your reservation.");
+                                return;  // Exit if it's not the user's reservation
+                            }
 
-                        // Remove the slot from ReservedSlots in the current room and add it to the available slots
-                        room.getReservedSlots().remove(slot);
+                            // Calculate the cancellation fee (25% of the original fee)
+                            double cancelFees = slot.getFees() * (25.0 / 100);
+                            System.out.println("You are being fined: " + cancelFees);
 
-                        // Now, we need to check each room's available slots to find one that doesn't conflict with the canceled slot
-                        boolean addedToAvailableSlot = false;
+                            // Remove the slot from ReservedSlots in the current room and add it to the available slots
+                            room.getReservedSlots().remove(slot);
 
-                        for (Room availableRoom : rooms) {
-                            // Loop through the available slots of the room to check for conflict
-                            for (Slot availableSlot : availableRoom.getAvailableSlots()) {
-                                // Check if the available slot's date and time do not conflict with the canceled slot
-                                if (!availableSlot.getDate().equals(cancelDate) || !availableSlot.getStartTime().equals(cancelTime)) {
-                                    // No conflict found, add the canceled slot to this available slot's room
-                                    availableRoom.getAvailableSlots().add(slot);
-                                    addedToAvailableSlot = true;
-                                    System.out.println("The slot has been successfully added to an available room.");
+                            // Now, we need to check each room's available slots to find one that doesn't conflict with the canceled slot
+                            boolean addedToAvailableSlot = false;
+
+                            for (Room availableRoom : rooms) {
+                                // Loop through the available slots of the room to check for conflict
+                                for (Slot availableSlot : availableRoom.getAvailableSlots()) {
+                                    // Check if the available slot's date and time do not conflict with the canceled slot
+                                    if (!availableSlot.getDate().equals(cancelDate) || !availableSlot.getStartTime().equals(cancelTime)) {
+                                        // No conflict found, add the canceled slot to this available slot's room
+                                        availableRoom.getAvailableSlots().add(slot);
+                                        addedToAvailableSlot = true;
+                                        System.out.println("The slot has been successfully added to an available room.");
+                                        break;
+                                    }
+                                }
+                                if (addedToAvailableSlot) {
                                     break;
                                 }
                             }
-                            if (addedToAvailableSlot) {
-                                break;
+
+                            if (!addedToAvailableSlot) {
+                                System.out.println("Could not find a room with no conflict to add the canceled slot.");
                             }
-                        }
 
-                        if (!addedToAvailableSlot) {
-                            System.out.println("Could not find a room with no conflict to add the canceled slot.");
+                            return;  // Exit after cancellation
                         }
-
-                        return;  // Exit after cancellation
                     }
                 }
+            } else if (cont == 2) {
+                return;
+            } else {
+                System.out.println("invalid choice try again");
             }
         }
     }
