@@ -1,21 +1,24 @@
-import Admin_package.Admin;
 import Rooms.*;
-import User.user; // Renamed from user
-import Visitors.Formal;
-import Visitors.General;
+import User.user;
 import Visitors.Instructor;
 import Visitors.Visitor;
-
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // option visitor => check type & pass array of the type
-        // admin functions => has every array list
-//        ArrayList<Slot> Availableslots = new ArrayList<>();
-//        ArrayList<Slot> ReservedSlots = new ArrayList<>();
-        // ///////////////////////////////////////////////////////////////////////////////////
+        String fnGeneralRoom = "fnGeneralRoom";
+        String fnMeetingRoom ="fnMeetingRoom";
+        String fnTeachingRoom ="fnTeachingRoom";
+        String fnGenerals ="fnGenerals";
+        String fnFormal ="fnFormal";
+        String fnInstructor ="fnInstructor";
+        filesHandler.readFromFile(fnGeneralRoom);
+        filesHandler.readFromFile(fnMeetingRoom);
+        filesHandler.readFromFile(fnTeachingRoom);
+
         Scanner input = new Scanner(System.in);
         ArrayList<Room> meetingRooms = new ArrayList<>();
         ArrayList<Room> generalRooms = new ArrayList<>();
@@ -37,53 +40,39 @@ public class Main {
         TeachingRoom teaching3 = new TeachingRoom("teaching3",8);
         teachingRooms.add(teaching3);
 
-        ArrayList<user> users = new ArrayList<>();
-        ArrayList<Slot> slots = new ArrayList<>();
-        ArrayList<Instructor> instructors = new ArrayList<>();
-        ArrayList<Formal> formals = new ArrayList<>();
-        ArrayList<General> generals = new ArrayList<>();
-        ArrayList<Visitor> visitors = new ArrayList<>();
-        user.startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
-        // Debugging: Print out registered users
-        while (true) {
-            System.out.println("Total registered users: " + users.size());
-            Visitor visitor = new Visitor();
-            // Ensure visitors list is populated before iteration
-            for (user user : users) {
-                visitor.sortVisitors(user, formals, generals, instructors);
-                visitors.addAll(formals);
-                visitors.addAll(generals);
-                visitors.addAll(instructors);
-            }
-            for (Visitor visitor1 : visitors) {
-                visitor1.options(teachingRooms,meetingRooms,generalRooms,users,instructors);
-//                if (visitor1 instanceof Instructor){
-//                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
-//                }else if (visitor1 instanceof General) {
-//                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
-//                }else if (visitor1 instanceof Formal){
-//                    visitor1.options(teachingRooms,users,meetingRooms,generalRooms,instructors);
-//                }
+        //  slots
+        Slot general1slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, general1);
+        general1.getAvailableSlots().add(general1slot);
+        Slot general2slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(12, 0), LocalTime.of(19, 0), 350, general1);
+        general1.getAvailableSlots().add(general2slot);
+        Slot meeting1slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(8, 0), LocalTime.of(10, 0), 350, meeting1);
+        meeting1.getAvailableSlots().add(meeting1slot);
+        Slot meeting2slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(11, 0), LocalTime.of(17, 0), 150, meeting1);
+        meeting1.getAvailableSlots().add(meeting2slot);
+        Slot teaching1Slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(9, 0), LocalTime.of(14, 0), 350, teaching1);
+        teaching1.getAvailableSlots().add(teaching1Slot);
+        Slot teaching2Slot = new Slot(LocalDate.of(2024, 12, 20), LocalTime.of(1, 0), LocalTime.of(9, 0), 350, teaching1);
+        teaching1.getAvailableSlots().add(teaching2Slot);
 
-            }
-            System.out.println("Formal visitors: " + formals.size());
-            System.out.println("General visitors: " + generals.size());
-            System.out.println("Instructor visitors: " + instructors.size());
-            // Sign-out option
+        ArrayList<Instructor> instructors = new ArrayList<>();
+        ArrayList<Visitor> visitors = new ArrayList<>();
+        user.startMenu(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
+
+        while (true) {
+            Visitor visitor = new Visitor();
             System.out.println("Do you want to Sign Out? (Y/N)");
             String signOutOption = input.next();
             if (signOutOption.equalsIgnoreCase("Y")) {
                 System.out.println("You have signed out successfully.");
-                visitor.signOut(users,meetingRooms, generalRooms,teachingRooms,instructors);
+                visitor.signOut(visitors,meetingRooms, generalRooms,teachingRooms,instructors);
             } else if (signOutOption.equalsIgnoreCase("N")) {
                 System.out.println("Going back to main menu...");
-//                for (Visitor visitor1 : visitors) {
-//                    visitor1.options(meetingRooms);
-//                }
             } else {
                 System.out.println("Invalid input. Please try again.");
             }
-            // Output visitor counts
+            filesHandler.saveToFile(fnGeneralRoom,generalRooms);
+            filesHandler.saveToFile(fnMeetingRoom,meetingRooms);
+            filesHandler.saveToFile(fnTeachingRoom,teachingRooms);
         }
 
     }

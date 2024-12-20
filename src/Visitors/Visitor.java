@@ -6,22 +6,29 @@ import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import Rooms.GeneralRoom;
 import Rooms.Room;
 import Rooms.Slot;
 import User.user;
 public class Visitor extends user {
-    private int totalReservedHours;
+    protected int totalReservedHours;
+    protected int totalFreeHours;
+
+    public int getTotalFreeHours() {
+        return totalFreeHours;
+    }
+
     public Visitor(){
         super(null,null,null,idStatic);
         totalReservedHours = 0;
+        totalFreeHours = 0;
     }
     public Visitor(String name, String password, String visitorType) {
         super(name,password,visitorType,idStatic);
         totalReservedHours = 0;
+        totalFreeHours = 0;
     }
 
-    private static Scanner input = new Scanner(System.in);
+    static Scanner input = new Scanner(System.in);
     //Inputs Date
     public static LocalDate getDateInput(String prompt) {
         while (true) {
@@ -35,6 +42,7 @@ public class Visitor extends user {
                 return resDate;
             } catch (Exception e) {
                 System.out.println("Invalid date! Please use format YYYY-MM-DD and ensure the date is not in the past.");
+                input.nextLine();
             }
         }
     }
@@ -47,14 +55,19 @@ public class Visitor extends user {
                 return LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("HH:mm"));
             } catch (Exception e) {
                 System.out.println("Invalid time! Please use format HH:mm.");
+                input.nextLine();
             }
         }
     }
-    public void options(ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<user> users, ArrayList<Instructor> instructors) {
+    public void options(ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms,ArrayList<Visitor> visitors, ArrayList<Instructor> instructors) {
         while (true) {
-            System.out.println("Select an option:\n1. Make Reservation\n2. Cancel Reservation\n3. Update Reservation\n4. Sign Out");
-            int option = input.nextInt();
-            input.nextLine(); // Clear the buffer
+            int option = 0;
+            try {
+                System.out.println("Select an option:\n1. Make Reservation\n2. Cancel Reservation\n3. Update Reservation\n4. Sign Out");
+                option = input.nextInt();
+            }catch (Exception e) {
+                input.nextLine();
+            }
             ArrayList<Room> roomsToDisplay = new ArrayList<>();
             if (this.getVisitorType().equals("Instructor")) {
                 roomsToDisplay = teachingRooms;
@@ -76,7 +89,7 @@ public class Visitor extends user {
                     break;
                 case 4:
                     System.out.println("Signing out...");
-                    signOut(users, meetingRooms, generalRooms, teachingRooms, instructors);
+                    signOut(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
                     break; // Exit options menu
                 default:
                     System.out.println("Invalid option. Please try again.");
@@ -97,6 +110,7 @@ public class Visitor extends user {
             System.out.println("-----------------------------------------------------------------");
             System.out.println("Enter room number you want to reserve: ");
             int roomNum = input.nextInt();
+            input.nextLine();
             LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
             LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
 
@@ -108,22 +122,6 @@ public class Visitor extends user {
             System.out.println("Invalid input! Let's try again.");
         }
     }
-
-//    public void reReserve(ArrayList<Room> rooms,ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors){
-//        System.out.println("Do you want to make another reservation?\n 1. Make a new reservation\n 2. Return to Main Menu");
-//        int option = input.nextInt();
-//        switch (option){
-//            case 1:
-//                reservation(rooms);
-//                break;
-//            case 2:
-//                options(rooms,users,meetingRooms,generalRooms,teachingRooms,instructors);
-//                break;
-//            default:
-//                System.out.println("Invalid input! Please try again.");
-//                reReserve(rooms,users, meetingRooms, generalRooms, teachingRooms, instructors);
-//        }
-//    }
 
 
     void cancelRes(ArrayList<Room> rooms){
@@ -319,22 +317,7 @@ public class Visitor extends user {
 
             default:
                 System.out.println("Invalid choice. Returning to the main menu.");
-                return;
         }
-
-//        // Cancel the old reservation (remove the old slot from reserved slots)
-//        if (slotToUpdate.getRoom().getReservedSlots().contains(slotToUpdate)) {
-//            slotToUpdate.getRoom().getReservedSlots().remove(slotToUpdate); // Remove the slot from reserved slots
-//            slotToUpdate.getRoom().getAvailableSlots().add(slotToUpdate);   // Add the slot to available slots
-//            System.out.println("The reservation has been canceled.");
-//        } else {
-//            System.out.println("Slot not found in the reserved slots.");
-//        }
-//
-//        // Now that the old reservation is canceled, ask the user to reserve a new slot
-//        System.out.println("Your old reservation has been canceled. You need to reserve a new slot.");
-//        reservation(rooms);  // Call reservation method to reserve a new slot
-//        System.out.println("Reservation process completed.");
     }
 
     boolean checkTimeConflict(Room room, LocalTime newStartTime, LocalTime newEndTime) {
@@ -346,36 +329,22 @@ public class Visitor extends user {
         return false;  // No conflict
     }
 
-
-
-    public void signOut(ArrayList<user> users, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
-        user.startMenu(users, meetingRooms, generalRooms, teachingRooms, instructors);
+    public void signOut(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+        user.startMenu(visitors, meetingRooms, generalRooms, teachingRooms, instructors);
     }
-
-
-
-    public void sortVisitors(user currentUser, ArrayList<Formal> formals, ArrayList<General> generals, ArrayList<Instructor> instructors) {
-        try {
-            String visitorType = currentUser.getVisitorType();
-            switch (visitorType) {
-                case "Formal":
-                    Formal formal = new Formal(currentUser.getName(), currentUser.getPassword(), visitorType);
-                    formals.add(formal);
-                    break;
-                case "General":
-                    General general = new General(currentUser.getName(), currentUser.getPassword(), visitorType);
-                    generals.add(general);
-                    break;
-                case "Instructor":
-                    Instructor instructor = new Instructor(currentUser.getName(), currentUser.getPassword(), visitorType);
-                    instructors.add(instructor);
-                    break;
-                default:
-                    System.out.println("Invalid visitor type: " + visitorType);
-                    break;
+    public Visitor leaderBoard(ArrayList<Visitor> visitors) {
+        int highestScore = 0;
+        Visitor winner = null;
+        for (Visitor visitor : visitors) {
+            if (visitor.totalReservedHours>highestScore) {
+                highestScore = visitor.totalReservedHours;
+                winner = visitor;
             }
-        } catch (Exception e) {
-            System.out.println("Error sorting visitors: " + e.getMessage());
         }
+        return winner;
     }
+    public Visitor rewardSys(){
+        return null;
+    }
+
 }

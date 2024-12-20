@@ -15,13 +15,4 @@ public class TeachingRoom extends Room{
     public static double getTotalFees() {
         return totalFees;
     }
-
-//    public void addVisitor(String visitor){
-//        if(number_of_visitors < 10){
-//         this.visitors.add(visitor);
-//            this.number_of_visitors++;
-//        } else{
-//            System.out.println("Maximum visitors reached for TeachingRooom.");
-//        }
-//    }
 }

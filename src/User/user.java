@@ -2,11 +2,15 @@ package User;
 
 import Admin_package.Admin;
 import Rooms.*;
+import Visitors.Formal;
+import Visitors.General;
 import Visitors.Instructor;
 import Visitors.Visitor;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+
 
 public class user {
     static Scanner input = new Scanner(System.in);
@@ -24,9 +28,6 @@ public class user {
         this.id = idStatic;
         this.visitorType = visitorType;
         idStatic++;  // Increment the static id for the next User.user
-    }
-    public user(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
-        startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
     }
 
     // Getters and Setters
@@ -66,7 +67,7 @@ public class user {
 
 
     // Register method to add a User.user
-    public static user register(ArrayList<user> users) {
+    public static Visitor register(ArrayList<Visitor> visitors) {
         System.out.println("Enter the name of the account you want to register:");
         String name = input.next();
         System.out.println("Enter the password of the account you want to register:");
@@ -81,45 +82,64 @@ public class user {
             {
                 case 1:
                     visitorType="Formal";
-                    break;
+                    return new Formal(name, password,visitorType);
                 case 2:
                     visitorType="General";
-                    break;
+                    return new General(name, password,visitorType);
+
                 case 3:
                     visitorType="Instructor";
-                    break;
+                    return new Instructor(name, password,visitorType);
+
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
             }
         }
 
         // Create a new User object and return it
-
-        return new user(name, password,visitorType,idStatic);
+        return new Visitor(name, password,visitorType);
 
 
     }
 
-    // Login method to validate User.user credentials
-//    static boolean loggedIn = false;
-//    public boolean isLoggedIn() {return loggedIn;}
-    public static void login(ArrayList<user> users) {
-        System.out.println("Login Page\n");
-        String nameLogin, passwordLogin;
-        System.out.println("Enter your Name:");
-        nameLogin = input.next();
-        System.out.println("Enter password:");
-        passwordLogin = input.next();
 
+    public static void login(ArrayList<Visitor> visitors, ArrayList<Room> teachingRooms, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Instructor> instructors) {
+            String nameLogin ="", passwordLogin="";
+
+        try {
+            System.out.println("Login Page\n");
+            System.out.println("Enter your Name:");
+            nameLogin = input.next();
+            System.out.println("Enter password:");
+            passwordLogin = input.next();
+        }catch (Exception e) {
+            System.out.println("Login Error : "+e.getMessage());
+            input.nextLine();
+        }
         boolean loggedIn = false; // Reset loggedIn for each login attempt
 
-        for (user u : users) {
-            if (u.getName().equals(nameLogin) && u.getPassword().equals(passwordLogin)) {
+        for (Visitor v : visitors) {
+            if (v.getName().equals(nameLogin) && v.getPassword().equals(passwordLogin)) {
                 System.out.println("You logged in successfully.");
+                Visitor winner = v.leaderBoard(visitors); // Get the winner from the leaderboard
+                Visitor reward = v.rewardSys(); // Get the visitor who qualifies for a reward
+
+                // Check if the logged-in user is the winner
+                if (v.equals(winner)) {
+                    System.out.println("Congratulations " + v.getName() + "! You are the winner!");
+                    System.out.println("You won 7 free hours for the next month for " + v.getVisitorType() + " category.");
+                }
+                // Check if the logged-in user has earned a reward
+                if (v.getTotalFreeHours() >= 1) {
+                    System.out.println("Congratulations " + v.getName() + "! You have reached a milestone!");
+                    System.out.println("You won 1 free hour");
+                }
+                v.options(teachingRooms, meetingRooms, generalRooms, visitors, instructors);
                 loggedIn = true;
                 break;
             }
         }
+
 
         if (!loggedIn) {
             int choice = 0;
@@ -131,40 +151,48 @@ public class user {
                 choice = input.nextInt();
                 switch (choice) {
                     case 1:
-                        login(users);
+                        login(visitors, teachingRooms, meetingRooms, generalRooms, instructors);
                         return; // Avoid further execution
                     case 2:
-                        user newUser = register(users);
-                        users.add(newUser);
+                        Visitor newVisitor = register(visitors);
+                        visitors.add(newVisitor);
                         return; // Avoid further execution
                 }
             }
         }
     }
 
-
     // Menu for starting the application
-    public static void startMenu(ArrayList<user> users, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
+    public static void startMenu(ArrayList<Visitor> visitors, ArrayList<Room>meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms, ArrayList<Instructor> instructors) {
 
         int choice = 0;
         do {
-            System.out.println("\t\t\t\t\t\t\t\t\t***Hello to Galacticos Work space***");
-            System.out.println("1. Create a new Account \n2. Login (Already have an account)");
-            choice = input.nextInt();
-
+            try {
+                System.out.println("\t\t\t\t\t\t\t\t\t***Hello to Galacticos Work space***");
+                System.out.println("1. Create a new Account \n2. Login (Already have an account)");
+                choice = input.nextInt();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid Input : "+e.getMessage());
+                input.nextLine();
+                choice = 4;
+            }
             switch (choice) {
                 case 1:
                     // Create a new User.user and add it to the list
-                    user newUser = register(users);
-                    users.add(newUser);
-                    startMenu(users,meetingRooms, generalRooms,teachingRooms, instructors);
+                    Visitor newVisitor = register(visitors);
+                    visitors.add(newVisitor);
+                    startMenu(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
                     break;
                 case 2:
                     // Directly call the login function
-                    login(users);
+                    login(visitors, teachingRooms, meetingRooms, generalRooms, instructors);
                     break;
                 case 3:
-                    Admin.adminLogin(users,meetingRooms, generalRooms,teachingRooms, instructors);
+                    Admin.adminLogin(visitors,meetingRooms, generalRooms,teachingRooms, instructors);
+                    break;
+                case 4:
+                    startMenu(visitors,meetingRooms, generalRooms, teachingRooms, instructors);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

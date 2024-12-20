@@ -149,7 +149,7 @@ public abstract class Room {
         Availableslots.add(newSlot);
 
         // Provide feedback to the user
-        System.out.println("Slot added successfully: " + newSlot);
+        System.out.println("Slot added successfully");
     }
 
     // check date to display its slots
@@ -171,6 +171,17 @@ public abstract class Room {
         if (!foundSlots) {
             System.out.println("No available slots for this date.");
         }
+    }
+
+    // Method to check if there are available slots for specific date
+    public boolean hasAvailableSlots(LocalDate date) {
+        // Check if there are no reservations for the date
+        for (Slot slot : getAvailableSlots()) {
+            if (slot.getDate().equals(date)) {
+                return true;  // If there is any reservation on the date, return false
+            }
+        }
+        return false;  // No reservations for the date, so return true
     }
 
     // CHANGE FROM INDEX TO START TIME
@@ -379,7 +390,5 @@ public abstract class Room {
     }
     public abstract void addFees();
 
-    public void updateReservation(){
 
-    }
 }

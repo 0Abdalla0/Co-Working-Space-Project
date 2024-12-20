@@ -16,14 +16,4 @@ public class MeetingRoom extends Room {
     public static double getTotalFees() {
         return totalFees;
     }
-
-//    @Override
-//    public void addVisitor(String visitor) {
-//        if (number_of_visitors < 10) {
-//        this.visitors.add(visitor);
-//            number_of_visitors++;
-//        } else {
-//            System.out.println("Maximum visitors reached for Meeting Room.");
-//        }
-//    }
 }
