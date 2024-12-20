@@ -72,27 +72,39 @@ public class Admin extends user {
 
     // Add slots to a specific room type
     public static void addSlots(Room room) {
+        Scanner input = new Scanner(System.in);
         int num_of_slots = 0;
+        boolean validInput = false;
 
-        try {
-            System.out.println("Enter Number of Slots you want to add: ");
-            num_of_slots = input.nextInt();
-            input.nextLine(); // Clear the buffer
-
-            for (int i = 0; i < num_of_slots; i++) {
-                try {
-                    System.out.println("Slot " + (i + 1) + ": ");
-                    room.inputAddSlot();
-                } catch (Exception e) {
-                    System.out.println("An error occurred while adding the slot: " + e.getMessage());
-                    System.out.println("Skipping this slot and continuing...");
+        // Prompt user for number of slots until a valid integer is entered
+        do {
+            try {
+                System.out.println("Enter Number of Slots you want to add: ");
+                num_of_slots = input.nextInt();
+                input.nextLine(); // Clear the buffer
+                if (num_of_slots <= 0) {
+                    System.out.println("Please enter a positive integer for the number of slots.");
+                } else {
+                    validInput = true; // Valid input, exit the loop
                 }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                input.nextLine(); // Clear invalid input
             }
-        } catch (Exception e) {
-            System.out.println("Invalid input for number of slots. Please enter a valid integer.");
-            input.nextLine(); // Clear the buffer to allow retry
+        } while (!validInput);
+
+        // Add the specified number of slots
+        for (int i = 0; i < num_of_slots; i++) {
+            try {
+                System.out.println("Slot " + (i + 1) + ": ");
+                room.inputAddSlot(); // Assuming this method handles slot input
+            } catch (Exception e) {
+                System.out.println("An error occurred while adding the slot: " + e.getMessage());
+                System.out.println("Skipping this slot and continuing...");
+            }
         }
     }
+
 
 
     // Input slot details for a specific room type
@@ -209,6 +221,7 @@ public class Admin extends user {
                 } else {
                     System.out.println("Invalid option. Returning to main menu.");
                     retry = false;
+
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid menu option.");
@@ -352,13 +365,34 @@ public class Admin extends user {
     }
 
     public static void update_entity(ArrayList<Visitor> visitors, ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+        Scanner input = new Scanner(System.in);
         boolean continueUpdating = true;
+
         while (continueUpdating) {
-            System.out.println("Select entity to update: ");
-            System.out.println("1. Room");
-            System.out.println("2. Visitor");
-            System.out.println("3. slot");
-            int option = input.nextInt();
+            int option = 0;
+            boolean validInput = false;
+
+            // Loop to get a valid option
+            while (!validInput) {
+                try {
+                    System.out.println("Select entity to update: ");
+                    System.out.println("1. Room");
+                    System.out.println("2. Visitor");
+                    System.out.println("3. Slot");
+                    option = input.nextInt();
+                    input.nextLine(); // Clear the buffer
+                    if (option >= 1 && option <= 3) {
+                        validInput = true; // Valid input, exit the loop
+                    } else {
+                        System.out.println("Invalid choice. Please enter a number between 1 and 3.");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a valid integer.");
+                    input.nextLine(); // Clear invalid input
+                }
+            }
+
+            // Handle the selected option
             switch (option) {
                 case 1:
                     Admin.displayAllRooms(generalRooms, meetingRooms, teachingRooms);
@@ -372,129 +406,153 @@ public class Admin extends user {
                     break;
                 case 3:
                     updateSlot(meetingRooms, generalRooms, teachingRooms);
-//                    LocalDate dateTest = getDateInput("enter date test");
-//                    System.out.println(meetingRooms.get(0).displayAvailableSlots(dateTest));
-
-
+                    break;
                 default:
-                    System.out.println("Invalid Option. try again");
-
-
-
+                    // This should not happen due to validation but included as a safeguard
+                    System.out.println("Unexpected error. Please try again.");
             }
-            System.out.println("Do You Want To continue updating?");
-            String choose = input.next();
-            if (choose.equalsIgnoreCase("Y")) {
-                continueUpdating = true;
-            } else {
-                continueUpdating = false;
+
+            // Ask if the user wants to continue updating
+            boolean validChoice = false;
+            while (!validChoice) {
+                try {
+                    System.out.println("Do You Want To continue updating? (Y/N)");
+                    String choose = input.nextLine().trim();
+                    if (choose.equalsIgnoreCase("Y")) {
+                        continueUpdating = true;
+                        validChoice = true; // Valid choice, exit the loop
+                    } else if (choose.equalsIgnoreCase("N")) {
+                        continueUpdating = false;
+                        validChoice = true; // Valid choice, exit the loop
+                    } else {
+                        System.out.println("Invalid choice. Please enter 'Y' or 'N'.");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please try again.");
+                }
             }
         }
     }
+
 
     public static void update_room(ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
         boolean found = false;
 
         while (!found) {
-            System.out.print("Enter the ID of the room to update: ");
-            int id = input.nextInt();
+            try {
+                System.out.print("Enter the ID of the room to update: ");
+                int id = input.nextInt();
 
-            Room targetRoom = null;
-            String roomType = null; // To store the type of the room
+                Room targetRoom = null;
+                String roomType = null; // To store the type of the room
 
-            // Search in meetingRooms
-            for (Room room : meetingRooms) {
-                if (room.getID() == id) {
-                    targetRoom = room;
-                    roomType = "Meeting Room";
-                    break;
-                }
-            }
-
-            // Search in generalRooms if not found
-            if (targetRoom == null) {
-                for (Room room : generalRooms) {
+                // Search in meetingRooms
+                for (Room room : meetingRooms) {
                     if (room.getID() == id) {
                         targetRoom = room;
-                        roomType = "General Room";
+                        roomType = "Meeting Room";
                         break;
                     }
                 }
-            }
 
-            // Search in teachingRooms if not found
-            if (targetRoom == null) {
-                for (Room room : teachingRooms) {
-                    if (room.getID() == id) {
-                        targetRoom = room;
-                        roomType = "Teaching Room";
-                        break;
+                // Search in generalRooms if not found
+                if (targetRoom == null) {
+                    for (Room room : generalRooms) {
+                        if (room.getID() == id) {
+                            targetRoom = room;
+                            roomType = "General Room";
+                            break;
+                        }
                     }
                 }
-            }
 
-            // If the room is found, display details and proceed to update
-            if (targetRoom != null) {
-                found = true;
-
-                // Display the room's details
-                System.out.println("Room found:");
-                System.out.println("Type: " + roomType);
-                System.out.println("ID: " + targetRoom.getID());
-                System.out.println("Name: " + targetRoom.getName());
-
-                // Prompt user to choose what to update
-                System.out.println("Choose 1 to update room name, or 2 to update room ID:");
-                int choice = input.nextInt();
-
-                switch (choice) {
-                    case 1: // Update room name
-                        System.out.print("Enter new room name to update: ");
-                        String roomName = input.next();
-                        targetRoom.setName(roomName);
-                        System.out.println("Room name updated successfully.");
-                        break;
-
-                    case 2: // Update room ID
-                        System.out.print("Enter the new room ID to update: ");
-                        int newId = input.nextInt();
-
-                        // Check if the new ID already exists in any list
-                        boolean idExists = false;
-
-                        for (Room room : meetingRooms) {
-                            if (room.getID() == newId) {
-                                idExists = true;
-                                break;
-                            }
+                // Search in teachingRooms if not found
+                if (targetRoom == null) {
+                    for (Room room : teachingRooms) {
+                        if (room.getID() == id) {
+                            targetRoom = room;
+                            roomType = "Teaching Room";
+                            break;
                         }
-                        for (Room room : generalRooms) {
-                            if (room.getID() == newId) {
-                                idExists = true;
-                                break;
-                            }
-                        }
-                        for (Room room : teachingRooms) {
-                            if (room.getID() == newId) {
-                                idExists = true;
-                                break;
-                            }
-                        }
-
-                        if (!idExists) {
-                            targetRoom.setID(newId);
-                            System.out.println("Room ID updated successfully.");
-                        } else {
-                            System.out.println("The entered ID is already in use. Please try again with a different ID.");
-                        }
-                        break;
-
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
+                    }
                 }
-            } else {
-                // If the room is not found, prompt the user to try again
-                System.out.println("Room with the given ID not found. Please try again.");
+
+                // If the room is found, display details and proceed to update
+                if (targetRoom != null) {
+                    found = true;
+
+                    // Display the room's details
+                    System.out.println("Room found:");
+                    System.out.println("Type: " + roomType);
+                    System.out.println("ID: " + targetRoom.getID());
+                    System.out.println("Name: " + targetRoom.getName());
+
+                    // Loop to ensure valid input for choice
+                    boolean validChoice = false;
+                    while (!validChoice) {
+                        try {
+                            System.out.println("Choose 1 to update room name, or 2 to update room ID:");
+                            int choice = input.nextInt();
+
+                            switch (choice) {
+                                case 1: // Update room name
+                                    System.out.print("Enter new room name to update: ");
+                                    String roomName = input.next();
+                                    targetRoom.setName(roomName);
+                                    System.out.println("Room name updated successfully.");
+                                    validChoice = true; // Exit the loop
+                                    break;
+
+                                case 2: // Update room ID
+                                    System.out.print("Enter the new room ID to update: ");
+                                    int newId = input.nextInt();
+
+                                    // Check if the new ID already exists in any list
+                                    boolean idExists = false;
+
+                                    for (Room room : meetingRooms) {
+                                        if (room.getID() == newId) {
+                                            idExists = true;
+                                            break;
+                                        }
+                                    }
+                                    for (Room room : generalRooms) {
+                                        if (room.getID() == newId) {
+                                            idExists = true;
+                                            break;
+                                        }
+                                    }
+                                    for (Room room : teachingRooms) {
+                                        if (room.getID() == newId) {
+                                            idExists = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!idExists) {
+                                        targetRoom.setID(newId);
+                                        System.out.println("Room ID updated successfully.");
+                                        validChoice = true; // Exit the loop
+                                    } else {
+                                        System.out.println("The entered ID is already in use. Please try again with a different ID.");
+                                    }
+                                    break;
+
+                                default:
+                                    System.out.println("Invalid choice. Please enter 1 or 2.");
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input. Please enter a valid integer.");
+                            input.nextLine(); // Clear invalid input
+                        }
+                    }
+                } else {
+                    // If the room is not found, prompt the user to try again
+                    System.out.println("Room with the given ID not found. Please try again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                input.nextLine(); // Clear invalid input
             }
         }
     }
@@ -504,80 +562,97 @@ public class Admin extends user {
         boolean found = false;
 
         while (!found) {
-            System.out.print("Enter Visitor ID you want to update: ");
-            int visitor_id = input.nextInt();
+            try {
+                System.out.print("Enter Visitor ID you want to update: ");
+                int visitor_id = input.nextInt();
 
-            // Search for the visitor by ID
-            user targetUser = null;
-            for (Visitor v : visitors) {
-                if (v.getId() == visitor_id) {
-                    targetUser = v;
-                    break;
-                }
-            }
-
-            // If visitor is found, display their details and proceed
-            if (targetUser != null) {
-                found = true;
-
-                // Display visitor details
-                System.out.println("Visitor found:");
-                System.out.println("ID: " + targetUser.getId());
-                System.out.println("Name: " + targetUser.getName());
-                System.out.println("Password: " + targetUser.getPassword());
-
-                // Prompt user to choose what to update
-                System.out.println("Choose what you want to update: 1 for Name, 2 for ID, 3 for Password");
-                int choice = input.nextInt();
-
-                switch (choice) {
-                    case 1:
-                        // Update name
-                        System.out.print("Enter new name: ");
-                        String newName = input.next();
-                        targetUser.setName(newName);
-                        System.out.println("Visitor name updated successfully.");
+                // Search for the visitor by ID
+                Visitor targetUser = null;
+                for (Visitor v : visitors) {
+                    if (v.getId() == visitor_id) {
+                        targetUser = v;
                         break;
+                    }
+                }
 
-                    case 2:
-                        // Update ID
-                        System.out.print("Enter new ID: ");
-                        int newId = input.nextInt();
+                // If visitor is found, display their details and proceed
+                if (targetUser != null) {
+                    found = true;
 
-                        // Check if new ID already exists
-                        boolean idExists = false;
-                        for (Visitor v : visitors) {
-                            if (v.getId() == newId) {
-                                idExists = true;
-                                break;
+                    // Display visitor details
+                    System.out.println("Visitor found:");
+                    System.out.println("ID: " + targetUser.getId());
+                    System.out.println("Name: " + targetUser.getName());
+                    System.out.println("Password: " + targetUser.getPassword());
+
+                    // Loop until the user provides a valid choice
+                    boolean validChoice = false;
+                    while (!validChoice) {
+                        try {
+                            System.out.println("Choose what you want to update: 1 for Name, 2 for ID, 3 for Password");
+                            int choice = input.nextInt();
+
+                            switch (choice) {
+                                case 1:
+                                    // Update name
+                                    System.out.print("Enter new name: ");
+                                    String newName = input.next();
+                                    targetUser.setName(newName);
+                                    System.out.println("Visitor name updated successfully.");
+                                    validChoice = true; // Exit the loop
+                                    break;
+
+                                case 2:
+                                    // Update ID
+                                    System.out.print("Enter new ID: ");
+                                    int newId = input.nextInt();
+
+                                    // Check if new ID already exists
+                                    boolean idExists = false;
+                                    for (Visitor v : visitors) {
+                                        if (v.getId() == newId) {
+                                            idExists = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!idExists) {
+                                        targetUser.setId(newId);
+                                        System.out.println("Visitor ID updated successfully.");
+                                        validChoice = true; // Exit the loop
+                                    } else {
+                                        System.out.println("The entered ID is already in use. Please try again with a different ID.");
+                                    }
+                                    break;
+
+                                case 3:
+                                    // Update password
+                                    System.out.print("Enter new password: ");
+                                    String newPassword = input.next();
+                                    targetUser.setPassword(newPassword);
+                                    System.out.println("Visitor password updated successfully.");
+                                    validChoice = true; // Exit the loop
+                                    break;
+
+                                default:
+                                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
                             }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input. Please enter a valid integer.");
+                            input.nextLine(); // Clear invalid input
                         }
-
-                        if (!idExists) {
-                            targetUser.setId(newId);
-                            System.out.println("Visitor ID updated successfully.");
-                        } else {
-                            System.out.println("The entered ID is already in use. Please try again with a different ID.");
-                        }
-                        break;
-
-                    case 3:
-                        // Update password
-                        System.out.print("Enter new password: ");
-                        String newPassword = input.next();
-                        targetUser.setPassword(newPassword);
-                        System.out.println("Visitor password updated successfully.");
-                        break;
-
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
+                    }
+                } else {
+                    // If visitor is not found, prompt user to try again
+                    System.out.println("Visitor with the given ID not found. Please try again.");
                 }
-            } else {
-                // If visitor is not found, prompt user to try again
-                System.out.println("Visitor with the given ID not found. Please try again.");
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                input.nextLine(); // Clear invalid input
             }
         }
     }
+
 
 
     public static void updateSlot(ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
@@ -653,34 +728,50 @@ public class Admin extends user {
             }
         }
     }
-    public static void calcRoom (ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms){
-        System.out.println("Which type of room do you want to calculate?");
-        System.out.println("1. Meeting Room     2. General Room     3. Teaching Room");
-        int choice = input.nextInt();
+    public static void calcRoom(ArrayList<Room> meetingRooms, ArrayList<Room> generalRooms, ArrayList<Room> teachingRooms) {
+        Scanner input = new Scanner(System.in);
+        boolean validInput = false;
 
-        switch (choice){
-            case 1:
-                for (Room room : meetingRooms) {
-                    room.addFees();
+        while (!validInput) {
+            try {
+                System.out.println("Which type of room do you want to calculate?");
+                System.out.println("1. Meeting Room     2. General Room     3. Teaching Room");
+                int choice = input.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        for (Room room : meetingRooms) {
+                            room.addFees();
+                        }
+                        System.out.println("Meeting room fees: ");
+                        System.out.println(MeetingRoom.getTotalFees());
+                        validInput = true; // Valid choice, exit the loop
+                        break;
+                    case 2:
+                        for (Room room : generalRooms) {
+                            room.addFees();
+                        }
+                        System.out.println("General room fees: ");
+                        System.out.println(GeneralRoom.getTotalFees());
+                        validInput = true; // Valid choice, exit the loop
+                        break;
+                    case 3:
+                        for (Room room : teachingRooms) {
+                            room.addFees();
+                        }
+                        System.out.println("Teaching room fees: ");
+                        System.out.println(TeachingRoom.getTotalFees());
+                        validInput = true; // Valid choice, exit the loop
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please enter a number between 1 and 3.");
                 }
-                System.out.println("Meeting room fees:  ");
-                System.out.println(MeetingRoom.getTotalFees());
-                break;
-            case 2:
-                for (Room room : generalRooms) {
-                    room.addFees();
-                }
-                System.out.println("General room fees:  ");
-                System.out.println(GeneralRoom.getTotalFees());
-                break;
-            case 3:
-                for (Room room : teachingRooms) {
-                    room.addFees();
-                }
-                System.out.println("Teaching room fees:  ");
-                System.out.println(TeachingRoom.getTotalFees());
-                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                input.nextLine(); // Clear the invalid input from the scanner buffer
+            }
         }
     }
+
 
 }
