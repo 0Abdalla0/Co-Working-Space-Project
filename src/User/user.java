@@ -67,11 +67,19 @@ public class user {
 
 
     // Register method to add a User.user
+    public static void validation(String name, String password,ArrayList<Visitor> visitors){
+        if(name.length()<3||name.length()>25||password.length()<8){
+            System.out.println("name must be between 3 and 25 characters and password must be more than 8 characters");
+            register(visitors);
+        }
+
+    }
     public static Visitor register(ArrayList<Visitor> visitors) {
         System.out.println("Enter the name of the account you want to register:");
         String name = input.next();
         System.out.println("Enter the password of the account you want to register:");
         String password = input.next();
+        user.validation(name,password,visitors);
         int choice=0;
         String visitorType="none";
         while(choice!=1&&choice!=2&&choice!=3)

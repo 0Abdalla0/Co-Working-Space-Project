@@ -42,7 +42,7 @@ public class Visitor extends user {
                 return resDate;
             } catch (Exception e) {
                 System.out.println("Invalid date! Please use format YYYY-MM-DD and ensure the date is not in the past.");
-                input.nextLine();
+
             }
         }
     }
@@ -101,6 +101,12 @@ public class Visitor extends user {
         try {
             LocalDate today = LocalDate.now();
             System.out.println("Today's date is " + today);
+            // Clear the input buffer
+            if (input.hasNextLine()) {
+                input.nextLine();
+            }
+
+
             LocalDate resDate = getDateInput("Enter The Date You Want (YYYY-MM-DD): ");
             System.out.println("-----------------------------------------------------------------");
             for (int i = 0; i < rooms.size(); i++) {
@@ -108,94 +114,142 @@ public class Visitor extends user {
                 rooms.get(i).displayAvailableSlots(resDate);
             }
             System.out.println("-----------------------------------------------------------------");
+
             System.out.println("Enter room number you want to reserve: ");
             int roomNum = input.nextInt();
-            input.nextLine();
+            input.nextLine(); // Consume the newline
+
             LocalTime startTime = getTimeInput("Enter start time you want to reserve: ");
             LocalTime endTime = getTimeInput("Enter end time you want to reserve: ");
 
+            // Validate start and end times
+            if (endTime.isBefore(startTime)) {
+                System.out.println("Error: End time cannot be earlier than start time.");
+                return;
+            }
+
+            Room selectedRoom = rooms.get(roomNum - 1); // Get the selected room
+            Slot slotToReserve = null;
+
+            // Check if the slot exists in the room's available slots
+            for (Slot slot : selectedRoom.getAvailableSlots()) {
+                if (slot.getStartTime().equals(startTime) && slot.getEndTime().equals(endTime)) {
+                    slotToReserve = slot;
+                    break;
+                }
+            }
+
+            if (slotToReserve == null) {
+                System.out.println("Error: No matching slot found with the specified times.");
+                return;
+            }
+
+            // Calculate reserved hours and reserve slot
             int reservedHours = Duration.between(startTime, endTime).toHoursPart(); // Calculate hours
             totalReservedHours += reservedHours;
-            rooms.get(roomNum-1).reserveSlot(startTime, this);
-            System.out.println("Reservation for room # " + roomNum + " and Slot # "+ startTime +" is successful.");
+            selectedRoom.reserveSlot(startTime, endTime, this);
+
+            // Success message
+            System.out.println("Reservation for room #" + roomNum + " and slot starting at " + startTime + " is successful.");
         } catch (Exception e) {
             System.out.println("Invalid input! Let's try again.");
+            input.nextLine(); // Clear the input buffer
         }
     }
 
 
+
     void cancelRes(ArrayList<Room> rooms){
-        System.out.println("******NOTE: THEIR IS A CANCELLATION FEES******\n Do you want to continue (Y/N)");
-        System.out.println("Fees Will Be 25%");
-        String cont = input.nextLine();
-        if (cont.equalsIgnoreCase("Y")){
-            System.out.println("Enter Your Password To Cancel: ");
-            String cancelPassword = input.nextLine();
-            if (!cancelPassword.equals(super.getPassword())){
-                System.out.println("Wrong Password!!! (try again)");
-                cancelRes(rooms);
-            }
-            // Ask the user for the cancellation date
-            LocalDate cancelDate = getDateInput("Enter the Date you want to Cancel (YYYY-MM-DD): ");
+        while(true) {
+            System.out.println("******NOTE: THEIR IS A CANCELLATION FEES******\n Do you want to continue (1.YES/2.NO)");
+            int cont = input.nextInt();
+            input.nextLine(); // Consume the leftover newline character
+            if (cont == 1) {
+                System.out.println("Fees Will Be 25%");
+                System.out.println("Enter Your Password To Cancel: ");
+                while (true) {
+                String cancelPassword = input.nextLine();
+                    if (!cancelPassword.equals(super.getPassword())) {
 
-            // Ask the user for the cancellation time
-            LocalTime cancelTime = getTimeInput("Enter the time you want to Cancel (HH:MM): ");
 
-            // Print the current size of Reserved Slots (for debugging purposes)
-            System.out.println("Total Rooms: " + rooms.size());
+                        System.out.println("Wrong Password!!! (try again)");
+                    }
+                    else {
+                        break;
+                    }
+                }
 
-            // Loop through each room in the rooms array
-            for (Room room : rooms) {
-                // Loop through each reserved slot in the room to find the matching reservation
-                for (Slot slot : room.getReservedSlots()) {
-                    // Check if the date and time match the user's input
-                    if (slot.getDate().equals(cancelDate) && slot.getStartTime().equals(cancelTime)) {
-                        // Check if the user is trying to cancel their own reservation
-                        if (slot.getUserID() != this.getId()) {
-                            System.out.println("This is not your reservation.");
-                            return;  // Exit if it's not the user's reservation
-                        }
+                // Ask the user for the cancellation date
+                LocalDate cancelDate = getDateInput("Enter the Date you want to Cancel (YYYY-MM-DD): ");
 
-                        // Calculate the cancellation fee (25% of the original fee)
-                        double cancelFees = slot.getFees() * (25.0 / 100);
-                        System.out.println("You are being fined: " + cancelFees);
+                // Ask the user for the cancellation time
+                LocalTime cancelTime = getTimeInput("Enter the time you want to Cancel (HH:MM): ");
 
-                        // Remove the slot from ReservedSlots in the current room and add it to the available slots
-                        room.getReservedSlots().remove(slot);
+                // Print the current size of Reserved Slots (for debugging purposes)
+                System.out.println("Total Rooms: " + rooms.size());
 
-                        // Now, we need to check each room's available slots to find one that doesn't conflict with the canceled slot
-                        boolean addedToAvailableSlot = false;
+                // Loop through each room in the rooms array
+                for (Room room : rooms) {
+                    // Loop through each reserved slot in the room to find the matching reservation
+                    for (Slot slot : room.getReservedSlots()) {
+                        // Check if the date and time match the user's input
+                        if (slot.getDate().equals(cancelDate) && slot.getStartTime().equals(cancelTime)) {
+                            // Check if the user is trying to cancel their own reservation
+                            if (slot.getUserID() != this.getId()) {
+                                System.out.println("This is not your reservation.");
+                                return;  // Exit if it's not the user's reservation
+                            }
 
-                        for (Room availableRoom : rooms) {
-                            // Loop through the available slots of the room to check for conflict
-                            for (Slot availableSlot : availableRoom.getAvailableSlots()) {
-                                // Check if the available slot's date and time do not conflict with the canceled slot
-                                if (!availableSlot.getDate().equals(cancelDate) || !availableSlot.getStartTime().equals(cancelTime)) {
-                                    // No conflict found, add the canceled slot to this available slot's room
-                                    availableRoom.getAvailableSlots().add(slot);
-                                    addedToAvailableSlot = true;
-                                    System.out.println("The slot has been successfully added to an available room.");
+                            // Calculate the cancellation fee (25% of the original fee)
+                            double cancelFees = slot.getFees() * (25.0 / 100);
+                            System.out.println("You are being fined: " + cancelFees);
+
+                            // Remove the slot from ReservedSlots in the current room and add it to the available slots
+                            room.getReservedSlots().remove(slot);
+
+                            // Now, we need to check each room's available slots to find one that doesn't conflict with the canceled slot
+                            boolean addedToAvailableSlot = false;
+
+                            for (Room availableRoom : rooms) {
+                                // Loop through the available slots of the room to check for conflict
+                                for (Slot availableSlot : availableRoom.getAvailableSlots()) {
+                                    // Check if the available slot's date and time do not conflict with the canceled slot
+                                    if (!availableSlot.getDate().equals(cancelDate) || !availableSlot.getStartTime().equals(cancelTime)) {
+                                        // No conflict found, add the canceled slot to this available slot's room
+                                        availableRoom.getAvailableSlots().add(slot);
+                                        addedToAvailableSlot = true;
+                                        System.out.println("The slot has been successfully added to an available room.");
+                                        break;
+                                    }
+                                }
+                                if (addedToAvailableSlot) {
                                     break;
                                 }
                             }
-                            if (addedToAvailableSlot) {
-                                break;
+
+                            if (!addedToAvailableSlot) {
+                                System.out.println("Could not find a room with no conflict to add the canceled slot.");
                             }
-                        }
 
-                        if (!addedToAvailableSlot) {
-                            System.out.println("Could not find a room with no conflict to add the canceled slot.");
+                            return;  // Exit after cancellation
                         }
-
-                        return;  // Exit after cancellation
+                        else{
+                            System.out.println("This is not your reservation with this date and time");
+                        }
                     }
                 }
+            } else if (cont == 2) {
+                return;
+            } else {
+                System.out.println("invalid choice try again");
             }
         }
     }
     void updateRes(ArrayList<Room> rooms){
         System.out.println("Enter Your Password To Update: ");
+        input.nextLine(); // This clears the leftover newline from the previous input
         String updatePassword = input.nextLine();
+
         if (!updatePassword.equals(super.getPassword())){
             System.out.println("wrong password!!!(try again)");
             updateRes(rooms);
